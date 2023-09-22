@@ -10,7 +10,7 @@ const UseStateNav = () => {
         document.body.classList.add('overflow-hidden')
     }
     return (
-        <header className='py-4 bg-warning position-fixed top-0 z-2 w-100'>
+        <header className='py-4 bg-warning  w-100'>
             <Container>
                 <nav className='d-flex justify-content-between align-items-center'>
          <h1>logo</h1>
