@@ -28,20 +28,25 @@ const EmailJs = () => {
     // const [address, setAddress] = useState("");
 
     return (
-        <form ref={form} onSubmit={sendEmail} id='my_form' >
-            <label className='text-black fs-4 me-2 mb-0 ms-5 '>Name</label>
-            <input required type="text" name="user_name"
-            />
-            <label className='text-black fs-4 ms-5 me-2 mb-0'>Email</label>
-            <input type="text" name="user_email" pattern="^[a-zA-Z0-9]+@gmail\.com$" required
-            />
-            <label className='text-black fs-4 ms-5 me-2 mb-0'>Message</label>
-            <textarea required name="message"
-            />
-            <div className='ms-5 mt-5'>
-                <input className=' bg-transparent px-4 py-1 rounded-4 fs-4 send_hover' type="submit" value="Send" />
-            </div>
-        </form>
+        <div>
+            <h1 className='text-center mb-5'>==EmailJs Start Here ==</h1>
+            <form ref={form} onSubmit={sendEmail} id='my_form' >
+                <label className='text-black fs-4 me-2 mb-0 ms-5 '>Name</label>
+                <input required type="text" name="user_name"
+                />
+                <label className='text-black fs-4 ms-5 me-2 mb-0'>Email</label>
+                <input type="text" name="user_email" pattern="^[a-zA-Z0-9]+@gmail\.com$" required
+                />
+                <label className='text-black fs-4 ms-5 me-2 mb-0'>Message</label>
+                <input type='text' required name="message"
+                />
+                <div className='ms-5 mt-5'>
+                    <input className=' bg-transparent px-4 py-1 rounded-4 fs-4 send_hover' type="submit" value="Send" />
+                </div>
+            </form>
+            <h1 className='text-center mb-5'>^^ EmailJs End Here ^^</h1>
+
+        </div>
     )
 };
 
