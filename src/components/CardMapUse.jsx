@@ -1,12 +1,15 @@
 import React from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import { CardMaping } from './CardMaping'
+import { Link } from 'react-router-dom'
 
 const CardMapUse = () => {
     return (
         <section className='py-5'>
-            <h1 className='text-center'>== Card Map Start Here ==</h1>
             <Container className='pb-lg-5 mb-lg-4 pt-lg-4'>
+            <Link to="/">
+          <button className="d-block common_btns mb-4">Back</button>
+        </Link>
                 <h2 className='text-center mb-4 pb-1 ff_open_sans fw-normal text_252B42 fs_2xlg mt-lg-5' data-aos="fade-left" data-aos-duration="1000" data-aos-delay="300">Как “Invest Coin” работает? </h2>
                 <p className='text-center ff_open_sans fw-normal text_222B32 fs_md mb-5 pb-5' data-aos="fade-right" data-aos-duration="1000" data-aos-delay="300">Invest Coin - это команда оптыных инвесторов, аналитиков и программистов. <span className='d-lg-block'>Мы работаем на площадках криптовалют (и не только) уже более 4 года и</span> имеем конкурентоспособное портфолио. Все встречи, общения и <span className='d-lg-block'>договоренности с нашими партнерами (клиентами) проходят в прозрачной</span> форме.</p>
                 <Row>
@@ -30,7 +33,6 @@ const CardMapUse = () => {
                   
                 </Row>
             </Container>
-            <h1 className='text-center mb-5'>^^ Card Map End Here ^^</h1>
         </section>
     )
 }
