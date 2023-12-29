@@ -27,8 +27,8 @@ const GsapPage = () => {
     .to(".box", { ease: "power1.in", duration: 1, rotation: "0deg" }, 1);
 },[])
   return (
-    <>
-    <div className="container" id="gsap_file">
+    <div>
+    <div className="container">
         <Link to='/'><button className='common_btns my-4'>Back</button></Link>
     </div>
     <div class="trigger overflow-hidden container">
@@ -143,7 +143,7 @@ const GsapPage = () => {
       <div class="box"></div>
       <div class="box"></div>
     </div>
-    </>
+    </div>
   );
 };
 
