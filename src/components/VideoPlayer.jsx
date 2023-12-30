@@ -42,7 +42,6 @@ const VideoPlayer = () => {
               >
                 <source src={sample_video} type="video/mp4" />
               </video>
-              
               <img
                 onClick={playPauseToggle}
                 className={`play_pause_btn cursor_pointer ${isPlaying ? "opacity-0 pe-none" : ""}`}
