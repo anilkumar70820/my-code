@@ -18,8 +18,8 @@
   --fs-2xmd: 22px;
   --fs-xmd: 24px;
   --fs-md: 28px;
-  --fs-lg: 43px;
-  --fs-xlg: 40px;
+  --fs-lg: 42px;
+  --fs-xlg: 44px;
   --fs-2xlg: 48px;
   --fs-xl: 50px;
   --fs-2xl: 75px;
@@ -182,6 +182,7 @@
   color: var(--text-ffffff) !important;
   font-family: "Courier New", Courier, monospace;
   font-weight: 600;
+  font-size: 20px;
   transition: all 400ms linear;
 }
 .common_btns:hover {
@@ -364,7 +365,17 @@ button.active {
   width: 400px;
   height: 300px;
 }
-
+/* ========= VIDEO PLAYER ======= */
+.play_pause_btn{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50% ,-50%);
+  height: 45px;
+  width: 45px;
+  transition: all 500ms linear;
+}
+/* ========= VIDEO PLAYER END ======= */
 /* ==== ticker slider ======= */
 .ticker-wrap {
   width: 100%;

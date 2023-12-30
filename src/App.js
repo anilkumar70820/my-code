@@ -17,6 +17,7 @@ import EmailJs from './components/EmailJs';
 import GoogleMap from './components/GoogleMap';
 import UseStateNav from './components/UseStateNav';
 import CardMapUse from './components/CardMapUse';
+import CountDown from './components/CountDown';
 // import { useContext } from "react";
 // import { UseContextData } from "./components/UseContextData";
 function App() {
@@ -49,6 +50,7 @@ function App() {
         <Route path='/googlemap' element={<GoogleMap/>} />
         <Route path='/navbar' element={<UseStateNav/>} />
         <Route path='/map' element={<CardMapUse/>} />
+        <Route path='/countdown' element={<CountDown/>} />
       </Routes>
     </div>
   );

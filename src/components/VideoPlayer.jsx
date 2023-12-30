@@ -1,69 +1,60 @@
-import React, { useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
-import sample_video from '../assets/video/sample_video.mp4'
+import React, { useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import sample_video from "../assets/video/sample_video.mp4";
+import play_btn from "../assets/images/svg/play-button-svgrepo-com.svg";
+import pause_btn from '../assets/images/svg/pause-button-icon.svg';
 
 const VideoPlayer = () => {
-    const videoRef = useRef(null);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [volume, setVolume] = useState(1);
-  
-    const playPauseToggle = () => {
-      if (videoRef.current.paused) {
-        videoRef.current.play();
-        setIsPlaying(true);
-      } else {
-        videoRef.current.pause();
-        setIsPlaying(false);
-      }
-    };
-  
-    const handleVolumeChange = (value) => {
-      setVolume(value);
-      videoRef.current.volume = value;
-    };
-  
-    const handlePrev = () => {
-      // Implement logic for going to the previous video
-      console.log("Previous video");
-    };
-  
-    const handleNext = () => {
-      // Implement logic for going to the next video
-      console.log("Next video");
-    };
+  const videoRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const playPauseToggle = () => {
+    if (videoRef.current.paused) {
+      videoRef.current.play();
+    } else {
+      videoRef.current.pause();
+    }
+  };
+
+  const handlePlay = () => {
+    setIsPlaying(true);
+  };
+
+  const handlePause = () => {
+    setIsPlaying(false);
+  };
+
   return (
     <>
-    <section>
+      <section>
         <div className="container">
-        <Link to='/'><button className='common_btns my-4'>Back</button></Link>
-        <div className="video-player-container">
-      <video ref={videoRef} className="video-player">
-        <source
-          src={sample_video}
-          type="video/mp4"
-        />
-        Your browser does not support the video tag.
-      </video>
-      <div className="controls">
-        <button onClick={handlePrev}>Prev</button>
-        <button onClick={playPauseToggle}>
-          {isPlaying ? "Pause" : "Play"}
-        </button>
-        <button onClick={handleNext}>Next</button>
-        <input
-          type="range"
-          min={0}
-          max={1}
-          step={0.1}
-          value={volume}
-          onChange={(e) => handleVolumeChange(e.target.value)}
-        />
-      </div>
-    </div>
+          <Link to="/">
+            <button className="common_btns my-4">Back</button>
+          </Link>
+          <div className="d-flex justify-content-center">
+            <div className="position-relative d-inline-block">
+              <video
+                ref={videoRef}
+                controls
+                className="rounded-5"
+                onPlay={handlePlay}
+                onPause={handlePause}
+              >
+                <source src={sample_video} type="video/mp4" />
+              </video>
+              
+              <img
+                onClick={playPauseToggle}
+                className={`play_pause_btn cursor_pointer ${isPlaying ? "opacity-0 pe-none" : ""}`}
+                src={isPlaying ? pause_btn : play_btn}
+                alt="play_btn"
+              />
+            </div>
+          </div>
         </div>
-    </section>
+      </section>
     </>
-  )
-}
+  );
+};
 
-export default VideoPlayer
+export default VideoPlayer;
