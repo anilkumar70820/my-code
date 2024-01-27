@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
 import { Link } from "react-router-dom";
+import { db } from "./FirebaseData";
+import { collection, addDoc } from "firebase/firestore";
 
-const FormValidation = () => {
+const FireStore = () => {
   const [formdata, setFormdata] = useState({
     firstName: "",
     lastName: "",
@@ -122,7 +124,8 @@ const FormValidation = () => {
       password: "",
       confirmPassword: "",
     });
-
+// ========FIRESTORE DATABASE ===========
+    const docRef = await addDoc(collection(db, 'users'), formdata);
   };
 
   return (
@@ -219,4 +222,4 @@ const FormValidation = () => {
   );
 };
 
-export default FormValidation;
+export default FireStore;

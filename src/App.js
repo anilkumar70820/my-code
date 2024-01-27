@@ -1,5 +1,9 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useEffect, useState } from "react";
+import { Route, Routes } from "react-router-dom";
+// import { useContext } from "react";
+// import { UseContextData } from "./components/UseContextData";
 import ToDoList from "./components/ToDoList";
 import ParalexEffect from "./components/ParalexEffect";
 import FormValidation from "./components/FormValidation";
@@ -8,7 +12,6 @@ import AudioPlayer from "./components/AudioPlayer";
 import SwiperSlider from "./components/SwiperSlider";
 import CSSTicker from "./components/CSSTicker";
 import TypeWriter from "./components/TypeWriter";
-import { Route, Routes } from "react-router-dom";
 import HomePage from "./components/HomePage";
 import GsapPage from "./components/GsapPage";
 import DarkMode from "./components/DarkMode";
@@ -19,9 +22,11 @@ import UseStateNav from "./components/UseStateNav";
 import CardMapUse from "./components/CardMapUse";
 import CountDown from "./components/CountDown";
 import Preloader from "./components/Preloader";
-import { useEffect, useState } from "react";
-// import { useContext } from "react";
-// import { UseContextData } from "./components/UseContextData";
+import CustomAccordian from "./components/CustomAccordian";
+import InputFile from "./components/InputFile";
+import FireStore from "./components/FireStore";
+import RealtimeDatabase from "./components/RealtimeDatabase";
+import FirebaseAuthentication from "./components/FirebaseAuthentication";
 function App() {
   // const { arr, newObj, show, setShow } = useContext(UseContextData);
   // console.log(arr, newObj)
@@ -59,6 +64,11 @@ function App() {
         <Route path="/navbar" element={<UseStateNav />} />
         <Route path="/map" element={<CardMapUse />} />
         <Route path="/countdown" element={<CountDown />} />
+        <Route path="/accordian" element={<CustomAccordian />} />
+        <Route path="/inputfile" element={<InputFile />} />
+        <Route path="/firestoredatabase" element={<FireStore />} />
+        <Route path="/realtimedatabase" element={<RealtimeDatabase />} />
+        <Route path="/firebaseauthentication" element={<FirebaseAuthentication />} />
       </Routes>
     </div>
   );

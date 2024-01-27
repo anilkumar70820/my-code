@@ -1,21 +1,20 @@
-import React, { useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useRef } from 'react';
 
 const AudioPlayer = () => {
-  const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [trackIndex, setTrackIndex] = useState(0);
+  const audioRef = useRef(null);
 
-  const tracks = [
-    "audio1.mp3",
-    "audio2.mp3",
-    "audio3.mp3",
-    // Add more audio tracks as needed
+  const songs = [
+    // Add your audio file URLs here
+    '',
+    'https://example.com/song2.mp3',
+    // Add more songs if needed
   ];
 
-  const playPauseToggle = () => {
+  const [currentSongIndex, setCurrentSongIndex] = useState(0);
+  const currentSong = songs[currentSongIndex];
+
+  const playPauseHandler = () => {
     if (isPlaying) {
       audioRef.current.pause();
     } else {
@@ -24,77 +23,37 @@ const AudioPlayer = () => {
     setIsPlaying(!isPlaying);
   };
 
-  const handleTimeUpdate = () => {
-    setCurrentTime(audioRef.current.currentTime);
+  const timeUpdateHandler = (e) => {
+    // You can perform actions as the time of the audio updates
+    // For example, updating a progress bar
+    const current = e.target.currentTime;
+    const duration = e.target.duration;
+    // Update progress bar or perform other actions
   };
 
-  const handleLoadedData = () => {
-    setDuration(audioRef.current.duration);
-  };
-
-  const handleSeek = (event) => {
-    const seekTime = event.target.value;
-    audioRef.current.currentTime = seekTime;
-    setCurrentTime(seekTime);
-  };
-
-  const playNextTrack = () => {
-    const nextIndex = (trackIndex + 1) % tracks.length;
-    setTrackIndex(nextIndex);
-    audioRef.current.src = tracks[nextIndex];
-    audioRef.current.play();
-    setIsPlaying(true);
-  };
-
-  const playPrevTrack = () => {
-    const prevIndex = trackIndex === 0 ? tracks.length - 1 : trackIndex - 1;
-    setTrackIndex(prevIndex);
-    audioRef.current.src = tracks[prevIndex];
-    audioRef.current.play();
-    setIsPlaying(true);
-  };
-  const formatTime = (time) => {
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
-    const formattedTime = `${String(minutes).padStart(2, "0")}:${String(
-      seconds
-    ).padStart(2, "0")}`;
-    return formattedTime;
+  const songEndHandler = () => {
+    // Triggered when the current song ends
+    // You can implement logic to play the next song in the playlist
+    // For simplicity, we'll just loop back to the first song in this example
+    setCurrentSongIndex((prevIndex) => (prevIndex + 1) % songs.length);
   };
 
   return (
     <div>
-       <div className='container'><Link to='/'><button className='common_btns my-4'>Back</button></Link></div>
       <audio
+        onTimeUpdate={timeUpdateHandler}
+        onEnded={songEndHandler}
         ref={audioRef}
-        src={tracks[trackIndex]}
-        onTimeUpdate={handleTimeUpdate}
-        onLoadedData={handleLoadedData}
+        src={currentSong}
       ></audio>
-
       <div>
-        <button onClick={playPrevTrack}>Previous</button>
-        <button onClick={playPauseToggle}>
-          {isPlaying ? "Pause" : "Play"}
+        <h2>Now Playing</h2>
+        <p>{currentSong}</p>
+      </div>
+      <div>
+        <button onClick={playPauseHandler}>
+          {isPlaying ? 'Pause' : 'Play'}
         </button>
-        <button onClick={playNextTrack}>Next</button>
-      </div>
-
-      <div>
-        <input
-          type="range"
-          min="0"
-          max={duration}
-          step="1"
-          value={currentTime}
-          onChange={handleSeek}
-        />
-      </div>
-
-      <div>
-        <p>
-          {formatTime(currentTime)} / {formatTime(duration)}
-        </p>
       </div>
     </div>
   );

@@ -23,14 +23,14 @@
   --fs-2xlg: 48px;
   --fs-xl: 50px;
   --fs-2xl: 75px;
-  --text-ffffff: #ffffff;
+  --text-ffffff: #ffffff !important;
   --text-252B42: #252b42;
   --text-222B32: #222b32;
   --text-8093F6: #8093f6;
-  --text-black:#000000;
+  --text-black: #000000;
   /* ====background colors===== */
-  --bg-white:#ffffff;
-  --bg-black:#000000;
+  --bg-white: #ffffff;
+  --bg-black: #000000;
 }
 /* Dark mode styles */
 .dark-mode {
@@ -38,12 +38,12 @@
   --text-252B42: #252b42;
   --text-222B32: #222b32;
   --text-8093F6: #8093f6;
-  --text-black:#ffffff;
+  --text-black: #ffffff;
   /* ====background colors===== */
-  --bg-white:#000000;
-  --bg-black:#ffffff;
+  --bg-white: #000000;
+  --bg-black: #ffffff;
 }
-.app.darkmode_btn{
+.app.darkmode_btn {
   background-color: white !important;
   color: black !important;
 }
@@ -117,17 +117,18 @@
 .text_8093F6 {
   color: var(--text-8093F6);
 }
-.text_black{
+.text_black {
   color: var(--text-black);
 }
-.bg_white{
+.bg_white {
   background-color: var(--bg-white);
 }
-.bg_black{
+.bg_black {
   background-color: var(--bg-black);
 }
 /* ==============Root End============== */
 /* =====================Comman Classes=============== */
+
 .bg_252B42 {
   background-color: #252b42;
 }
@@ -143,7 +144,6 @@
 .ff_poppins {
   font-family: "Poppins";
 }
-
 
 .invest_cards {
   border: 1px solid transparent;
@@ -170,7 +170,7 @@
   color: white !important;
   box-shadow: 1px 2px 2px #ffffff;
 }
-.cursor_block{
+.cursor_block {
   cursor: not-allowed !important;
   pointer-events: none !important;
   opacity: 0.5;
@@ -199,20 +199,25 @@
 }
 input {
   font-weight: 600;
-  /* color: red; */
-  /* border: 2px solid red; */
   outline: none;
-  /* border-radius: 8px; */
-  /* padding: 4px; */
 }
 
-/* textarea {
-  font-weight: 600;
-  padding: 5px;
-  color: red;
-} */
-
 /* ================progreesbar============ */
+
+/* ============ INPUT TYPES ============= */
+.input_img_size {
+  width: 250px;
+  height: 250px;
+  border-radius: 100%;
+}
+.input_file_box {
+  width: 400px;
+  min-height: 200px;
+  border: 2px solid;
+  border-radius: 8px;
+  padding: 12px;
+}
+
 .windowscrollcolor {
   background-color: red;
   height: 10px;
@@ -243,7 +248,7 @@ input {
 
 /* ================progreesbar end============ */
 /* ========= Email JS ===== */
-#emailjs input{
+#emailjs input {
   width: 400px;
   /* width: 100%; */
   border-radius: 4px;
@@ -254,7 +259,7 @@ input {
   padding: 10px;
 }
 /* =========================== */
-.map_size{
+.map_size {
   width: 900px;
   height: 500px;
 }
@@ -318,7 +323,6 @@ button.active {
   text-overflow: ellipsis !important;
   white-space: normal !important;
 }
-/* Add your styles here */
 
 .size {
   width: 25px;
@@ -326,7 +330,6 @@ button.active {
 }
 
 .bg_img {
-  /* Your background image styling */
   background-image: url(./assets//images//png//javascript.png);
   background-size: cover;
   height: 100vh;
@@ -360,18 +363,17 @@ button.active {
   height: 100px !important;
   max-width: 200px;
   width: 100%;
-  /* height: 100% !important; */
 }
 .img_size {
   width: 400px;
   height: 300px;
 }
 /* ========= VIDEO PLAYER ======= */
-.play_pause_btn{
+.play_pause_btn {
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50% ,-50%);
+  transform: translate(-50%, -50%);
   height: 45px;
   width: 45px;
   transition: all 500ms linear;
@@ -384,7 +386,6 @@ button.active {
   margin: 0 auto;
   overflow: hidden;
   white-space: nowrap;
-  /* position: fixed; */
   top: 0;
   height: 3.5rem;
   background-color: #ffca46;
@@ -497,7 +498,6 @@ button.active {
   color: #000000;
 }
 
-
 /* ================================== */
 /* =============== GSAP ============= */
 
@@ -530,161 +530,82 @@ button.active {
   display: block;
 }
 /* ============================== */
-/* ========== GSAP 2 ========== */
 
-:root {
-  --size: 90;
-  --ar: calc(194.8 / 596.69);
-  --coeff: 1vmin;
-  --width: calc(var(--size) * var(--coeff));
-  --height: calc((var(--size) * var(--ar)) * var(--coeff));
-  --bg: #756cac;
-  --color: #fff;
-  --body: #eec28c;
-  --nose: #eca08e;
-  --cap: #333;
-  --cap-accent: #f4ec10;
-  --hair: #8f7556;
-  --shirt-one: #4a4a4a;
-  --shirt-two: #2b2b2b;
-  --short-one: #b31e14;
-  --short-two: #931910;
-  --shoe: #0d0d0d;
-  --sole: #9e7e6b;
-  --logo: #fff;
-  --cheek: rgba(226, 156, 151, 0.5);
-  --pupil: #f2f2f2;
-  --mouth: #1a1a1a;
+/* ========== ACCORDIAN CSS ============ */
+.accordion {
+  --bs-accordion-color: var(--bs-body-color);
+  --bs-accordion-bg: var(--bs-body-bg);
+  --bs-accordion-transition: color 0.15s ease-in-out,
+    background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out, border-radius 0.15s ease;
+  --bs-accordion-border-color: var(--bs-border-color);
+  --bs-accordion-border-width: var(--bs-border-width);
+  --bs-accordion-border-radius: var(--bs-border-radius);
+  --bs-accordion-inner-border-radius: calc(
+    var(--bs-border-radius) - (var(--bs-border-width))
+  );
+  --bs-accordion-btn-padding-x: 1.25rem;
+  --bs-accordion-btn-padding-y: 1rem;
+  --bs-accordion-btn-color: var(--bs-body-color);
+  --bs-accordion-btn-bg: var(--bs-accordion-bg);
+  --bs-accordion-btn-icon: url(data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27 fill=%27%23212529%27%3e%3cpath fill-rule=%27evenodd%27 d=%27M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z%27/%3e%3c/svg%3e);
+  --bs-accordion-btn-icon-width: 1.25rem;
+  --bs-accordion-btn-icon-transform: rotate(-180deg);
+  --bs-accordion-btn-icon-transition: transform 0.2s ease-in-out;
+  --bs-accordion-btn-active-icon: url(data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27 fill=%27%23052c65%27%3e%3cpath fill-rule=%27evenodd%27 d=%27M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z%27/%3e%3c/svg%3e);
+  --bs-accordion-btn-focus-border-color: #86b7fe;
+  --bs-accordion-btn-focus-box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  --bs-accordion-body-padding-x: 1.25rem;
+  --bs-accordion-body-padding-y: 1rem;
+  --bs-accordion-active-color: var(--bs-primary-text-emphasis);
+  --bs-accordion-active-bg: var(--bs-primary-bg-subtle);
 }
-body {
-  width: 100vw;
-  font-family: sans-serif;
-  overflow-x: hidden;
-  background: var(--bg);
+.accordion-item {
+  border: 2px solid black !important;
+  border-radius: 8px !important;
 }
-.cap {
-  fill: var(--cap);
+.accordion-button:not(.collapsed) {
+  color: var(--bs-accordion-active-color);
+  background-color: var(--bs-accordion-active-bg);
+  box-shadow:none !important;
 }
-.cap__accent {
-  fill: var(--cap-accent);
-}
-.marionette {
-  height: 100%;
+.accordion-button {
+  position: relative;
+  display: flex;
+  align-items: center;
   width: 100%;
+  padding: var(--bs-accordion-btn-padding-y) var(--bs-accordion-btn-padding-x);
+  font-size: 1rem;
+  color: white !important;
+  text-align: left;
+background-color: black !important;
+  border: 0;
+  border-radius: 0;
+  overflow-anchor: none;
+  transition: var(--bs-accordion-transition);
 }
-.marionette__shoe {
-  fill: var(--shoe);
+.accordion-button:not(.collapsed)::after {
+  background-image: var(--bs-accordion-btn-active-icon);
+  transform: var(--bs-accordion-btn-icon-transform);
+  color: white !important;
 }
-.marionette__sole {
-  fill: var(--sole);
-}
-.marionette__shirt-one {
-  fill: var(--shirt-one);
-}
-.marionette__shirt-two {
-  fill: var(--shirt-two);
-}
-.marionette__short-one {
-  fill: var(--short-one);
-}
-.marionette__short-two {
-  fill: var(--short-two);
-}
-.marionette__cheek {
-  fill: var(--cheek);
-}
-.marionette__mouth,
-.marionette__eye circle:nth-of-type(1) {
-  fill: var(--mouth);
-}
-.marionette__pupil {
-  fill: var(--pupil);
-}
-.marionette__hair {
-  fill: var(--hair);
-}
-.marionette__logo {
-  stroke: var(--logo);
-}
-.marionette__body {
-  fill: var(--body);
-}
-.marionette__container {
-  width: var(--width);
-  position: fixed;
-  height: var(--height);
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  transform-origin: 90% 50%;
-}
-.marionette__nose {
-  position: absolute;
-  top: 36%;
-  right: 15.5%;
-  width: 0;
-  height: 2.5vmin;
-  background: var(--nose);
-}
-.marionette__nose:after,
-.marionette__nose:before {
+.accordion-button::after {
+  flex-shrink: 0;
+  width: var(--bs-accordion-btn-icon-width);
+  height: var(--bs-accordion-btn-icon-width);
+  margin-left: auto;
   content: "";
-  position: absolute;
-  height: 2.5vmin;
-  width: 2.5vmin;
-  border-radius: 50%;
-  background: var(--nose);
+  background-image: var(--bs-accordion-btn-icon);
+  background-repeat: no-repeat;
+  background-size: var(--bs-accordion-btn-icon-width);
+  transition: var(--bs-accordion-btn-icon-transition);
 }
-.marionette__nose:after {
-  left: 0;
-  transform: translate(-50%, 0);
-}
-.marionette__nose:before {
-  transform: translate(50%, 0);
-  right: 0;
-}
-h1 {
-  font-size: 2rem;
-  font-weight: 800;
-  color: var(--color);
-}
-.story {
-  height: 100vh;
-  width: 100vw;
-  position: fixed;
-  overflow: hidden;
-}
-.story__content {
-  position: absolute;
-  width: var(--width);
-  left: 50%;
-  transform: translate(-50%, var(--y));
-}
-.story__content--bottom {
-  top: 50%;
-  --y: calc(0% + (var(--height) / 2));
-}
-.story__content--top {
-  bottom: 50%;
-  --y: calc(0% - (var(--height) / 2));
-}
-.story__content--bottom .blurb {
-  top: 0;
-}
-.story__content--top .blurb {
-  bottom: 0;
-}
-.blurb {
-  position: absolute;
-  visibility: hidden;
-}
-.blurb--two .word,
-.blurb--three .word,
-.blurb--four .word {
-  opacity: 0;
+.accordion-body {
+  padding: var(--bs-accordion-body-padding-y) var(--bs-accordion-body-padding-x);
+  /* border: 2px solid black !important; */
+  background-color: black !important;
 }
 
-/* ========== GSAP 2 ========== */
 /* ======= NAV BAR MEDIA QURIES ======== */
 @media (max-width: 992px) {
   .nav_sm {
@@ -693,7 +614,7 @@ h1 {
     top: 0;
     width: 100%;
     height: 100vh;
-   background-color: orange;
+    background-color: orange;
     display: flex;
     flex-direction: column;
     justify-content: center;

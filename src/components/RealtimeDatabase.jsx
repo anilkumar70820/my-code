@@ -1,8 +1,10 @@
+import { ref, set } from "firebase/database";
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
 import { Link } from "react-router-dom";
+import { rd } from "./FirebaseData";
 
-const FormValidation = () => {
+const RealtimeDatabase = () => {
   const [formdata, setFormdata] = useState({
     firstName: "",
     lastName: "",
@@ -122,7 +124,10 @@ const FormValidation = () => {
       password: "",
       confirmPassword: "",
     });
-
+// =============FIREBASE REALTIMEDATABASE =========
+    set(ref(rd, 'users/'), {
+    formdata
+    });
   };
 
   return (
@@ -219,4 +224,4 @@ const FormValidation = () => {
   );
 };
 
-export default FormValidation;
+export default RealtimeDatabase;

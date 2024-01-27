@@ -1,7 +1,7 @@
 import gsap from "gsap";
 import { Link } from "react-router-dom";
 import React, { useEffect } from "react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 const GsapPage = () => {
     useEffect(() => {
