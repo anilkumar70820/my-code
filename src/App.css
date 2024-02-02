@@ -245,7 +245,20 @@ input {
   background-color: black !important ;
   border-radius: 10px;
 }
-
+table thead th {
+  border: 2px solid black;
+}
+table tr td {
+  border: 2px solid black;
+  border-radius: 8px !important;
+}
+tr,
+th,
+td {
+  text-align: center;
+  height: 60px;
+  vertical-align: middle;
+}
 /* ================progreesbar end============ */
 /* ========= Email JS ===== */
 #emailjs input {
@@ -339,11 +352,25 @@ button.active {
   color: #fff;
 }
 
+.user_img {
+  height: 50px;
+  width: 50px;
+  border-radius: 100%;
+}
+.table_max_w {
+  width: 800px;
+}
+
 #form_validation input {
   padding: 10px;
-  width: 500px;
+  /* max-width: 500px; */
+  width: 100% !important;
   border-radius: 12px;
   border: 2px solid yellowgreen;
+}
+.form_width {
+  max-width: 500px;
+  width: 100%;
 }
 .error_message {
   position: absolute;
@@ -567,7 +594,7 @@ button.active {
 .accordion-button:not(.collapsed) {
   color: var(--bs-accordion-active-color);
   background-color: var(--bs-accordion-active-bg);
-  box-shadow:none !important;
+  box-shadow: none !important;
 }
 .accordion-button {
   position: relative;
@@ -578,7 +605,7 @@ button.active {
   font-size: 1rem;
   color: white !important;
   text-align: left;
-background-color: black !important;
+  background-color: black !important;
   border: 0;
   border-radius: 0;
   overflow-anchor: none;

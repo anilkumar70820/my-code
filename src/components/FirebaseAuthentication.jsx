@@ -16,7 +16,7 @@ const FirebaseAuthentication = () => {
     password: "",
     confirmPassword: "",
   });
-
+// ===== regex ==========
   const regexFirstName = /^[a-zA-Z0-9]+([._][a-zA-Z0-9]+)*$/;
   const regexEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
   const regexPassword = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#])[A-Za-z\d@#]{8,}$/;
@@ -118,7 +118,7 @@ const FirebaseAuthentication = () => {
       setError((prevError) => ({ ...prevError, confirmPassword: true }));
       return;
     }
-
+// ======= FIREBASE AUTHENTICATION JS ==================
     try {
       if (isSignUp) {
         // Create a new user in Firebase Authentication for sign up
@@ -167,7 +167,7 @@ const FirebaseAuthentication = () => {
       </h1>
       <div className="container d-flex align-items-center justify-content-center">
         <form
-          className="d-flex flex-column gap-4 justify-content-center"
+          className="d-flex flex-column gap-4 justify-content-center form_width"
           onSubmit={formSubmit}
         >
           <div className={`position-relative ${isSignUp ? "d-block" : "d-none"}`} >
