@@ -8,10 +8,17 @@ import {
   deleteDoc,
   doc,
   updateDoc,
+  onSnapshot,
 } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
 
 const FireStore = () => {
+  const [loading, setLoading] = useState();
   const [formdata, setFormdata] = useState({
     firstName: "",
     lastName: "",
@@ -32,7 +39,7 @@ const FireStore = () => {
   const [editMode, setEditMode] = useState(false); // State to track edit mode
   const [editUserId, setEditUserId] = useState(null); // State to store ID of user being edited
 
-  // ========= firestore database data ==========
+  // ========= firestore database datafatch  ==========
   const [userData, setUserData] = useState([]);
   useEffect(() => {
     // Fetch data from Firestore
@@ -45,38 +52,36 @@ const FireStore = () => {
       setUserData(fetchedData);
     };
 
+    // Set up a real-time listener for changes to the "users" collection
+    const unsubscribe = onSnapshot(collection(db, "users"), (snapshot) => {
+      const updatedData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setUserData(updatedData);
+    });
+
     fetchData();
+
+    // Clean up the listener when the component unmounts
+    return () => unsubscribe();
   }, []);
 
+  // ======== GET VALUES FROM INPUTS ===========
   const handleInputChange = (field, value) => {
     setFormdata({ ...formdata, [field]: value });
-
-    // Validate in real-time
-    switch (field) {
-      case "firstName":
-        setError((prevError) => ({
-          ...prevError,
-          [field]: value.trim() === "" || !regexFirstName.test(value),
-        }));
-        break;
-      case "email":
-        setError((prevError) => ({
-          ...prevError,
-          email: value.trim() === "" || !regexEmail.test(value),
-        }));
-        break;
-      default:
-        break;
-    }
   };
 
+  // ============= GET FILE FROM INPUT TYPE FILE ============
   const handleFileChange = (e) => {
     // Set image file to state
     setFormdata({ ...formdata, image: e.target.files[0] });
   };
 
+  // ========= FORM SUBMIT FUNCTION =========
   const formSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     // Check for empty fields
     if (formdata.firstName.trim() === "" || formdata.email.trim() === "") {
@@ -84,24 +89,46 @@ const FireStore = () => {
         firstName: formdata.firstName.trim() === "",
         email: formdata.email.trim() === "",
       });
+      setLoading(false);
       return;
     }
 
-    // Continue with form submission logic
-    console.log(formdata);
+    // Validate fields using regular expressions
+    const isValidFirstName = regexFirstName.test(formdata.firstName);
+    const isValidEmail = regexEmail.test(formdata.email);
 
-    if (editMode) {
-      // If in edit mode, update user data
-      await updateUserData(editUserId, formdata);
-    } else {
-      // If not in edit mode, add new user data
-      await addUserData(formdata);
+    // If any field is invalid, set error state and prevent form submission
+    if (!isValidFirstName || !isValidEmail) {
+      setError({
+        firstName: !isValidFirstName,
+        email: !isValidEmail,
+      });
+      setLoading(false);
+      return;
     }
 
-    // Clear form data after successful submission
-    clearFormData();
+    try {
+      if (editMode) {
+        // If in edit mode, update user data
+        await updateUserData(editUserId, formdata);
+      } else {
+        // If not in edit mode, add new user data
+        await addUserData(formdata);
+      }
+
+      // Clear form data after successful submission
+      clearFormData();
+      // Clear input type file after form submission
+      document.getElementById("fileinput").value = "";
+
+      setLoading(false);
+    } catch (error) {
+      console.error("Error:", error);
+      setLoading(false);
+    }
   };
 
+  // ========== SAVE DATA TO FIREBASE STORAGE ===========
   const addUserData = async (userData) => {
     // Upload image to Firebase Storage
     const imageUrl = await uploadImageToStorage(userData.image);
@@ -117,15 +144,14 @@ const FireStore = () => {
     await addDoc(collection(db, "users"), newUser);
   };
 
+  // =========== UPDATE USER DATA ==================
   const updateUserData = async (userId, userData) => {
-    // Upload image to Firebase Storage if new image selected
-    const defaultImgRef = ref(
-      storage,
-      "gs://practice-page-1cbb4.appspot.com/default.jpg"
-    );
-    const imageUrl = userData.image
-      ? await uploadImageToStorage(userData.image)
-      : await getDownloadURL(defaultImgRef);
+    // Upload image to Firebase Storage if a new image is selected
+    let imageUrl = userData.image;
+    if (userData.image && typeof userData.image !== "string") {
+      imageUrl = await uploadImageToStorage(userData.image);
+    }
+
     // Update form data in Firestore database
     const userRef = doc(db, "users", userId);
     await updateDoc(userRef, {
@@ -136,12 +162,13 @@ const FireStore = () => {
     });
   };
 
+  // =============== UPLOAD IMAGE TO FIREBASE STORAGE ===========
   const uploadImageToStorage = async (image) => {
     if (!image) {
       // If no image is selected, return the URL of the default image from Firebase Storage
       const defaultImgRef = ref(
         storage,
-        "gs://practice-page-1cbb4.appspot.com/default.jpg"
+        "gs://practice-page-1cbb4.appspot.com/default_user.jpg"
       ); // Change 'default.jpg' to the actual path of your default image
       const defaultImgUrl = await getDownloadURL(defaultImgRef);
       return defaultImgUrl; // Return the URL of the default image
@@ -152,22 +179,58 @@ const FireStore = () => {
     return await getDownloadURL(storageRef);
   };
 
-  const handleEdit = (id) => {
-    // Set form data to the user being edited
+  // ============== EDIT USER DATA =============
+  const handleEdit = async (id) => {
+    // Find the user to be edited
     const userToEdit = userData.find((user) => user.id === id);
-    setFormdata(userToEdit);
+
+    // Log the image URL to check if it's correct
+    console.log("Image URL:", userToEdit.imageUrl);
+
+    // Set form data to the user being edited, including the image URL
+    setFormdata({
+      firstName: userToEdit.firstName,
+      lastName: userToEdit.lastName,
+      email: userToEdit.email,
+      image: userToEdit.imageUrl || "", // Set the image URL from user data or empty string if not available
+    });
 
     // Set edit mode and edit user ID
     setEditMode(true);
     setEditUserId(id);
   };
 
+  // const urlToFile = async (url) => {
+  // Fetch the image data
+  // const response = await fetch(url);
+  // const blob = await response.blob();
+
+  // Create a File object from the blob
+  // return new File([blob], "image.jpg", { type: "image/jpeg" });
+  // };
+
+  // ============== DELETE USER DATA =============
   const handleDelete = async (id) => {
-    // Implement delete functionality
+    // Find the user to be deleted
+    const userToDelete = userData.find((user) => user.id === id);
+
+    // Delete the user's image from Firebase Storage if it's not the default image
+    if (
+      userToDelete.imageUrl &&
+      !userToDelete.imageUrl.includes("default_user.jpg")
+    ) {
+      const imageRef = ref(storage, userToDelete.imageUrl);
+      await deleteObject(imageRef);
+    }
+
+    // Delete the user data from Firestore
     await deleteDoc(doc(db, "users", id));
+
+    // Update the local state to reflect the deletion
     setUserData(userData.filter((user) => user.id !== id));
   };
 
+  // ============== CLEAR FORM DATA ===============
   const clearFormData = () => {
     // Clear form data after submission or cancellation of edit mode
     setFormdata({
@@ -205,7 +268,7 @@ const FireStore = () => {
               <p className="text-danger fw-semibold error_message">
                 {formdata.firstName.trim() === ""
                   ? "Please enter your First Name!"
-                  : "Invalid First Name!"}
+                  : ""}
               </p>
             )}
           </div>
@@ -226,23 +289,26 @@ const FireStore = () => {
             />
             {error.email && (
               <p className="text-danger fw-semibold error_message">
-                {formdata.email.trim() === ""
-                  ? "Please enter your Email!"
-                  : "Invalid Email!"}
+                {formdata.email.trim() === "" ? "Please enter your Email!" : ""}
               </p>
             )}
           </div>
           {/* Input field for image upload */}
-          <input type="file" onChange={handleFileChange} />
-          <button type="submit">
-            {editMode ? "Update" : "Submit"}{" "}
+          <input
+            type="file"
+            id="fileinput"
+            accept="image/*"
+            onChange={handleFileChange}
+          />
+          <button className="common_btns" type="submit">
+            {loading ? "submiting..." : editMode ? "Update" : "Submit"}{" "}
             {/* Conditional rendering for button text */}
           </button>
         </form>
       </div>
 
       {/* Table to display user data */}
-      <div className="container">
+      <div className={`container ${userData.length === 0 ? "d-none" : ""}`}>
         <h2>User Data</h2>
         <table className="table_max_w mx-auto overflow-x-scroll">
           <thead>

@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
 import { Link } from "react-router-dom";
@@ -16,7 +17,7 @@ const FirebaseAuthentication = () => {
     password: "",
     confirmPassword: "",
   });
-// ===== regex ==========
+  // ===== regex ==========
   const regexFirstName = /^[a-zA-Z0-9]+([._][a-zA-Z0-9]+)*$/;
   const regexEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
   const regexPassword = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#])[A-Za-z\d@#]{8,}$/;
@@ -118,7 +119,7 @@ const FirebaseAuthentication = () => {
       setError((prevError) => ({ ...prevError, confirmPassword: true }));
       return;
     }
-// ======= FIREBASE AUTHENTICATION JS ==================
+    // ======= FIREBASE AUTHENTICATION JS ==================
     try {
       if (isSignUp) {
         // Create a new user in Firebase Authentication for sign up
@@ -133,7 +134,11 @@ const FirebaseAuthentication = () => {
         await addDoc(collection(db, "users"), userData);
       } else {
         // Sign in with existing user for sign in
-        await signInWithEmailAndPassword(auth, formdata.email, formdata.password);
+        await signInWithEmailAndPassword(
+          auth,
+          formdata.email,
+          formdata.password
+        );
       }
 
       // Clear form data after successful submission
@@ -170,7 +175,9 @@ const FirebaseAuthentication = () => {
           className="d-flex flex-column gap-4 justify-content-center form_width"
           onSubmit={formSubmit}
         >
-          <div className={`position-relative ${isSignUp ? "d-block" : "d-none"}`} >
+          <div
+            className={`position-relative ${isSignUp ? "d-block" : "d-none"}`}
+          >
             <input
               type="text"
               placeholder="First Name"
@@ -185,7 +192,9 @@ const FirebaseAuthentication = () => {
               </p>
             )}
           </div>
-          <div className={`position-relative ${isSignUp ? "d-block" : "d-none"}`}>
+          <div
+            className={`position-relative ${isSignUp ? "d-block" : "d-none"}`}
+          >
             <input
               type="text"
               placeholder="Last Name"
@@ -241,7 +250,9 @@ const FirebaseAuthentication = () => {
               </p>
             )}
           </div>
-          <div className={`position-relative ${isSignUp ? "d-block" : "d-none"}`}>
+          <div
+            className={`position-relative ${isSignUp ? "d-block" : "d-none"}`}
+          >
             <input
               type="password"
               placeholder="Confirm Password"
@@ -260,7 +271,11 @@ const FirebaseAuthentication = () => {
           <input type="submit" value={isSignUp ? "Sign Up" : "Sign In"} />
 
           {/* Toggle between Sign Up and Sign In mode */}
-          <button className="fw-semibold ff_open_sans border-2 rounded-3" type="button" onClick={() => setIsSignUp((prev) => !prev)}>
+          <button
+            className="fw-semibold ff_open_sans border-2 rounded-3"
+            type="button"
+            onClick={() => setIsSignUp((prev) => !prev)}
+          >
             {isSignUp
               ? "Already have an account? Sign In"
               : "Don't have an account? Sign Up"}

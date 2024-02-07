@@ -27,20 +27,21 @@ import InputFile from "./components/InputFile";
 import FireStore from "./components/FireStore";
 import RealtimeDatabase from "./components/RealtimeDatabase";
 import FirebaseAuthentication from "./components/FirebaseAuthentication";
+import NewForm from "./components/NewForm";
 function App() {
   // const { arr, newObj, show, setShow } = useContext(UseContextData);
   // console.log(arr, newObj)
-  const [preloader, setPreloader] = useState(true);
-  useEffect(() => {
-    setTimeout(() => {
-      setPreloader(false);
-      document.body.classList.remove("overflow-hidden");
-    }, 3000);
-    document.body.classList.add("overflow-hidden");
-  }, []);
+  // const [preloader, setPreloader] = useState(true);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setPreloader(false);
+  //     document.body.classList.remove("overflow-hidden");
+  //   }, 3000);
+  //   document.body.classList.add("overflow-hidden");
+  // }, []);
   return (
     <div>
-      {preloader && <Preloader />}
+      {/* {preloader && <Preloader />} */}
       {/* {show ? <h2 className='ms-5 mt-5 mb-4'>THIS IS DEFAULT</h2>
         :
         <h2 className='ms-5 mt-5 mb-4'>THIS IS ONCLICK</h2>}
@@ -68,8 +69,12 @@ function App() {
         <Route path="/inputfile" element={<InputFile />} />
         <Route path="/firestoredatabase" element={<FireStore />} />
         <Route path="/realtimedatabase" element={<RealtimeDatabase />} />
-        <Route path="/firebaseauthentication" element={<FirebaseAuthentication />} />
+        <Route
+          path="/firebaseauthentication"
+          element={<FirebaseAuthentication />}
+        />
       </Routes>
+      <NewForm/>
     </div>
   );
 }
