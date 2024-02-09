@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import CommonButton from "./CommonButton";
 
 const NestedMap = () => {
   // Example data with nested arrays
@@ -33,7 +34,10 @@ const NestedMap = () => {
 
   return (
     <div className="container">
-      <Link to='/'><button className='common_btns my-4'>Back</button></Link>
+      <Link to='/'> <CommonButton
+            linkButton={"Back"}
+            className={"mb-4"}
+          /></Link>
       <div className="d-flex gap-5 flex-wrap">
         {/* Outer map for categories */}
         {data.map((categoryData) => (

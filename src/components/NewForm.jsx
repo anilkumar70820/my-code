@@ -76,6 +76,7 @@
 // export default NewForm;
 
 import React, { useState } from "react";
+import CommonButton from "./CommonButton";
 
 const NewForm = () => {
   const [form, setForm] = useState({
@@ -154,9 +155,7 @@ const NewForm = () => {
               </p>
             )}
           </div>
-          <button className="common_btns" type="submit">
-            Submit
-          </button>
+          <CommonButton linkButton={"Submit"} />
         </form>
       </div>
     </div>

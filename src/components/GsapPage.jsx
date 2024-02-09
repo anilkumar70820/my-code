@@ -1,6 +1,7 @@
 import gsap from "gsap";
 import { Link } from "react-router-dom";
 import React, { useEffect } from "react";
+import CommonButton from "./CommonButton";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 const GsapPage = () => {
@@ -29,7 +30,10 @@ const GsapPage = () => {
   return (
     <div>
     <div className="container">
-        <Link to='/'><button className='common_btns my-4'>Back</button></Link>
+        <Link to='/'> <CommonButton
+            linkButton={"Back"}
+            className={"mb-4"}
+          /></Link>
     </div>
     <div class="trigger overflow-hidden container">
       <span class="down span">

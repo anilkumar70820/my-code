@@ -4,6 +4,7 @@ import check_icon from "../assets/images/svg/check_icon.svg";
 import green_check_icon from "../assets/images/svg/green_check_icon.svg";
 import edit_icon from "../assets/images/png/editing.png";
 import { Link } from "react-router-dom";
+import CommonButton from "./CommonButton";
 
 const ToDoList = () => {
  const [inputData, setInputData] = useState("");
@@ -69,7 +70,10 @@ const ToDoList = () => {
 
   return (
     <>
-         <div className="container"> <Link to='/'><button className='common_btns my-4'>Back</button></Link></div>
+         <div className="container"> <Link to='/'> <CommonButton
+            linkButton={"Back"}
+            className={"mb-4"}
+          /></Link></div>
     <div className="min-vh-100 d-flex justify-content-center">
       <div className="container d-flex justify-content-center">
         <div className="todo_box">

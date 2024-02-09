@@ -1,36 +1,83 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import InputFile from './InputFile'
+import React from "react";
+import { Link } from "react-router-dom";
+import CommonButton from "./CommonButton";
 
 const HomePage = () => {
   return (
-   <>
-   <div className='d-flex flex-wrap gap-4 container my-5'>
+    <>
+      <div className="d-flex flex-wrap gap-4 container my-5">
+        <Link to="/accordian">
+          <CommonButton linkButton={"Accordian"} />
+        </Link>
+        <Link className="cursor_block" to="/audioplayer">
+          <CommonButton linkButton={"Audio Player"} />
+        </Link>
+        <Link to="/countdown">
+        <CommonButton linkButton={"Countdown Timer"}/>
+        </Link>
+        <Link to="/darkmode">
+        <CommonButton linkButton={"Dark Mode"}/>
+        </Link>
+        <Link to="/emailjs">
+        <CommonButton linkButton={"Email Js"}/>
+        </Link>
+        <Link to="/formvalidation">
+        <CommonButton linkButton={"Form Validation"}/>
+        </Link>
+        <Link to="/realtimedatabase">
+        <CommonButton linkButton={"Realtime Database"}/>
+        </Link>
+        <Link to="/firestoredatabase">
+        <CommonButton linkButton={"Firestore Database"}/>
+        </Link>
+        <Link to="/firebaseauthentication">
+        <CommonButton linkButton={"Firebase Authentication"}/>
+        </Link>
+        <Link to="/googlemap">
+        <CommonButton linkButton={"Google Map"}/>
+        </Link>
+        <Link to="/gsap">
+        <CommonButton linkButton={"Gsap"}/>
+        </Link>
+        <Link to="/inputfile">
+        <CommonButton linkButton={"Input Type"}/>
+        </Link>
+        <Link to="/map">
+        <CommonButton linkButton={"Map Function"}/>
+        </Link>
+        <Link to="/navbar">
+         <CommonButton linkButton={"Nav Bar"}/>
+        </Link>
+        <Link to="/nestedmap">
+        <CommonButton linkButton={"Nested Map"}/>
+        </Link>
+        <Link to="/parallaxeffect">
+        <CommonButton linkButton={"Parallax Effect"}/>
+        </Link>
+        <Link to="/slickslider">
+        <CommonButton linkButton={"Slick Slider"}/>
+        </Link>
+        <Link to="/swiperslider">
+        <CommonButton linkButton={"Swiper Slider"}/>
+        </Link>
+        <Link to="/tickerslider">
+        <CommonButton linkButton={"Ticker Slider"}/>
+        </Link>
+        <Link to="/todolist">
+        <CommonButton linkButton={"To Do List"}/>
+        </Link>
+        <Link to="/typewriter">
+        <CommonButton linkButton={"Type Writer Effect"}/>
+        </Link>
+        <Link to="/videoplayer">
+        <CommonButton linkButton={"Video Player"}/>
+        </Link>
+        <Link to="/practiceform">
+        <CommonButton linkButton={"Practice Form Validation"}/>
+        </Link>
+      </div>
+    </>
+  );
+};
 
-<Link to='/accordian'><button className='common_btns'>Accordian</button></Link>
-<Link  className='cursor_block' to='/audioplayer'><button disabled className='common_btns'>Audio Player</button></Link>
-<Link to='/countdown'><button className='common_btns'>Countdown Timer</button></Link>
-<Link to='/darkmode'><button className='common_btns'>Dark Mode</button></Link>
-<Link to='/emailjs'><button className='common_btns'>Email Js</button></Link>
-<Link to='/formvalidation'><button className='common_btns'>Form Validation</button></Link>
-<Link to='/realtimedatabase'><button className='common_btns'>Realtime Database</button></Link>
-<Link to='/firestoredatabase'><button className='common_btns'>Firestore Database</button></Link>
-<Link to='/firebaseauthentication'><button className='common_btns'>Firebase Authentication</button></Link>
-<Link to='/googlemap'><button className='common_btns'>Google Map</button></Link>
-<Link to='/gsap'><button className='common_btns'>Gsap</button></Link>
-<Link to='/inputfile'><button className='common_btns'>Input Type</button></Link>
-<Link to='/map'><button className='common_btns'>Map Function</button></Link>
-<Link to='/navbar'><button className='common_btns'>Nav Bar</button></Link>
-<Link to='/nestedmap'><button className='common_btns'>Nested Map</button></Link>
-<Link to='/parallaxeffect'><button className='common_btns'>Parallax Effect</button></Link>
-<Link to='/swiperslider'><button className='common_btns'>Swiper Slider</button></Link>
-<Link to='/tickerslider'><button className='common_btns'>Ticker Slider</button></Link>
-<Link to='/todolist'><button className='common_btns'>To Do List</button></Link>
-<Link to='/typewriter'><button className='common_btns'>Type Writer Effect</button></Link>
-<Link to='/videoplayer'><button className='common_btns'>Video Player</button></Link>
-   </div>
-   </>
-  )
-}
-
-export default HomePage
+export default HomePage;

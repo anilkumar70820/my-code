@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import CommonButton from "./CommonButton";
 
 const CountDown = () => {
-
-    // COUNTDOWN TIMER ==============
+  // COUNTDOWN TIMER ==============
   const days = useRef();
   const hours = useRef();
   const minutes = useRef();
@@ -46,7 +46,7 @@ const CountDown = () => {
     // Cleanup the interval on component unmount
     return () => clearInterval(intervalId);
   }, []);
-// COUNTER ===============
+  // COUNTER ===============
   const [count, setCount] = useState(0);
 
   const decrease = () => {
@@ -56,8 +56,8 @@ const CountDown = () => {
     }
   };
 
-//   STOPWATCH =====================
- const [time, setTime] = useState(0);
+  //   STOPWATCH =====================
+  const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
 
   useEffect(() => {
@@ -87,18 +87,21 @@ const CountDown = () => {
     const hours = Math.floor(time / 3600);
     const minutes = Math.floor((time % 3600) / 60);
     const seconds = time % 60;
-//   STARTING POINT
-    const formattedHours = String(hours).padStart(2, '0');
-    const formattedMinutes = String(minutes).padStart(2, '0');
-    const formattedSeconds = String(seconds).padStart(2, '0');
-  
+    //   STARTING POINT
+    const formattedHours = String(hours).padStart(2, "0");
+    const formattedMinutes = String(minutes).padStart(2, "0");
+    const formattedSeconds = String(seconds).padStart(2, "0");
+
     return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
   };
   return (
-    <div className="bg_black min-vh-100">
+    <div className="bg_black min-vh-100 py-5">
       <div className="container">
         <Link to="/">
-          <button className="common_btns bg-white text-black my-4">Back</button>
+          <CommonButton
+            linkButton={"Back"}
+            className={"mb-4 text-black bg-white "}
+          />
         </Link>
       </div>
       {/* ======== COUNTDOWN TIMER ========== */}
@@ -144,36 +147,49 @@ const CountDown = () => {
       </div>
       {/* ========= COUNTER ========= */}
       <div className="d-flex gap-5 justify-content-center container align-items-center">
-      <div className="mb-5 me-5">
-        <h1 className="text-center text_ffffff fs_lg mb-4">COUNTER</h1>
-        <div className="d-flex justify-content-center align-items-center gap-5">
-          <h2
-            className="text-black mb-0 fs-1 cursor_pointer bg-white common_btns"
-            onClick={() => setCount(count + 1)}
-          >
-            +
-          </h2>
-          <p className="text_ffffff mb-0 fs_lg fw-semibold">
-            <span>{count < 10 ? "0" : ""}</span>
-            {count}
-          </p>
-          <h2 className="mb-0 cursor_pointer common_btns text-black bg-white fs-1" onClick={decrease}>
-            -
-          </h2>
+        <div className="mb-5 me-5">
+          <h1 className="text-center text_ffffff fs_lg mb-4">COUNTER</h1>
+          <div className="d-flex justify-content-center align-items-center gap-5">
+            <h2
+              className="text-black mb-0 fs-1 cursor_pointer bg-white common_btns"
+              onClick={() => setCount(count + 1)}
+            >
+              +
+            </h2>
+            <p className="text_ffffff mb-0 fs_lg fw-semibold">
+              <span>{count < 10 ? "0" : ""}</span>
+              {count}
+            </p>
+            <h2
+              className="mb-0 cursor_pointer common_btns text-black bg-white fs-1"
+              onClick={decrease}
+            >
+              -
+            </h2>
+          </div>
+        </div>
+        {/* ========== STOPWATCH =============== */}
+        <div className="pb-5 ms-5">
+          <h1 className="text_ffffff text-center mb-4">STOPWATCH</h1>
+          <div className="d-flex flex-column align-items-center">
+            <h1 className="text_ffffff">{formatTime(time)}</h1>
+            <div className="d-flex gap-3">
+              <button
+                className="common_btns bg-white text-black"
+                onClick={handleToggle}
+              >
+                {isRunning ? "Pause" : "Play"}
+              </button>
+              <button
+                className="common_btns bg-white text-black"
+                onClick={handleReset}
+              >
+                Reset
+              </button>
+            </div>
+          </div>
         </div>
       </div>
-      {/* ========== STOPWATCH =============== */}
-      <div className="pb-5 ms-5">
-        <h1 className="text_ffffff text-center mb-4">STOPWATCH</h1>
-      <div className="d-flex flex-column align-items-center">
-      <h1 className="text_ffffff">{formatTime(time)}</h1>
-      <div className="d-flex gap-3">
-        <button className="common_btns bg-white text-black" onClick={handleToggle}>{isRunning ? 'Pause' : 'Play'}</button>
-        <button className="common_btns bg-white text-black" onClick={handleReset}>Reset</button>
-      </div>
-    </div>
-    </div>
-    </div>
     </div>
   );
 };

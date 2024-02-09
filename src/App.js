@@ -1,5 +1,7 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 // import { useContext } from "react";
@@ -24,10 +26,11 @@ import CountDown from "./components/CountDown";
 import Preloader from "./components/Preloader";
 import CustomAccordian from "./components/CustomAccordian";
 import InputFile from "./components/InputFile";
-import FireStore from "./components/FireStore";
-import RealtimeDatabase from "./components/RealtimeDatabase";
-import FirebaseAuthentication from "./components/FirebaseAuthentication";
 import NewForm from "./components/NewForm";
+import MySlider from "./components/MySlider";
+import FireStore from "./components/firebase_database/FireStore";
+import RealtimeDatabase from "./components/firebase_database/RealtimeDatabase";
+import FirebaseAuthentication from "./components/firebase_database/FirebaseAuthentication";
 function App() {
   // const { arr, newObj, show, setShow } = useContext(UseContextData);
   // console.log(arr, newObj)
@@ -69,12 +72,16 @@ function App() {
         <Route path="/inputfile" element={<InputFile />} />
         <Route path="/firestoredatabase" element={<FireStore />} />
         <Route path="/realtimedatabase" element={<RealtimeDatabase />} />
+        <Route path="slickslider" element={<MySlider />} />
         <Route
           path="/firebaseauthentication"
           element={<FirebaseAuthentication />}
         />
+        <Route
+          path="/practiceform"
+          element={<NewForm />}
+        />
       </Routes>
-      <NewForm/>
     </div>
   );
 }

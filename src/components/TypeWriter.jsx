@@ -1,11 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Typewriter from 'typewriter-effect';
+import CommonButton from "./CommonButton";
 
 const TypeWriter = () => {
   return (
     <div className='container mt-5'>
-        <Link to='/'><button className='common_btns mb-4'>Back</button></Link>
+        <Link to='/'> <CommonButton
+            linkButton={"Back"}
+            className={"mb-4"}
+          /></Link>
         <h1 className='fs_lg text-danger h-25'>
       <Typewriter
         onInit={(typewriter) => {

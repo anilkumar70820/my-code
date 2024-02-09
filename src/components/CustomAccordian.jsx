@@ -1,13 +1,16 @@
 import React from "react";
 import { Accordion } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import CommonButton from "./CommonButton";
 
 const CustomAccordian = () => {
   return (
     <>
     <div className="container pt-5 pb-4">
      <Link className="d-inline-block" to="/">
-          <button className="d-block common_btns mb-4">Back</button>
+     <CommonButton
+            linkButton={"Back"}
+          />
         </Link>
         </div>
 

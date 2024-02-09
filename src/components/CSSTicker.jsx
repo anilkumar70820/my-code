@@ -1,10 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import CommonButton from "./CommonButton";
 
 const CSSTicker = () => {
   return (
     <>
-   <div className='container'><Link to='/'><button className='common_btns my-4'>Back</button></Link></div>
+   <div className='container'><Link to='/'> <CommonButton
+            linkButton={"Back"}
+            className={"mb-4"}
+          /></Link></div>
      <div className="marquee mt-5 bg-warning">
              <div className="marquee__content">
                  <ul className="list-inline">

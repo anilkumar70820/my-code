@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import CommonButton from "./CommonButton";
 
 const UseStateNav = () => {
   const [showNavbar, setShowNavbar] = useState(true);
@@ -13,7 +14,10 @@ const UseStateNav = () => {
     <div className="py-5 ">
       <div className="container">
         <Link to="/">
-          <button className="d-block common_btns">Back</button>
+        <CommonButton
+            linkButton={"Back"}
+            className={"mb-4"}
+          />
         </Link>
       </div>
       <header className="py-4 w-100 bg-warning mt-4">

@@ -1,10 +1,16 @@
-import { ref, set } from "firebase/database";
+
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
 import { Link } from "react-router-dom";
-import { rd } from "./FirebaseData";
+import CommonButton from "../CommonButton";
+import { auth, db } from "./FirebaseData";
+import { addDoc, collection } from "firebase/firestore";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 
-const RealtimeDatabase = () => {
+const FirebaseAuthentication = () => {
   const [formdata, setFormdata] = useState({
     firstName: "",
     lastName: "",
@@ -12,7 +18,7 @@ const RealtimeDatabase = () => {
     password: "",
     confirmPassword: "",
   });
-
+  // ===== regex ==========
   const regexFirstName = /^[a-zA-Z0-9]+([._][a-zA-Z0-9]+)*$/;
   const regexEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
   const regexPassword = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#])[A-Za-z\d@#]{8,}$/;
@@ -26,6 +32,7 @@ const RealtimeDatabase = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
+  const [isSignUp, setIsSignUp] = useState();
 
   const handleInputChange = (field, value) => {
     setFormdata({ ...formdata, [field]: value });
@@ -71,29 +78,30 @@ const RealtimeDatabase = () => {
 
     // Check for empty fields
     if (
-      formdata.firstName.trim() === "" ||
-      formdata.lastName.trim() === "" ||
+      (isSignUp &&
+        (formdata.firstName.trim() === "" ||
+          formdata.lastName.trim() === "" ||
+          formdata.confirmPassword.trim() === "")) ||
       formdata.email.trim() === "" ||
-      formdata.password.trim() === "" ||
-      formdata.confirmPassword.trim() === ""
+      formdata.password.trim() === ""
     ) {
       setError({
-        firstName: formdata.firstName.trim() === "",
-        lastName: formdata.lastName.trim() === "",
+        firstName: isSignUp && formdata.firstName.trim() === "",
+        lastName: isSignUp && formdata.lastName.trim() === "",
         email: formdata.email.trim() === "",
         password: formdata.password.trim() === "",
-        confirmPassword: formdata.confirmPassword.trim() === "",
+        confirmPassword: isSignUp && formdata.confirmPassword.trim() === "",
       });
       return;
     }
 
     // Check regex patterns
-    if (!regexFirstName.test(formdata.firstName)) {
+    if (isSignUp && !regexFirstName.test(formdata.firstName)) {
       setError((prevError) => ({ ...prevError, firstName: true }));
       return;
     }
 
-    if (!regexFirstName.test(formdata.lastName)) {
+    if (isSignUp && !regexFirstName.test(formdata.lastName)) {
       setError((prevError) => ({ ...prevError, lastName: true }));
       return;
     }
@@ -108,37 +116,71 @@ const RealtimeDatabase = () => {
       return;
     }
 
-    if (formdata.confirmPassword !== formdata.password) {
+    if (isSignUp && formdata.confirmPassword !== formdata.password) {
       setError((prevError) => ({ ...prevError, confirmPassword: true }));
       return;
     }
+    // ======= FIREBASE AUTHENTICATION JS ==================
+    try {
+      if (isSignUp) {
+        // Create a new user in Firebase Authentication for sign up
+        const { user } = await createUserWithEmailAndPassword(
+          auth,
+          formdata.email,
+          formdata.password
+        );
 
-    // Continue with form submission logic
-    console.log(formdata);
+        // Add user data to Firestore for sign up
+        const userData = { ...formdata, uid: user.uid };
+        await addDoc(collection(db, "users"), userData);
+      } else {
+        // Sign in with existing user for sign in
+        await signInWithEmailAndPassword(
+          auth,
+          formdata.email,
+          formdata.password
+        );
+      }
 
-    // Clear form data after successful submission
-    setFormdata({
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    });
-// =============FIREBASE REALTIMEDATABASE =========
-    set(ref(rd, 'users/'), {
-    formdata
-    });
+      // Clear form data after successful submission
+      setFormdata({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      });
+      // Display alert for successful login
+      window.alert("Login successful!");
+    } catch (error) {
+      if (isSignUp && error.code === "auth/email-already-in-use") {
+        alert("This email is already in use.");
+      } else {
+        alert("Invalid email or password. Please try again.");
+      }
+    }
   };
 
   return (
     <section className="py-5 min-vh-100" id="form_validation">
-      <div className="container"><Link to='/'><button className='common_btns mb-4'>Back</button></Link></div>
+      <div className="container">
+        <Link to="/">
+        <CommonButton
+            linkButton={"Back"}
+          />
+        </Link>
+      </div>
+      <h1 className="mb-5 text-center">
+        {isSignUp ? "Create A New Account" : "Sign In"}
+      </h1>
       <div className="container d-flex align-items-center justify-content-center">
         <form
           className="d-flex flex-column gap-4 justify-content-center form_width"
           onSubmit={formSubmit}
         >
-          <div className="position-relative">
+          <div
+            className={`position-relative ${isSignUp ? "d-block" : "d-none"}`}
+          >
             <input
               type="text"
               placeholder="First Name"
@@ -153,7 +195,9 @@ const RealtimeDatabase = () => {
               </p>
             )}
           </div>
-          <div className="position-relative">
+          <div
+            className={`position-relative ${isSignUp ? "d-block" : "d-none"}`}
+          >
             <input
               type="text"
               placeholder="Last Name"
@@ -184,7 +228,8 @@ const RealtimeDatabase = () => {
             )}
           </div>
           <div className="position-relative">
-            <input className="pe-5"
+            <input
+              className="pe-5"
               type={showPassword ? "text" : "password"}
               placeholder="Password"
               value={formdata.password}
@@ -194,7 +239,11 @@ const RealtimeDatabase = () => {
               className="password_toggle_icon"
               onClick={togglePasswordVisibility}
             >
-              {showPassword ? <FaEyeSlash className="text-danger" /> : <FaEye className="text-success"/>}
+              {showPassword ? (
+                <FaEyeSlash className="text-danger" />
+              ) : (
+                <FaEye className="text-success" />
+              )}
             </span>
             {error.password && (
               <p className="text-danger fw-semibold error_message">
@@ -204,12 +253,16 @@ const RealtimeDatabase = () => {
               </p>
             )}
           </div>
-          <div className="position-relative">
+          <div
+            className={`position-relative ${isSignUp ? "d-block" : "d-none"}`}
+          >
             <input
               type="password"
               placeholder="Confirm Password"
               value={formdata.confirmPassword}
-              onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
+              onChange={(e) =>
+                handleInputChange("confirmPassword", e.target.value)
+              }
             />
             {error.confirmPassword && (
               <p className="text-danger fw-semibold error_message">
@@ -217,11 +270,23 @@ const RealtimeDatabase = () => {
               </p>
             )}
           </div>
-          <input type="submit" />
+          {/* Conditionally render Register/Login button based on the mode */}
+          <input type="submit" value={isSignUp ? "Sign Up" : "Sign In"} />
+
+          {/* Toggle between Sign Up and Sign In mode */}
+          <button
+            className="fw-semibold ff_open_sans border-2 rounded-3"
+            type="button"
+            onClick={() => setIsSignUp((prev) => !prev)}
+          >
+            {isSignUp
+              ? "Already have an account? Sign In"
+              : "Don't have an account? Sign Up"}
+          </button>
         </form>
       </div>
     </section>
   );
 };
 
-export default RealtimeDatabase;
+export default FirebaseAuthentication;

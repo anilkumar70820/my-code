@@ -1,4 +1,6 @@
 import React, { useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
+import CommonButton from "./CommonButton"
 
 const AudioPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -40,6 +42,11 @@ const AudioPlayer = () => {
 
   return (
     <div>
+      <div className="container">
+      <Link to="/">
+          <CommonButton linkButton={"Back"} className={"mb-4"}/>
+        </Link>
+      </div>
       <audio
         onTimeUpdate={timeUpdateHandler}
         onEnded={songEndHandler}

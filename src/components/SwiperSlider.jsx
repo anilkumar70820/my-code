@@ -12,12 +12,16 @@ import 'swiper/css/pagination';
 // import required modules
 import { Navigation, Pagination, Mousewheel, Keyboard,Autoplay } from 'swiper/modules';
 import { Link } from 'react-router-dom';
+import CommonButton from "./CommonButton";
 
 const SwiperSlider =()=> {
   return (
     <>
     <div className='container'>
-    <Link to='/'><button className='common_btns my-4'>Back</button></Link>
+    <Link to='/'> <CommonButton
+            linkButton={"Back"}
+            className={"mb-4"}
+          /></Link>
       <Swiper
         navigation={true}  //for right left arrows
         pagination={{

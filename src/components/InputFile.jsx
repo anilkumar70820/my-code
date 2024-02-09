@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import CommonButton from "./CommonButton";
 
 const InputFile = () => {
   const [file, setFile] = useState();
@@ -14,7 +15,10 @@ const InputFile = () => {
     <>
       <div className="container d-flex flex-column">
         <Link to="/">
-          <button className="common_btns my-4">Back</button>
+        <CommonButton
+            linkButton={"Back"}
+            className={"mb-4"}
+          />
         </Link>
         <div className="d-flex justify-content-center">
         <div className="input_file_box flex-column d-flex align-items-center">

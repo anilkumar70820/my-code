@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
 import { Link } from "react-router-dom";
+import CommonButton from "./CommonButton";
 
 const FormValidation = () => {
   const [formdata, setFormdata] = useState({
@@ -127,7 +128,10 @@ const FormValidation = () => {
 
   return (
     <section className="py-5 min-vh-100" id="form_validation">
-      <div className="container"><Link to='/'><button className='common_btns mb-4'>Back</button></Link></div>
+      <div className="container"><Link to='/'> <CommonButton
+            linkButton={"Back"}
+            className={"mb-4"}
+          /></Link></div>
       <div className="container d-flex align-items-center justify-content-center">
         <form
           className="d-flex flex-column gap-4 justify-content-center form_width"

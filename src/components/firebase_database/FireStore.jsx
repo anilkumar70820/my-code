@@ -16,6 +16,7 @@ import {
   getDownloadURL,
   deleteObject,
 } from "firebase/storage";
+import CommonButton from "../CommonButton";
 
 const FireStore = () => {
   const [loading, setLoading] = useState();
@@ -51,7 +52,6 @@ const FireStore = () => {
       }));
       setUserData(fetchedData);
     };
-
     // Set up a real-time listener for changes to the "users" collection
     const unsubscribe = onSnapshot(collection(db, "users"), (snapshot) => {
       const updatedData = snapshot.docs.map((doc) => ({
@@ -60,29 +60,23 @@ const FireStore = () => {
       }));
       setUserData(updatedData);
     });
-
     fetchData();
-
     // Clean up the listener when the component unmounts
     return () => unsubscribe();
   }, []);
-
   // ======== GET VALUES FROM INPUTS ===========
   const handleInputChange = (field, value) => {
     setFormdata({ ...formdata, [field]: value });
   };
-
   // ============= GET FILE FROM INPUT TYPE FILE ============
   const handleFileChange = (e) => {
     // Set image file to state
     setFormdata({ ...formdata, image: e.target.files[0] });
   };
-
   // ========= FORM SUBMIT FUNCTION =========
   const formSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
     // Check for empty fields
     if (formdata.firstName.trim() === "" || formdata.email.trim() === "") {
       setError({
@@ -92,11 +86,9 @@ const FireStore = () => {
       setLoading(false);
       return;
     }
-
     // Validate fields using regular expressions
     const isValidFirstName = regexFirstName.test(formdata.firstName);
     const isValidEmail = regexEmail.test(formdata.email);
-
     // If any field is invalid, set error state and prevent form submission
     if (!isValidFirstName || !isValidEmail) {
       setError({
@@ -106,7 +98,6 @@ const FireStore = () => {
       setLoading(false);
       return;
     }
-
     try {
       if (editMode) {
         // If in edit mode, update user data
@@ -115,24 +106,20 @@ const FireStore = () => {
         // If not in edit mode, add new user data
         await addUserData(formdata);
       }
-
       // Clear form data after successful submission
       clearFormData();
       // Clear input type file after form submission
       document.getElementById("fileinput").value = "";
-
       setLoading(false);
     } catch (error) {
       console.error("Error:", error);
       setLoading(false);
     }
   };
-
   // ========== SAVE DATA TO FIREBASE STORAGE ===========
   const addUserData = async (userData) => {
     // Upload image to Firebase Storage
     const imageUrl = await uploadImageToStorage(userData.image);
-
     // Save form data to Firestore database including image URL
     const newUser = {
       firstName: userData.firstName,
@@ -140,10 +127,8 @@ const FireStore = () => {
       email: userData.email,
       imageUrl: imageUrl, // Save the URL of the uploaded image
     };
-
     await addDoc(collection(db, "users"), newUser);
   };
-
   // =========== UPDATE USER DATA ==================
   const updateUserData = async (userId, userData) => {
     // Upload image to Firebase Storage if a new image is selected
@@ -151,7 +136,6 @@ const FireStore = () => {
     if (userData.image && typeof userData.image !== "string") {
       imageUrl = await uploadImageToStorage(userData.image);
     }
-
     // Update form data in Firestore database
     const userRef = doc(db, "users", userId);
     await updateDoc(userRef, {
@@ -161,7 +145,6 @@ const FireStore = () => {
       imageUrl: imageUrl,
     });
   };
-
   // =============== UPLOAD IMAGE TO FIREBASE STORAGE ===========
   const uploadImageToStorage = async (image) => {
     if (!image) {
@@ -173,20 +156,16 @@ const FireStore = () => {
       const defaultImgUrl = await getDownloadURL(defaultImgRef);
       return defaultImgUrl; // Return the URL of the default image
     }
-
     const storageRef = ref(storage, `user_images/${image.name}`);
     await uploadBytes(storageRef, image);
     return await getDownloadURL(storageRef);
   };
-
   // ============== EDIT USER DATA =============
   const handleEdit = async (id) => {
     // Find the user to be edited
     const userToEdit = userData.find((user) => user.id === id);
-
     // Log the image URL to check if it's correct
     console.log("Image URL:", userToEdit.imageUrl);
-
     // Set form data to the user being edited, including the image URL
     setFormdata({
       firstName: userToEdit.firstName,
@@ -194,26 +173,14 @@ const FireStore = () => {
       email: userToEdit.email,
       image: userToEdit.imageUrl || "", // Set the image URL from user data or empty string if not available
     });
-
     // Set edit mode and edit user ID
     setEditMode(true);
     setEditUserId(id);
   };
-
-  // const urlToFile = async (url) => {
-  // Fetch the image data
-  // const response = await fetch(url);
-  // const blob = await response.blob();
-
-  // Create a File object from the blob
-  // return new File([blob], "image.jpg", { type: "image/jpeg" });
-  // };
-
   // ============== DELETE USER DATA =============
   const handleDelete = async (id) => {
     // Find the user to be deleted
     const userToDelete = userData.find((user) => user.id === id);
-
     // Delete the user's image from Firebase Storage if it's not the default image
     if (
       userToDelete.imageUrl &&
@@ -222,17 +189,13 @@ const FireStore = () => {
       const imageRef = ref(storage, userToDelete.imageUrl);
       await deleteObject(imageRef);
     }
-
     // Delete the user data from Firestore
     await deleteDoc(doc(db, "users", id));
-
     // Update the local state to reflect the deletion
     setUserData(userData.filter((user) => user.id !== id));
   };
-
   // ============== CLEAR FORM DATA ===============
   const clearFormData = () => {
-    // Clear form data after submission or cancellation of edit mode
     setFormdata({
       firstName: "",
       lastName: "",
@@ -249,7 +212,7 @@ const FireStore = () => {
     <section className="py-5 min-vh-100" id="form_validation">
       <div className="container">
         <Link to="/">
-          <button className="common_btns mb-4">Back</button>
+          <CommonButton linkButton={"Back"} className={"mb-4"}/>
         </Link>
       </div>
       <div className="container d-flex align-items-center justify-content-center">

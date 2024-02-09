@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import sample_video from "../assets/video/sample_video.mp4";
 import play_btn from "../assets/images/svg/play-button-svgrepo-com.svg";
 import pause_btn from '../assets/images/svg/pause-button-icon.svg';
+import CommonButton from "./CommonButton";
 
 const VideoPlayer = () => {
   const videoRef = useRef(null);
@@ -29,7 +30,10 @@ const VideoPlayer = () => {
       <section>
         <div className="container">
           <Link to="/">
-            <button className="common_btns my-4">Back</button>
+          <CommonButton
+            linkButton={"Back"}
+            className={"mb-4"}
+          />
           </Link>
           <div className="d-flex justify-content-center">
             <div className="position-relative d-inline-block">
