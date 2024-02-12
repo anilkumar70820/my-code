@@ -19,7 +19,7 @@ import {
 import CommonButton from "../CommonButton";
 
 const FireStore = () => {
-  const [loading, setLoading] = useState();
+  const [loading, setLoading] = useState(false);
   const [formdata, setFormdata] = useState({
     firstName: "",
     lastName: "",
@@ -27,9 +27,8 @@ const FireStore = () => {
     image: null,
   });
 
-  const regexFirstName = /^[a-zA-Z0-9]+([._][a-zA-Z0-9]+)*$/;
-  const regexEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-
+  const [showImage, setShowImage] = useState(null);
+  // ======== ERROR STATE ============
   const [error, setError] = useState({
     firstName: false,
     lastName: false,
@@ -37,13 +36,12 @@ const FireStore = () => {
     image: false,
   });
 
-  const [editMode, setEditMode] = useState(false); // State to track edit mode
-  const [editUserId, setEditUserId] = useState(null); // State to store ID of user being edited
+  const [editMode, setEditMode] = useState(false);
+  const [editUserId, setEditUserId] = useState(null);
 
-  // ========= firestore database datafatch  ==========
   const [userData, setUserData] = useState([]);
+  // ============== GET DATA FROM FIREBASE AND PRINT IN TABLE ================
   useEffect(() => {
-    // Fetch data from Firestore
     const fetchData = async () => {
       const querySnapshot = await getDocs(collection(db, "users"));
       const fetchedData = querySnapshot.docs.map((doc) => ({
@@ -52,7 +50,6 @@ const FireStore = () => {
       }));
       setUserData(fetchedData);
     };
-    // Set up a real-time listener for changes to the "users" collection
     const unsubscribe = onSnapshot(collection(db, "users"), (snapshot) => {
       const updatedData = snapshot.docs.map((doc) => ({
         id: doc.id,
@@ -61,23 +58,30 @@ const FireStore = () => {
       setUserData(updatedData);
     });
     fetchData();
-    // Clean up the listener when the component unmounts
     return () => unsubscribe();
   }, []);
-  // ======== GET VALUES FROM INPUTS ===========
+
+  // =============== GET VALUE FROM INPUTS ===================
   const handleInputChange = (field, value) => {
     setFormdata({ ...formdata, [field]: value });
   };
-  // ============= GET FILE FROM INPUT TYPE FILE ============
+
+  // =============== GET IMAGE FILE FROM INPUT ================
   const handleFileChange = (e) => {
-    // Set image file to state
-    setFormdata({ ...formdata, image: e.target.files[0] });
+    if (e.target.files && e.target.files[0]) {
+      setFormdata({ ...formdata, image: e.target.files[0] });
+      setShowImage(URL.createObjectURL(e.target.files[0]));
+    } else {
+      setShowImage(formdata.image);
+    }
   };
-  // ========= FORM SUBMIT FUNCTION =========
+
+  // ================== FORM SUBMITTION FUNCTION =================
   const formSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    // Check for empty fields
+
+    // ============== CHECK FOR EMPTY FIELDS ==============
     if (formdata.firstName.trim() === "" || formdata.email.trim() === "") {
       setError({
         firstName: formdata.firstName.trim() === "",
@@ -86,10 +90,15 @@ const FireStore = () => {
       setLoading(false);
       return;
     }
-    // Validate fields using regular expressions
+
+    // ================ REGEX PATTERNS =================
+    const regexFirstName = /^[a-zA-Z0-9]+([._][a-zA-Z0-9]+)*$/;
+    const regexEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+    //  =============== CHECK FOR REGEX PATTERN ================
     const isValidFirstName = regexFirstName.test(formdata.firstName);
     const isValidEmail = regexEmail.test(formdata.email);
-    // If any field is invalid, set error state and prevent form submission
+
     if (!isValidFirstName || !isValidEmail) {
       setError({
         firstName: !isValidFirstName,
@@ -98,45 +107,42 @@ const FireStore = () => {
       setLoading(false);
       return;
     }
+
+    // ============= EDIT MODE SUBMIT CONDITION ===========
     try {
       if (editMode) {
-        // If in edit mode, update user data
         await updateUserData(editUserId, formdata);
       } else {
-        // If not in edit mode, add new user data
         await addUserData(formdata);
       }
-      // Clear form data after successful submission
       clearFormData();
-      // Clear input type file after form submission
       document.getElementById("fileinput").value = "";
+      setShowImage(false);
       setLoading(false);
     } catch (error) {
       console.error("Error:", error);
       setLoading(false);
     }
   };
-  // ========== SAVE DATA TO FIREBASE STORAGE ===========
+
+  // ======== ADD USER DATA IN FIREBASE AFTER EDIT DATA =================
   const addUserData = async (userData) => {
-    // Upload image to Firebase Storage
     const imageUrl = await uploadImageToStorage(userData.image);
-    // Save form data to Firestore database including image URL
     const newUser = {
       firstName: userData.firstName,
       lastName: userData.lastName,
       email: userData.email,
-      imageUrl: imageUrl, // Save the URL of the uploaded image
+      imageUrl: imageUrl,
     };
     await addDoc(collection(db, "users"), newUser);
   };
-  // =========== UPDATE USER DATA ==================
+
+  // ============= UPDATE USER DATA IN FIREBASE ====================
   const updateUserData = async (userId, userData) => {
-    // Upload image to Firebase Storage if a new image is selected
     let imageUrl = userData.image;
     if (userData.image && typeof userData.image !== "string") {
       imageUrl = await uploadImageToStorage(userData.image);
     }
-    // Update form data in Firestore database
     const userRef = doc(db, "users", userId);
     await updateDoc(userRef, {
       firstName: userData.firstName,
@@ -145,56 +151,71 @@ const FireStore = () => {
       imageUrl: imageUrl,
     });
   };
-  // =============== UPLOAD IMAGE TO FIREBASE STORAGE ===========
+
+  // ============== UPLOAD IMAGE TO FIREBASE STORAGE ===============
   const uploadImageToStorage = async (image) => {
     if (!image) {
-      // If no image is selected, return the URL of the default image from Firebase Storage
       const defaultImgRef = ref(
         storage,
         "gs://practice-page-1cbb4.appspot.com/default_user.jpg"
-      ); // Change 'default.jpg' to the actual path of your default image
+      );
       const defaultImgUrl = await getDownloadURL(defaultImgRef);
-      return defaultImgUrl; // Return the URL of the default image
+      return defaultImgUrl;
     }
     const storageRef = ref(storage, `user_images/${image.name}`);
     await uploadBytes(storageRef, image);
     return await getDownloadURL(storageRef);
   };
-  // ============== EDIT USER DATA =============
+
+  // ============ EDIT USER DATA FUNCTION ================
   const handleEdit = async (id) => {
-    // Find the user to be edited
     const userToEdit = userData.find((user) => user.id === id);
-    // Log the image URL to check if it's correct
-    console.log("Image URL:", userToEdit.imageUrl);
-    // Set form data to the user being edited, including the image URL
     setFormdata({
       firstName: userToEdit.firstName,
       lastName: userToEdit.lastName,
       email: userToEdit.email,
-      image: userToEdit.imageUrl || "", // Set the image URL from user data or empty string if not available
+      image: userToEdit.imageUrl || "",
     });
+    if (userToEdit.imageUrl) {
+      setShowImage(userToEdit.imageUrl);
+    }
     // Set edit mode and edit user ID
     setEditMode(true);
     setEditUserId(id);
   };
-  // ============== DELETE USER DATA =============
+
+  // ============= DELETE USER DATA FROM FIREBASE FUNCTION =============
   const handleDelete = async (id) => {
-    // Find the user to be deleted
     const userToDelete = userData.find((user) => user.id === id);
-    // Delete the user's image from Firebase Storage if it's not the default image
     if (
       userToDelete.imageUrl &&
       !userToDelete.imageUrl.includes("default_user.jpg")
     ) {
       const imageRef = ref(storage, userToDelete.imageUrl);
-      await deleteObject(imageRef);
+      try {
+        // Attempt to delete the image from Firebase Storage
+        await deleteObject(imageRef);
+      } catch (error) {
+        if (error.code === "storage/object-not-found") {
+          // If the image is not found, log a message (optional)
+          console.log(
+            `Image '${userToDelete.imageUrl}' not found in Firebase Storage.`
+          );
+        } else {
+          // Log other errors for debugging purposes
+          console.error("Error deleting image:", error);
+        }
+      }
     }
+
     // Delete the user data from Firestore
     await deleteDoc(doc(db, "users", id));
-    // Update the local state to reflect the deletion
+
+    // Update the local state to remove the deleted user
     setUserData(userData.filter((user) => user.id !== id));
   };
-  // ============== CLEAR FORM DATA ===============
+
+  // =============== CLEAR FORM FIELDS AFTER SUBMIT FORM ============
   const clearFormData = () => {
     setFormdata({
       firstName: "",
@@ -202,8 +223,6 @@ const FireStore = () => {
       email: "",
       image: null,
     });
-
-    // Reset edit mode and edit user ID
     setEditMode(false);
     setEditUserId(null);
   };
@@ -212,7 +231,7 @@ const FireStore = () => {
     <section className="py-5 min-vh-100" id="form_validation">
       <div className="container">
         <Link to="/">
-          <CommonButton linkButton={"Back"} className={"mb-4"}/>
+          <CommonButton linkButton={"Back"} className={"mb-4"} />
         </Link>
       </div>
       <div className="container d-flex align-items-center justify-content-center">
@@ -257,20 +276,31 @@ const FireStore = () => {
             )}
           </div>
           {/* Input field for image upload */}
-          <input
-            type="file"
-            id="fileinput"
-            accept="image/*"
-            onChange={handleFileChange}
-          />
+          <div className="border_yellogreen">
+            <label htmlFor="fileinput" className="common_btns me-4">
+              Choose File
+              <input
+                type="file"
+                id="fileinput"
+                accept="image/*"
+                onChange={handleFileChange}
+                hidden
+              />
+            </label>
+            {showImage && (
+              <img
+                src={showImage}
+                alt="user_image"
+                className={`${showImage ? "user_img" : ""}`}
+              />
+            )}
+          </div>
           <button className="common_btns" type="submit">
             {loading ? "submiting..." : editMode ? "Update" : "Submit"}{" "}
-            {/* Conditional rendering for button text */}
           </button>
         </form>
       </div>
 
-      {/* Table to display user data */}
       <div className={`container ${userData.length === 0 ? "d-none" : ""}`}>
         <h2>User Data</h2>
         <table className="table_max_w mx-auto overflow-x-scroll">

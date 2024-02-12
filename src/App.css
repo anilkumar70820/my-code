@@ -361,7 +361,12 @@ button.active {
 .table_max_w {
   width: 800px;
 }
-
+.border_yellogreen{
+  border: 2px solid yellowgreen;
+  border-radius: 12px;
+  padding: 10px;
+  outline: none;
+}
 #form_validation input {
   padding: 10px;
   /* max-width: 500px; */
