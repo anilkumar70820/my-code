@@ -18,11 +18,12 @@ const FirebaseAuthentication = () => {
     password: "",
     confirmPassword: "",
   });
-  // ===== regex ==========
+  // ===== regex PATTERNS ==========
   const regexFirstName = /^[a-zA-Z0-9]+([._][a-zA-Z0-9]+)*$/;
   const regexEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
   const regexPassword = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#])[A-Za-z\d@#]{8,}$/;
 
+  // ============ ERROR STATE ==============
   const [error, setError] = useState({
     firstName: false,
     lastName: false,
@@ -34,10 +35,12 @@ const FirebaseAuthentication = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState();
 
+
+  // =========== GET INPUTS VALUE =============
   const handleInputChange = (field, value) => {
     setFormdata({ ...formdata, [field]: value });
 
-    // Validate in real-time
+    // ================ VALIDATE IN REAL TIME ===========
     switch (field) {
       case "firstName":
       case "lastName":
@@ -69,14 +72,17 @@ const FirebaseAuthentication = () => {
     }
   };
 
+  // ======== PASSWORD SHOW AND HIDDEN FUNCTION ===============
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
+  // ========== FORM SUBMITION FUNCTION ===============
   const formSubmit = async (e) => {
+    // =========== AFTER FORM SUBMIT STOP TO PAGE RELOAD ================
     e.preventDefault();
 
-    // Check for empty fields
+    // ==== CONDITION FOR CHECK EMPTY FIELDS ==============
     if (
       (isSignUp &&
         (formdata.firstName.trim() === "" ||
@@ -95,7 +101,7 @@ const FirebaseAuthentication = () => {
       return;
     }
 
-    // Check regex patterns
+    // ============= CHECK REGEX PATTERN ============
     if (isSignUp && !regexFirstName.test(formdata.firstName)) {
       setError((prevError) => ({ ...prevError, firstName: true }));
       return;
@@ -120,6 +126,7 @@ const FirebaseAuthentication = () => {
       setError((prevError) => ({ ...prevError, confirmPassword: true }));
       return;
     }
+    
     // ======= FIREBASE AUTHENTICATION JS ==================
     try {
       if (isSignUp) {
@@ -133,6 +140,8 @@ const FirebaseAuthentication = () => {
         // Add user data to Firestore for sign up
         const userData = { ...formdata, uid: user.uid };
         await addDoc(collection(db, "users"), userData);
+
+        window.alert("Sign up successful!");
       } else {
         // Sign in with existing user for sign in
         await signInWithEmailAndPassword(
@@ -140,6 +149,8 @@ const FirebaseAuthentication = () => {
           formdata.email,
           formdata.password
         );
+
+        window.alert("Sign in successful!");
       }
 
       // Clear form data after successful submission
@@ -149,9 +160,7 @@ const FirebaseAuthentication = () => {
         email: "",
         password: "",
         confirmPassword: "",
-      });
-      // Display alert for successful login
-      window.alert("Login successful!");
+      }); 
     } catch (error) {
       if (isSignUp && error.code === "auth/email-already-in-use") {
         alert("This email is already in use.");

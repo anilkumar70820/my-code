@@ -14,10 +14,12 @@ const RealtimeDatabase = () => {
     confirmPassword: "",
   });
 
+  // ========= REGEX PATTERNS ================
   const regexFirstName = /^[a-zA-Z0-9]+([._][a-zA-Z0-9]+)*$/;
   const regexEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
   const regexPassword = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#])[A-Za-z\d@#]{8,}$/;
 
+  // ========== SET ERRORS STATE ============
   const [error, setError] = useState({
     firstName: false,
     lastName: false,
@@ -28,10 +30,11 @@ const RealtimeDatabase = () => {
 
   const [showPassword, setShowPassword] = useState(false);
 
+  // ========== GET VALUE FROM INPUTS ===============
   const handleInputChange = (field, value) => {
     setFormdata({ ...formdata, [field]: value });
 
-    // Validate in real-time
+    // ============ REALTIME VALIDATION ============
     switch (field) {
       case "firstName":
       case "lastName":
@@ -63,14 +66,16 @@ const RealtimeDatabase = () => {
     }
   };
 
+  // ========== SHOW AND HIDE PASSWORD FUNCTION ================
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
+  // ============= FORM SUBMITION FUNCTION ============
   const formSubmit = async (e) => {
     e.preventDefault();
 
-    // Check for empty fields
+    // =========== CHECK  ERROR FOR EMPTY FIELDS =============
     if (
       formdata.firstName.trim() === "" ||
       formdata.lastName.trim() === "" ||
@@ -88,7 +93,7 @@ const RealtimeDatabase = () => {
       return;
     }
 
-    // Check regex patterns
+    // ============ CHECK ERROR FOR REGEX PATTERNS ===========
     if (!regexFirstName.test(formdata.firstName)) {
       setError((prevError) => ({ ...prevError, firstName: true }));
       return;
@@ -117,7 +122,7 @@ const RealtimeDatabase = () => {
     // Continue with form submission logic
     console.log(formdata);
 
-    // Clear form data after successful submission
+    // ====== CLEAR FORM DATA AFTER SUCCESFULL SUBMITION =========
     setFormdata({
       firstName: "",
       lastName: "",
@@ -125,7 +130,7 @@ const RealtimeDatabase = () => {
       password: "",
       confirmPassword: "",
     });
-// =============FIREBASE REALTIMEDATABASE =========
+// ============= FIREBASE REALTIMEDATABASE =========
     set(ref(rd, 'users/'), {
     formdata
     });

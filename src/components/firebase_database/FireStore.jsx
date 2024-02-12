@@ -22,7 +22,7 @@ const FireStore = () => {
   const [loading, setLoading] = useState(false);
   const [formdata, setFormdata] = useState({
     firstName: "",
-    lastName: "",
+    lastName: "", 
     email: "",
     image: null,
   });
@@ -277,7 +277,7 @@ const FireStore = () => {
           </div>
           {/* Input field for image upload */}
           <div className="border_yellogreen">
-            <label htmlFor="fileinput" className="common_btns me-4">
+            <label htmlFor="fileinput" className="common_btns me-4 py-1 px-3">
               Choose File
               <input
                 type="file"
@@ -300,17 +300,18 @@ const FireStore = () => {
           </button>
         </form>
       </div>
-
-      <div className={`container ${userData.length === 0 ? "d-none" : ""}`}>
-        <h2>User Data</h2>
+      <div
+        className={`container ${userData.length === 0 ? "d-none" : " mt-5"}`}
+      >
+        <h2 className="text-center mb-3">User Data</h2>
         <table className="table_max_w mx-auto overflow-x-scroll">
           <thead>
             <tr>
-              <th>Profile Image</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Edit Details</th>
-              <th>Delete Details</th>
+              <th className="fw-semibold fs-5">Profile Image</th>
+              <th className="fw-semibold fs-5">Name</th>
+              <th className="fw-semibold fs-5">Email</th>
+              <th className="fw-semibold fs-5">Edit Details</th>
+              <th className="fw-semibold fs-5">Delete Details</th>
             </tr>
           </thead>
           <tbody>
@@ -319,10 +320,10 @@ const FireStore = () => {
                 <td>
                   <img className="user_img" src={user.imageUrl} alt="User" />
                 </td>
-                <td>
+                <td className="text-capitalize fw-medium">
                   {user.firstName} {user.lastName}
                 </td>
-                <td>{user.email}</td>
+                <td className="fw-medium">{user.email}</td>
                 <td>
                   <button
                     className="common_btns px-3 py-1"
