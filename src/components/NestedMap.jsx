@@ -34,7 +34,7 @@ const NestedMap = () => {
 
   return (
     <div className="container">
-      <Link to='/'> <CommonButton
+      <Link to='/homepage'> <CommonButton
             linkButton={"Back"}
             className={"mb-4"}
           /></Link>

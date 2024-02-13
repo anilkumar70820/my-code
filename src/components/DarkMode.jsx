@@ -12,7 +12,7 @@ const DarkMode = () => {
   return (
     <div className={`min-vh-100 bg_white ${isDarkMode ? "dark-mode" : ""}`}>
       <div className="container py-5">
-        <Link to="/">
+        <Link to="/homepage">
         <CommonButton
             linkButton={"Back"}
           />

@@ -14,7 +14,7 @@ const InputFile = () => {
   return (
     <>
       <div className="container d-flex flex-column">
-        <Link to="/">
+        <Link to="/homepage">
         <CommonButton
             linkButton={"Back"}
             className={"mb-4"}

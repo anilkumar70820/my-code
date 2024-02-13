@@ -189,7 +189,7 @@ const EmailJs = () => {
   return (
     <div className="py-5">
       <div className="container" id="form_validation">
-        <Link to="/">
+        <Link to="/homepage">
           <CommonButton linkButton={"Back"} />
         </Link>
         <form

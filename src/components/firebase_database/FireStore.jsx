@@ -22,7 +22,7 @@ const FireStore = () => {
   const [loading, setLoading] = useState(false);
   const [formdata, setFormdata] = useState({
     firstName: "",
-    lastName: "", 
+    lastName: "",
     email: "",
     image: null,
   });
@@ -68,12 +68,12 @@ const FireStore = () => {
 
   // =============== GET IMAGE FILE FROM INPUT ================
   const handleFileChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setFormdata({ ...formdata, image: e.target.files[0] });
-      setShowImage(URL.createObjectURL(e.target.files[0]));
-    } else {
-      setShowImage(formdata.image);
-    }
+    // if (e.target.files && e.target.files[0]) {
+    setFormdata({ ...formdata, image: e.target.files[0] });
+    setShowImage(URL.createObjectURL(e.target.files[0]));
+    // } else {
+    setShowImage(formdata.image);
+    // }
   };
 
   // ================== FORM SUBMITTION FUNCTION =================
@@ -230,7 +230,7 @@ const FireStore = () => {
   return (
     <section className="py-5 min-vh-100" id="form_validation">
       <div className="container">
-        <Link to="/">
+        <Link to="/homepage">
           <CommonButton linkButton={"Back"} className={"mb-4"} />
         </Link>
       </div>
@@ -288,11 +288,7 @@ const FireStore = () => {
               />
             </label>
             {showImage && (
-              <img
-                src={showImage}
-                alt="user_image"
-                className={`${showImage ? "user_img" : ""}`}
-              />
+              <img src={showImage} alt="user_image" className="user_img" />
             )}
           </div>
           <button className="common_btns" type="submit">
@@ -301,49 +297,51 @@ const FireStore = () => {
         </form>
       </div>
       <div
-        className={`container ${userData.length === 0 ? "d-none" : " mt-5"}`}
+        className={`my_container ${userData.length === 0 ? "d-none" : " mt-5"}`}
       >
         <h2 className="text-center mb-3">User Data</h2>
-        <table className="table_max_w mx-auto overflow-x-scroll">
-          <thead>
-            <tr>
-              <th className="fw-semibold fs-5">Profile Image</th>
-              <th className="fw-semibold fs-5">Name</th>
-              <th className="fw-semibold fs-5">Email</th>
-              <th className="fw-semibold fs-5">Edit Details</th>
-              <th className="fw-semibold fs-5">Delete Details</th>
-            </tr>
-          </thead>
-          <tbody>
-            {userData.map((user) => (
-              <tr key={user.id}>
-                <td>
-                  <img className="user_img" src={user.imageUrl} alt="User" />
-                </td>
-                <td className="text-capitalize fw-medium">
-                  {user.firstName} {user.lastName}
-                </td>
-                <td className="fw-medium">{user.email}</td>
-                <td>
-                  <button
-                    className="common_btns px-3 py-1"
-                    onClick={() => handleEdit(user.id)}
-                  >
-                    Edit
-                  </button>
-                </td>
-                <td>
-                  <button
-                    className="common_btns px-3 py-1"
-                    onClick={() => handleDelete(user.id)}
-                  >
-                    Delete
-                  </button>
-                </td>
+        <div className="d-flex justify-content-md-center">
+          <table className="table_max_w overflow-x-scroll">
+            <thead>
+              <tr>
+                <th className="fw-semibold fs-5">Profile Image</th>
+                <th className="fw-semibold fs-5">Name</th>
+                <th className="fw-semibold fs-5">Email</th>
+                <th className="fw-semibold fs-5">Edit Details</th>
+                <th className="fw-semibold fs-5">Delete Details</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {userData.map((user) => (
+                <tr key={user.id}>
+                  <td>
+                    <img className="user_img" src={user.imageUrl} alt="User" />
+                  </td>
+                  <td className="text-capitalize fw-medium">
+                    {user.firstName} {user.lastName}
+                  </td>
+                  <td className="fw-medium">{user.email}</td>
+                  <td>
+                    <button
+                      className="common_btns px-3 py-1"
+                      onClick={() => handleEdit(user.id)}
+                    >
+                      Edit
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      className="common_btns px-3 py-1"
+                      onClick={() => handleDelete(user.id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
   );

@@ -13,7 +13,7 @@ const UseStateNav = () => {
   return (
     <div className="py-5 ">
       <div className="container">
-        <Link to="/">
+        <Link to="/homepage">
         <CommonButton
             linkButton={"Back"}
             className={"mb-4"}

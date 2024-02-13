@@ -5,7 +5,7 @@ import CommonButton from "./CommonButton";
 const CSSTicker = () => {
   return (
     <>
-   <div className='container'><Link to='/'> <CommonButton
+   <div className='container'><Link to='/homepage'> <CommonButton
             linkButton={"Back"}
             className={"mb-4"}
           /></Link></div>

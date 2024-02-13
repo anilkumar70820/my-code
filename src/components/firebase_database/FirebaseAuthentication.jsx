@@ -1,7 +1,7 @@
-
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import CommonButton from "../CommonButton";
 import { auth, db } from "./FirebaseData";
 import { addDoc, collection } from "firebase/firestore";
@@ -11,6 +11,7 @@ import {
 } from "firebase/auth";
 
 const FirebaseAuthentication = () => {
+  const navigate = useNavigate();
   const [formdata, setFormdata] = useState({
     firstName: "",
     lastName: "",
@@ -22,7 +23,6 @@ const FirebaseAuthentication = () => {
   const regexFirstName = /^[a-zA-Z0-9]+([._][a-zA-Z0-9]+)*$/;
   const regexEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
   const regexPassword = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#])[A-Za-z\d@#]{8,}$/;
-
   // ============ ERROR STATE ==============
   const [error, setError] = useState({
     firstName: false,
@@ -31,57 +31,49 @@ const FirebaseAuthentication = () => {
     password: false,
     confirmPassword: false,
   });
-
   const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState();
-
-
   // =========== GET INPUTS VALUE =============
   const handleInputChange = (field, value) => {
     setFormdata({ ...formdata, [field]: value });
-
     // ================ VALIDATE IN REAL TIME ===========
     switch (field) {
       case "firstName":
-      case "lastName":
-        setError((prevError) => ({
-          ...prevError,
-          [field]: value.trim() === "" || !regexFirstName.test(value),
-        }));
+        setError({
+          ...error,
+          [field]: value.trim() === "",
+        });
         break;
       case "email":
-        setError((prevError) => ({
-          ...prevError,
-          email: value.trim() === "" || !regexEmail.test(value),
-        }));
+        setError({
+          ...error,
+          email: value.trim() === "",
+        });
         break;
       case "password":
-        setError((prevError) => ({
-          ...prevError,
-          password: value.trim() === "" || !regexPassword.test(value),
-        }));
+        setError({
+          ...error,
+          password: value.trim() === "",
+        });
         break;
       case "confirmPassword":
-        setError((prevError) => ({
-          ...prevError,
+        setError({
+          ...error,
           confirmPassword: value !== formdata.password,
-        }));
+        });
         break;
       default:
         break;
     }
   };
-
   // ======== PASSWORD SHOW AND HIDDEN FUNCTION ===============
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-
   // ========== FORM SUBMITION FUNCTION ===============
   const formSubmit = async (e) => {
     // =========== AFTER FORM SUBMIT STOP TO PAGE RELOAD ================
     e.preventDefault();
-
     // ==== CONDITION FOR CHECK EMPTY FIELDS ==============
     if (
       (isSignUp &&
@@ -100,33 +92,23 @@ const FirebaseAuthentication = () => {
       });
       return;
     }
-
     // ============= CHECK REGEX PATTERN ============
     if (isSignUp && !regexFirstName.test(formdata.firstName)) {
-      setError((prevError) => ({ ...prevError, firstName: true }));
+      setError({ ...error, firstName: true });
       return;
     }
-
-    if (isSignUp && !regexFirstName.test(formdata.lastName)) {
-      setError((prevError) => ({ ...prevError, lastName: true }));
-      return;
-    }
-
     if (!regexEmail.test(formdata.email)) {
-      setError((prevError) => ({ ...prevError, email: true }));
+      setError({ ...error, email: true });
       return;
     }
-
     if (!regexPassword.test(formdata.password)) {
-      setError((prevError) => ({ ...prevError, password: true }));
+      setError({ ...error, password: true });
       return;
     }
-
     if (isSignUp && formdata.confirmPassword !== formdata.password) {
-      setError((prevError) => ({ ...prevError, confirmPassword: true }));
+      setError({ ...error, confirmPassword: true });
       return;
     }
-    
     // ======= FIREBASE AUTHENTICATION JS ==================
     try {
       if (isSignUp) {
@@ -136,12 +118,16 @@ const FirebaseAuthentication = () => {
           formdata.email,
           formdata.password
         );
-
         // Add user data to Firestore for sign up
-        const userData = { ...formdata, uid: user.uid };
-        await addDoc(collection(db, "users"), userData);
+        // const userData = { ...formdata, uid: user.uid };
+        // await addDoc(collection(db, "users"), userData);
 
-        window.alert("Sign up successful!");
+        // ====== OPEN POPUP OF SUCCESSFULLY SIGN UP =============
+        Swal.fire({
+          title: "Sign up Successfully!",
+          icon: "success",
+        });
+        setIsSignUp(false)
       } else {
         // Sign in with existing user for sign in
         await signInWithEmailAndPassword(
@@ -149,10 +135,14 @@ const FirebaseAuthentication = () => {
           formdata.email,
           formdata.password
         );
-
-        window.alert("Sign in successful!");
+        // ===== AFTER SIGN IN GO TO HOMEPAGE ===============
+        navigate("/homepage");
+        // ====== OPEN POPUP OF SUCCESSFULLY SIGN IN=============
+        Swal.fire({
+          title: "Sign In Successfully!",
+          icon: "success",
+        });
       }
-
       // Clear form data after successful submission
       setFormdata({
         firstName: "",
@@ -160,7 +150,7 @@ const FirebaseAuthentication = () => {
         email: "",
         password: "",
         confirmPassword: "",
-      }); 
+      });
     } catch (error) {
       if (isSignUp && error.code === "auth/email-already-in-use") {
         alert("This email is already in use.");
@@ -169,16 +159,15 @@ const FirebaseAuthentication = () => {
       }
     }
   };
-
   return (
     <section className="py-5 min-vh-100" id="form_validation">
-      <div className="container">
+      {/* <div className="container">
         <Link to="/">
         <CommonButton
             linkButton={"Back"}
           />
         </Link>
-      </div>
+      </div> */}
       <h1 className="mb-5 text-center">
         {isSignUp ? "Create A New Account" : "Sign In"}
       </h1>
@@ -254,13 +243,24 @@ const FirebaseAuthentication = () => {
                 <FaEye className="text-success" />
               )}
             </span>
-            {error.password && (
-              <p className="text-danger fw-semibold error_message">
-                {formdata.password.trim() === ""
-                  ? "Please enter a password!"
-                  : "Password must be strong."}
-              </p>
-            )}
+            <div className={`${isSignUp ? "d-block" : "d-none"}`}>
+              {error.password && (
+                <p className="text-danger fw-semibold error_message">
+                  {formdata.password.trim() === ""
+                    ? "Please enter a password!"
+                    : "Password must be strong."}
+                </p>
+              )}
+            </div>
+            <div className={`${isSignUp ? "d-none" : "d-block"}`}>
+              {error.password && (
+                <p className="text-danger fw-semibold error_message">
+                  {formdata.password.trim() === ""
+                    ? "Please enter a password!"
+                    : "Incorrect Password."}
+                </p>
+              )}
+            </div>
           </div>
           <div
             className={`position-relative ${isSignUp ? "d-block" : "d-none"}`}
@@ -275,7 +275,9 @@ const FirebaseAuthentication = () => {
             />
             {error.confirmPassword && (
               <p className="text-danger fw-semibold error_message">
-                Passwords do not match!
+                {formdata.confirmPassword.trim() === ""
+                  ? "Please enter Confirm password!"
+                  : "Password does not match"}
               </p>
             )}
           </div>

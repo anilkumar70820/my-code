@@ -138,7 +138,7 @@ const RealtimeDatabase = () => {
 
   return (
     <section className="py-5 min-vh-100" id="form_validation">
-      <div className="container"><Link to='/'> <CommonButton
+      <div className="container"><Link to='/homepage'> <CommonButton
             linkButton={"Back"}
           /></Link></div>
       <div className="container d-flex align-items-center justify-content-center">

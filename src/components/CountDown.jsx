@@ -97,7 +97,7 @@ const CountDown = () => {
   return (
     <div className="bg_black min-vh-100 py-5">
       <div className="container">
-        <Link to="/">
+        <Link to="/homepage">
           <CommonButton
             linkButton={"Back"}
             className={"mb-4 text-black bg-white "}

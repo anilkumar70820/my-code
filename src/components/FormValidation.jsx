@@ -128,7 +128,7 @@ const FormValidation = () => {
 
   return (
     <section className="py-5 min-vh-100" id="form_validation">
-      <div className="container"><Link to='/'> <CommonButton
+      <div className="container"><Link to='/homepage'> <CommonButton
             linkButton={"Back"}
             className={"mb-4"}
           /></Link></div>

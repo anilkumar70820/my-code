@@ -8,7 +8,7 @@ const CardMapUse = () => {
   return (
     <section className="py-5">
       <Container className="pb-lg-5 mb-lg-4 pt-lg-4">
-      <Link to="/">
+      <Link to="/homepage">
           <CommonButton linkButton={"Back"} className={"mb-4"}/>
         </Link>
         <h2

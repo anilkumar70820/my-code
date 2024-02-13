@@ -6,7 +6,7 @@ import CommonButton from "./CommonButton";
 const TypeWriter = () => {
   return (
     <div className='container mt-5'>
-        <Link to='/'> <CommonButton
+        <Link to='/homepage'> <CommonButton
             linkButton={"Back"}
             className={"mb-4"}
           /></Link>

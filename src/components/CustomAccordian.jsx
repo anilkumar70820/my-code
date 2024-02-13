@@ -7,7 +7,7 @@ const CustomAccordian = () => {
   return (
     <>
     <div className="container pt-5 pb-4">
-     <Link className="d-inline-block" to="/">
+     <Link className="d-inline-block" to="/homepage">
      <CommonButton
             linkButton={"Back"}
           />

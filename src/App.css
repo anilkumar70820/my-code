@@ -8,6 +8,11 @@
   box-sizing: border-box;
 }
 
+.my_container{
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 12px;
+}
 /* ========Root Start============ */
 :root {
   --fs-3xsm: 12px;
@@ -359,9 +364,9 @@ button.active {
   border-radius: 100%;
 }
 .table_max_w {
-  width: 800px;
+  width: 800px !important;
 }
-.border_yellogreen{
+.border_yellogreen {
   border: 2px solid yellowgreen;
   border-radius: 12px;
   padding: 10px;

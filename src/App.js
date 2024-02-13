@@ -51,7 +51,8 @@ function App() {
       <button className='z-3 py-3 px-4 bg-black ms-5 text-white fw-bold fs-2 rounded-4 border-0' onClick={() => setShow(false)}>click</button>
       <button className='mb-5 py-3 px-4 bg-black ms-5 text-white fw-bold fs-2 rounded-4 border-0' onClick={() => setShow(true)}>click again</button> */}
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<FirebaseAuthentication />} />
+        <Route path="/homepage" element={<HomePage />} />
         <Route path="/typewriter" element={<TypeWriter />} />
         <Route path="/tickerslider" element={<CSSTicker />} />
         <Route path="/swiperslider" element={<SwiperSlider />} />
@@ -77,10 +78,7 @@ function App() {
           path="/firebaseauthentication"
           element={<FirebaseAuthentication />}
         />
-        <Route
-          path="/practiceform"
-          element={<NewForm />}
-        />
+        <Route path="/practiceform" element={<NewForm />} />
       </Routes>
     </div>
   );
