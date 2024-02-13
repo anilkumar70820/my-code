@@ -7,6 +7,8 @@ import { auth, db } from "./FirebaseData";
 import { addDoc, collection } from "firebase/firestore";
 import {
   createUserWithEmailAndPassword,
+  sendEmailVerification,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 
@@ -122,6 +124,9 @@ const FirebaseAuthentication = () => {
         // const userData = { ...formdata, uid: user.uid };
         // await addDoc(collection(db, "users"), userData);
 
+        // Send email verification
+        await sendEmailVerification(user);
+
         // ====== OPEN POPUP OF SUCCESSFULLY SIGN UP =============
         Swal.fire({
           title: "Sign up Successfully!",
@@ -130,11 +135,23 @@ const FirebaseAuthentication = () => {
         setIsSignUp(false);
       } else {
         // Sign in with existing user for sign in
-        await signInWithEmailAndPassword(
+        const { user } = await signInWithEmailAndPassword(
           auth,
           formdata.email,
           formdata.password
         );
+
+        // Check if email is verified
+        if (!user.emailVerified) {
+          // Prompt the user to verify their email
+          Swal.fire({
+            title: "Email Not Verified",
+            text: "Please verify your email to sign in.",
+            icon: "error",
+          });
+          return;
+        }
+
         // ===== AFTER SIGN IN GO TO HOMEPAGE ===============
         navigate("/homepage");
         // ====== OPEN POPUP OF SUCCESSFULLY SIGN IN=============
@@ -157,6 +174,28 @@ const FirebaseAuthentication = () => {
       } else {
         alert("Invalid email or password. Please try again.");
       }
+    }
+  };
+
+  // ==========RESET PASSWORD FUNCTION =============
+  const handlePasswordReset = async () => {
+    try {
+      // Send password reset email
+      await sendPasswordResetEmail(auth, formdata.email);
+
+      // Show success message
+      Swal.fire({
+        title: "Password Reset Email Sent",
+        text: "Check your email for instructions on how to reset your password.",
+        icon: "success",
+      });
+    } catch (error) {
+      // Show error message if there's an issue
+      Swal.fire({
+        title: "Error",
+        text: "Failed to send password reset email. Please try again later.",
+        icon: "error",
+      });
     }
   };
   return (
@@ -283,6 +322,14 @@ const FirebaseAuthentication = () => {
           </div>
           {/* Conditionally render Register/Login button based on the mode */}
           <input type="submit" value={isSignUp ? "Sign Up" : "Sign In"} />
+          <Link
+            className={`d-flex justify-content-end ${
+              isSignUp ? "d-none" : "d-block"
+            }`}
+            onClick={handlePasswordReset}
+          >
+            Forget Password ?
+          </Link>
 
           {/* Toggle between Sign Up and Sign In mode */}
           <button
