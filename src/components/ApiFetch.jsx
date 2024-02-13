@@ -11,7 +11,7 @@ const ApiFetch = () => {
         console.log()
     return (
 
-        <div>
+        <div className='py-5'>
             <h1 className='text-center mb-4'>== Api Fetch Start Here ==</h1>
             <div className='d-flex justify-content-center flex-wrap'>
             {/* 5. Using *dogImage as* the *src* for our image*/}

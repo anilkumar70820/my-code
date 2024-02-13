@@ -2,14 +2,14 @@ import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { CardMaping } from "./CardMaping";
 import { Link } from "react-router-dom";
-import CommonButton from "./CommonButton";
+import CommonButton from "./common/CommonButton";
 
 const CardMapUse = () => {
   return (
     <section className="py-5">
       <Container className="pb-lg-5 mb-lg-4 pt-lg-4">
-      <Link to="/homepage">
-          <CommonButton linkButton={"Back"} className={"mb-4"}/>
+        <Link to="/homepage">
+          <CommonButton linkButton={"Back"} className={"mb-4"} />
         </Link>
         <h2
           className="text-center mb-4 pb-1 ff_open_sans fw-normal text_252B42 fs_2xlg mt-lg-5"
@@ -69,6 +69,5 @@ const CardMapUse = () => {
     </section>
   );
 };
-
 
 export default CardMapUse;

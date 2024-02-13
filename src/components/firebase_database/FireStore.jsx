@@ -16,7 +16,7 @@ import {
   getDownloadURL,
   deleteObject,
 } from "firebase/storage";
-import CommonButton from "../CommonButton";
+import CommonButton from "../common/CommonButton";
 
 const FireStore = () => {
   const [loading, setLoading] = useState(false);

@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
-import CommonButton from "./CommonButton"
+import React, { useState, useRef } from "react";
+import { Link } from "react-router-dom";
+import CommonButton from "./common/CommonButton";
 
 const AudioPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -8,8 +8,8 @@ const AudioPlayer = () => {
 
   const songs = [
     // Add your audio file URLs here
-    '',
-    'https://example.com/song2.mp3',
+    "",
+    "https://example.com/song2.mp3",
     // Add more songs if needed
   ];
 
@@ -41,10 +41,10 @@ const AudioPlayer = () => {
   };
 
   return (
-    <div>
+    <div className="py-5">
       <div className="container">
-      <Link to="/">
-          <CommonButton linkButton={"Back"} className={"mb-4"}/>
+        <Link to="/">
+          <CommonButton linkButton={"Back"} className={"mb-4"} />
         </Link>
       </div>
       <audio
@@ -59,7 +59,7 @@ const AudioPlayer = () => {
       </div>
       <div>
         <button onClick={playPauseHandler}>
-          {isPlaying ? 'Pause' : 'Play'}
+          {isPlaying ? "Pause" : "Play"}
         </button>
       </div>
     </div>

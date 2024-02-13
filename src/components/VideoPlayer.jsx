@@ -2,8 +2,8 @@ import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import sample_video from "../assets/video/sample_video.mp4";
 import play_btn from "../assets/images/svg/play-button-svgrepo-com.svg";
-import pause_btn from '../assets/images/svg/pause-button-icon.svg';
-import CommonButton from "./CommonButton";
+import pause_btn from "../assets/images/svg/pause-button-icon.svg";
+import CommonButton from "./common/CommonButton";
 
 const VideoPlayer = () => {
   const videoRef = useRef(null);
@@ -27,13 +27,10 @@ const VideoPlayer = () => {
 
   return (
     <>
-      <section>
+      <section className="py-5">
         <div className="container">
           <Link to="/homepage">
-          <CommonButton
-            linkButton={"Back"}
-            className={"mb-4"}
-          />
+            <CommonButton linkButton={"Back"} className={"mb-4"} />
           </Link>
           <div className="d-flex justify-content-center">
             <div className="position-relative d-inline-block">
@@ -48,7 +45,9 @@ const VideoPlayer = () => {
               </video>
               <img
                 onClick={playPauseToggle}
-                className={`play_pause_btn cursor_pointer ${isPlaying ? "opacity-0 pe-none" : ""}`}
+                className={`play_pause_btn cursor_pointer ${
+                  isPlaying ? "opacity-0 pe-none" : ""
+                }`}
                 src={isPlaying ? pause_btn : play_btn}
                 alt="play_btn"
               />

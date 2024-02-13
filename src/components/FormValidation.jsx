@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
 import { Link } from "react-router-dom";
-import CommonButton from "./CommonButton";
+import CommonButton from "./common/CommonButton";
 
 const FormValidation = () => {
   const [formdata, setFormdata] = useState({
@@ -123,15 +123,16 @@ const FormValidation = () => {
       password: "",
       confirmPassword: "",
     });
-
   };
 
   return (
     <section className="py-5 min-vh-100" id="form_validation">
-      <div className="container"><Link to='/homepage'> <CommonButton
-            linkButton={"Back"}
-            className={"mb-4"}
-          /></Link></div>
+      <div className="container">
+        <Link to="/homepage">
+          {" "}
+          <CommonButton linkButton={"Back"} className={"mb-4"} />
+        </Link>
+      </div>
       <div className="container d-flex align-items-center justify-content-center">
         <form
           className="d-flex flex-column gap-4 justify-content-center form_width"
@@ -183,7 +184,8 @@ const FormValidation = () => {
             )}
           </div>
           <div className="position-relative">
-            <input className="pe-5"
+            <input
+              className="pe-5"
               type={showPassword ? "text" : "password"}
               placeholder="Password"
               value={formdata.password}
@@ -193,7 +195,11 @@ const FormValidation = () => {
               className="password_toggle_icon"
               onClick={togglePasswordVisibility}
             >
-              {showPassword ? <FaEyeSlash className="text-danger" /> : <FaEye className="text-success"/>}
+              {showPassword ? (
+                <FaEyeSlash className="text-danger" />
+              ) : (
+                <FaEye className="text-success" />
+              )}
             </span>
             {error.password && (
               <p className="text-danger fw-semibold error_message">
@@ -208,7 +214,9 @@ const FormValidation = () => {
               type="password"
               placeholder="Confirm Password"
               value={formdata.confirmPassword}
-              onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
+              onChange={(e) =>
+                handleInputChange("confirmPassword", e.target.value)
+              }
             />
             {error.confirmPassword && (
               <p className="text-danger fw-semibold error_message">

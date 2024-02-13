@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import CommonButton from "./CommonButton";
+import CommonButton from "./common/CommonButton";
 
 const DarkMode = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -13,9 +13,7 @@ const DarkMode = () => {
     <div className={`min-vh-100 bg_white ${isDarkMode ? "dark-mode" : ""}`}>
       <div className="container py-5">
         <Link to="/homepage">
-        <CommonButton
-            linkButton={"Back"}
-          />
+          <CommonButton linkButton={"Back"} />
         </Link>
         <button onClick={toggleDarkMode}>
           {isDarkMode ? "Light Mode" : "Dark Mode"}

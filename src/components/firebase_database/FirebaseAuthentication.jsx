@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import CommonButton from "../CommonButton";
+import CommonButton from "../common/CommonButton";
 import { auth, db } from "./FirebaseData";
 import { addDoc, collection } from "firebase/firestore";
 import {
@@ -127,7 +127,7 @@ const FirebaseAuthentication = () => {
           title: "Sign up Successfully!",
           icon: "success",
         });
-        setIsSignUp(false)
+        setIsSignUp(false);
       } else {
         // Sign in with existing user for sign in
         await signInWithEmailAndPassword(

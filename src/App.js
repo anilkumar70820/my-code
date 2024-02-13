@@ -23,7 +23,7 @@ import GoogleMap from "./components/GoogleMap";
 import UseStateNav from "./components/UseStateNav";
 import CardMapUse from "./components/CardMapUse";
 import CountDown from "./components/CountDown";
-import Preloader from "./components/Preloader";
+import Preloader from "./components/common/Preloader";
 import CustomAccordian from "./components/CustomAccordian";
 import InputFile from "./components/InputFile";
 import NewForm from "./components/NewForm";

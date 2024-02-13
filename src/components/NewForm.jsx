@@ -122,7 +122,7 @@
 // }
 
 import React, { useState } from "react";
-import CommonButton from "./CommonButton";
+import CommonButton from "./common/CommonButton";
 
 const NewForm = () => {
   const [form, setForm] = useState({
@@ -154,7 +154,7 @@ const NewForm = () => {
   const handleInputChange = (field, value) => {
     setForm({ ...form, [field]: value });
     // Reset error when user starts typing
-    // setError({ ...error, [field]: false });  
+    // setError({ ...error, [field]: false });
 
     // =========== REALTIME VALIDATION ==============
     switch (field) {
@@ -217,7 +217,7 @@ const NewForm = () => {
       return;
     }
 
-// ========= CHECK REGEXS PATERNS ==============
+    // ========= CHECK REGEXS PATERNS ==============
     if (!regexFirstName.test(form.firstName)) {
       setError({
         ...error,

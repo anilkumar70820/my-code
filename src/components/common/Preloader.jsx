@@ -1,5 +1,5 @@
 import React from 'react'
-import preloader from '../assets/images/webp/practice.webp'
+import preloader from '../../assets/images/webp/practice.webp'
 
 const Preloader = () => {
     return (

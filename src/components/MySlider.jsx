@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
-import CommonButton from "./CommonButton";
+import CommonButton from "./common/CommonButton";
 
 const MySlider = () => {
   var center = {
@@ -40,10 +40,7 @@ const MySlider = () => {
     <div className="py-5">
       <div className="container">
         <Link to="/homepage">
-        <CommonButton
-            linkButton={"Back"}
-            className={"mb-4"}
-          />
+          <CommonButton linkButton={"Back"} className={"mb-4"} />
         </Link>
         <h2 className="text-center fs-1 mb-5">SLICK SLIDER</h2>
         <Slider {...center}>
