@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import CommonButton from "../common/CommonButton";
+// import CommonButton from "../common/CommonButton";
 import { auth, db } from "./FirebaseData";
-import { addDoc, collection } from "firebase/firestore";
+// import { addDoc, collection } from "firebase/firestore";
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
@@ -21,6 +21,8 @@ const FirebaseAuthentication = () => {
     password: "",
     confirmPassword: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [isSignUp, setIsSignUp] = useState();
   // ===== regex PATTERNS ==========
   const regexFirstName = /^[a-zA-Z0-9]+([._][a-zA-Z0-9]+)*$/;
   const regexEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -33,8 +35,25 @@ const FirebaseAuthentication = () => {
     password: false,
     confirmPassword: false,
   });
-  const [showPassword, setShowPassword] = useState(false);
-  const [isSignUp, setIsSignUp] = useState();
+
+  // Reset error state when mode changes
+  useEffect(() => {
+    setError({
+      firstName: false,
+      lastName: false,
+      email: false,
+      password: false,
+      confirmPassword: false,
+    });
+    setFormdata({
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    });
+  }, [isSignUp]);
+
   // =========== GET INPUTS VALUE =============
   const handleInputChange = (field, value) => {
     setFormdata({ ...formdata, [field]: value });
