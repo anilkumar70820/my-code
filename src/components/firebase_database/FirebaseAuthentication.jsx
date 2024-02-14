@@ -3,13 +3,14 @@ import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 // import CommonButton from "../common/CommonButton";
-import { auth, db } from "./FirebaseData";
+import { auth, googleAuthProvider, db } from "./FirebaseData";
 // import { addDoc, collection } from "firebase/firestore";
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
+  signInWithPopup,
 } from "firebase/auth";
 
 const FirebaseAuthentication = () => {
@@ -149,6 +150,7 @@ const FirebaseAuthentication = () => {
         // ====== OPEN POPUP OF SUCCESSFULLY SIGN UP =============
         Swal.fire({
           title: "Sign up Successfully!",
+          text: "Please Verify Your Email Before SignIn",
           icon: "success",
         });
         setIsSignUp(false);
@@ -215,6 +217,21 @@ const FirebaseAuthentication = () => {
         text: "Failed to send password reset email. Please try again later.",
         icon: "error",
       });
+    }
+  };
+
+  // Google sign-in function
+  const signInWithGoogle = async () => {
+    try {
+      const { user } = await signInWithPopup(auth, googleAuthProvider);
+      navigate("/homepage");
+      Swal.fire({
+        title: "Sign In with Google Successfully!",
+        icon: "success",
+      });
+    } catch (error) {
+      console.log(error);
+      alert("Failed to sign in with Google. Please try again.");
     }
   };
   return (
@@ -359,6 +376,14 @@ const FirebaseAuthentication = () => {
             {isSignUp
               ? "Already have an account? Sign In"
               : "Don't have an account? Sign Up"}
+          </button>
+          <p className="text-center fs-4">OR</p>
+          <button
+            type="button"
+            className="common_btns"
+            onClick={signInWithGoogle}
+          >
+            Sign In with Google Account
           </button>
         </form>
       </div>

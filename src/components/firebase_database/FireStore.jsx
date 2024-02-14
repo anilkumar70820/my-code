@@ -68,12 +68,12 @@ const FireStore = () => {
 
   // =============== GET IMAGE FILE FROM INPUT ================
   const handleFileChange = (e) => {
-    // if (e.target.files && e.target.files[0]) {
-    setFormdata({ ...formdata, image: e.target.files[0] });
-    setShowImage(URL.createObjectURL(e.target.files[0]));
-    // } else {
-    setShowImage(formdata.image);
-    // }
+    if (e.target.files && e.target.files[0]) {
+      setFormdata({ ...formdata, image: e.target.files[0] });
+      setShowImage(URL.createObjectURL(e.target.files[0]));
+    } else {
+      setShowImage(formdata.image);
+    }
   };
 
   // ================== FORM SUBMITTION FUNCTION =================
@@ -115,14 +115,21 @@ const FireStore = () => {
       } else {
         await addUserData(formdata);
       }
+
+      // ======= CLEAR FORMDATA AFTER SUCCESSFULL SUBMITTION ===========
       clearFormData();
+
+      // ======= CLEAR FILE INPUT AFTER SUCCESSFULL SUBMITTION ============
       document.getElementById("fileinput").value = "";
+
+      // ==== IMAGE PREVIEW FALSE ==========
       setShowImage(false);
       setLoading(false);
     } catch (error) {
       console.error("Error:", error);
       setLoading(false);
     }
+    console.log("Form data submitted successfully:", formdata);
   };
 
   // ======== ADD USER DATA IN FIREBASE AFTER EDIT DATA =================

@@ -52,33 +52,33 @@ function App() {
       <button className='mb-5 py-3 px-4 bg-black ms-5 text-white fw-bold fs-2 rounded-4 border-0' onClick={() => setShow(true)}>click again</button> */}
       <Routes>
         <Route path="/" element={<FirebaseAuthentication />} />
-        <Route path="/homepage" element={<HomePage />} />
-        <Route path="/typewriter" element={<TypeWriter />} />
-        <Route path="/tickerslider" element={<CSSTicker />} />
-        <Route path="/swiperslider" element={<SwiperSlider />} />
-        <Route path="/formvalidation" element={<FormValidation />} />
-        <Route path="/nestedmap" element={<NestedMap />} />
-        <Route path="/todolist" element={<ToDoList />} />
-        <Route path="/parallaxeffect" element={<ParalexEffect />} />
-        <Route path="/gsap" element={<GsapPage />} />
-        <Route path="/darkmode" element={<DarkMode />} />
-        <Route path="/videoplayer" element={<VideoPlayer />} />
-        <Route path="/audioplayer" element={<AudioPlayer />} />
-        <Route path="/emailjs" element={<EmailJs />} />
-        <Route path="/googlemap" element={<GoogleMap />} />
-        <Route path="/navbar" element={<UseStateNav />} />
-        <Route path="/map" element={<CardMapUse />} />
-        <Route path="/countdown" element={<CountDown />} />
-        <Route path="/accordian" element={<CustomAccordian />} />
-        <Route path="/inputfile" element={<InputFile />} />
-        <Route path="/firestoredatabase" element={<FireStore />} />
-        <Route path="/realtimedatabase" element={<RealtimeDatabase />} />
-        <Route path="slickslider" element={<MySlider />} />
-        <Route
-          path="/firebaseauthentication"
-          element={<FirebaseAuthentication />}
-        />
-        <Route path="/practiceform" element={<NewForm />} />
+          <Route path="/homepage" element={<HomePage />} />
+          <Route path="/typewriter" element={<TypeWriter />} />
+          <Route path="/tickerslider" element={<CSSTicker />} />
+          <Route path="/swiperslider" element={<SwiperSlider />} />
+          <Route path="/formvalidation" element={<FormValidation />} />
+          <Route path="/nestedmap" element={<NestedMap />} />
+          <Route path="/todolist" element={<ToDoList />} />
+          <Route path="/parallaxeffect" element={<ParalexEffect />} />
+          <Route path="/gsap" element={<GsapPage />} />
+          <Route path="/darkmode" element={<DarkMode />} />
+          <Route path="/videoplayer" element={<VideoPlayer />} />
+          <Route path="/audioplayer" element={<AudioPlayer />} />
+          <Route path="/emailjs" element={<EmailJs />} />
+          <Route path="/googlemap" element={<GoogleMap />} />
+          <Route path="/navbar" element={<UseStateNav />} />
+          <Route path="/map" element={<CardMapUse />} />
+          <Route path="/countdown" element={<CountDown />} />
+          <Route path="/accordian" element={<CustomAccordian />} />
+          <Route path="/inputfile" element={<InputFile />} />
+          <Route path="/firestoredatabase" element={<FireStore />} />
+          <Route path="/realtimedatabase" element={<RealtimeDatabase />} />
+          <Route path="slickslider" element={<MySlider />} />
+          <Route
+            path="/firebaseauthentication"
+            element={<FirebaseAuthentication />}
+          />
+          <Route path="/practiceform" element={<NewForm />} />
       </Routes>
     </div>
   );
