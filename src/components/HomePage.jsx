@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import CommonButton from "./common/CommonButton";
 import Swal from "sweetalert2";
+import { FaSignOutAlt } from "react-icons/fa";
 
 const HomePage = () => {
   const logOut = () => {
@@ -14,7 +15,11 @@ const HomePage = () => {
     <div className="py-5">
       <div className="d-flex justify-content-end container">
         <Link to="/" onClick={logOut}>
-          <CommonButton linkButton={"Log Out"} />
+          <CommonButton
+            linkButton={"Log Out"}
+            className={"text-danger"}
+            icon={<FaSignOutAlt/>}
+          />
         </Link>
       </div>
       <div className="d-flex flex-wrap gap-4 container my-5">

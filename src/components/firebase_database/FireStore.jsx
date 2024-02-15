@@ -42,23 +42,40 @@ const FireStore = () => {
   const [userData, setUserData] = useState([]);
   // ============== GET DATA FROM FIREBASE AND PRINT IN TABLE ================
   useEffect(() => {
+    // =========== FETCH DATA FROM FIREBASE FIRESTORE =========
     const fetchData = async () => {
+      // Fetch data from the "users" collection in Firestore
       const querySnapshot = await getDocs(collection(db, "users"));
+      
+      // Map over the documents returned from the query and format the data
       const fetchedData = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
+        id: doc.id, // Assign the document ID to the 'id' property
+        ...doc.data(), // Spread the document data into the object
       }));
+      
+      // Set the fetched data into the state variable 'userData'
       setUserData(fetchedData);
     };
-    const unsubscribe = onSnapshot(collection(db, "users"), (snapshot) => {
-      const updatedData = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setUserData(updatedData);
-    });
-    fetchData();
-    return () => unsubscribe();
+    
+
+    // =========== UPDATE DATA IMMEDIATELY AFTER SUBMIT ============
+    // Subscribe to changes in the "users" collection in Firestore
+  const unsubscribe = onSnapshot(collection(db, "users"), (snapshot) => {
+    // Map over the documents in the snapshot and format the data
+    const updatedData = snapshot.docs.map((doc) => ({
+      id: doc.id, // Assign the document ID to the 'id' property
+      ...doc.data(), // Spread the document data into the object
+    }));
+    
+    // Set the updated data into the state variable 'userData'
+    setUserData(updatedData);
+  });
+  
+  // Fetch initial data from the "users" collection
+  fetchData();
+  
+  // Clean up the subscription when the component unmounts
+  return () => unsubscribe();
   }, []);
 
   // =============== GET VALUE FROM INPUTS ===================
@@ -68,24 +85,30 @@ const FireStore = () => {
 
   // =============== GET IMAGE FILE FROM INPUT ================
   const handleFileChange = (e) => {
+    // Check if files are selected and if the first file exists
     if (e.target.files && e.target.files[0]) {
+      // If a file is selected, update the formdata with the selected file
+      // and set the showImage state to display the selected image
       setFormdata({ ...formdata, image: e.target.files[0] });
       setShowImage(URL.createObjectURL(e.target.files[0]));
     } else {
+      // If no file is selected or the selected file doesn't exist,
+      // keep the current image in the showImage state
       setShowImage(formdata.image);
     }
   };
-
   // ================== FORM SUBMITTION FUNCTION =================
   const formSubmit = async (e) => {
+    // ========= AFTER FORM SUBMIT PAGE DID NOT REFRESH ========
     e.preventDefault();
+    // ======= SHOW LOADING THAT PAGE ARE SUBMITTING ======
     setLoading(true);
 
     // ============== CHECK FOR EMPTY FIELDS ==============
     if (formdata.firstName.trim() === "" || formdata.email.trim() === "") {
       setError({
-        firstName: formdata.firstName.trim() === "",
-        email: formdata.email.trim() === "",
+        firstName: true,
+        email:true,
       });
       setLoading(false);
       return;
@@ -111,8 +134,10 @@ const FireStore = () => {
     // ============= EDIT MODE SUBMIT CONDITION ===========
     try {
       if (editMode) {
+        // ========= IF EDIT MODE IS ACTIVE THEN UPDATE EXITING DATA ==========
         await updateUserData(editUserId, formdata);
       } else {
+        // ============= ELSE ADD NEW USER IN FIRESTORE =======
         await addUserData(formdata);
       }
 
@@ -124,33 +149,43 @@ const FireStore = () => {
 
       // ==== IMAGE PREVIEW FALSE ==========
       setShowImage(false);
+      // ========= SUBMITTING LOADING FALSE =========
       setLoading(false);
+      // ========= ERROR FALSE =======
+      setError(false)
+
+      // ======= SHOW ERROR IF FORM NOT SUBMOT OR DATA NOT ADD IN FIREBASE  ========
     } catch (error) {
       console.error("Error:", error);
       setLoading(false);
     }
+    // ========== PRINT FORMDATA DATA IN CONSOLE =========
     console.log("Form data submitted successfully:", formdata);
   };
-
-  // ======== ADD USER DATA IN FIREBASE AFTER EDIT DATA =================
-  const addUserData = async (userData) => {
-    const imageUrl = await uploadImageToStorage(userData.image);
+  // ======== ADD NEW USER DATA IN FIREBASE FIRESTORE =================
+  const addUserData = async () => {
+    // ======== UPLOAD IMAGE IN FIREBASE STORAGE ========
+    const imageUrl = await uploadImageToStorage(formdata.image);
+    // ========== CREATE A NEW USER ================
     const newUser = {
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-      email: userData.email,
+      firstName: formdata.firstName,
+      lastName: formdata.lastName,
+      email: formdata.email,
       imageUrl: imageUrl,
     };
+    // ======= ADD NEW USER IN FIREBASE FIRESTORE ===========
     await addDoc(collection(db, "users"), newUser);
   };
-
-  // ============= UPDATE USER DATA IN FIREBASE ====================
+  // ============= UPDATE USER DATA IN FIREBASE AFTER EDIT DATA ====================
   const updateUserData = async (userId, userData) => {
     let imageUrl = userData.image;
+  // ====== THIS CONDITION CHECK FOR THAT IMAGE TYPE SHOULD NOT STRING =========
     if (userData.image && typeof userData.image !== "string") {
       imageUrl = await uploadImageToStorage(userData.image);
     }
+    //========== FIND USER WITH THEIR ID =========
     const userRef = doc(db, "users", userId);
+// ========== UPDATE USER DATA ========
     await updateDoc(userRef, {
       firstName: userData.firstName,
       lastName: userData.lastName,
@@ -158,49 +193,59 @@ const FireStore = () => {
       imageUrl: imageUrl,
     });
   };
-
   // ============== UPLOAD IMAGE TO FIREBASE STORAGE ===============
   const uploadImageToStorage = async (image) => {
+    // ========= IF IMAGE NOT FOUND THEN ADD DEFAULT IMAGE FOR USER ============
     if (!image) {
+      // ========= FIREBAE STORAGE PATH ============
       const defaultImgRef = ref(
         storage,
         "gs://practice-page-1cbb4.appspot.com/default_user.jpg"
       );
+      // ======== DOWNLOAD URL FOR DEFAULT IMAGE =========
       const defaultImgUrl = await getDownloadURL(defaultImgRef);
       return defaultImgUrl;
     }
+    // ====== GET PATH FOR UPLOAD IMAGE ===========
     const storageRef = ref(storage, `user_images/${image.name}`);
+    // ======= UPLOAD IMAGE TO FIREBASE STORAGE =======
     await uploadBytes(storageRef, image);
+    // ======== DOWNLOAD IMAGE URL ==========
     return await getDownloadURL(storageRef);
   };
-
   // ============ EDIT USER DATA FUNCTION ================
   const handleEdit = async (id) => {
+    // =========== FIND USER FOR EDIT THEIR DATA ==========
     const userToEdit = userData.find((user) => user.id === id);
+    // ======== FILL INPUTS WITH USER DATA ===========
     setFormdata({
       firstName: userToEdit.firstName,
       lastName: userToEdit.lastName,
       email: userToEdit.email,
       image: userToEdit.imageUrl || "",
     });
+
+    // ======== SHOW USER IMAGE =========
     if (userToEdit.imageUrl) {
       setShowImage(userToEdit.imageUrl);
     }
     // Set edit mode and edit user ID
     setEditMode(true);
+    // ====== EDIT USER DATA IN SAME ID NOT CREATE NEW ID ===============
     setEditUserId(id);
   };
-
   // ============= DELETE USER DATA FROM FIREBASE FUNCTION =============
   const handleDelete = async (id) => {
+    // ======== FIND USER TO DELETE DATA ==========
     const userToDelete = userData.find((user) => user.id === id);
+    // ========= CHECK IF USER HAVE NOT DEFAULT IMAGE THEN DELETE USER IMAGE ======= 
     if (
       userToDelete.imageUrl &&
       !userToDelete.imageUrl.includes("default_user.jpg")
     ) {
       const imageRef = ref(storage, userToDelete.imageUrl);
       try {
-        // Attempt to delete the image from Firebase Storage
+        // ====== DELETE USER IMAGE =====
         await deleteObject(imageRef);
       } catch (error) {
         if (error.code === "storage/object-not-found") {
@@ -221,7 +266,6 @@ const FireStore = () => {
     // Update the local state to remove the deleted user
     setUserData(userData.filter((user) => user.id !== id));
   };
-
   // =============== CLEAR FORM FIELDS AFTER SUBMIT FORM ============
   const clearFormData = () => {
     setFormdata({
@@ -233,7 +277,6 @@ const FireStore = () => {
     setEditMode(false);
     setEditUserId(null);
   };
-
   return (
     <section className="py-5 min-vh-100" id="form_validation">
       <div className="container">
@@ -299,23 +342,33 @@ const FireStore = () => {
             )}
           </div>
           <button className="common_btns" type="submit">
-            {loading ? "submiting..." : editMode ? "Update" : "Submit"}{" "}
-          </button>
+  {loading ? (
+    <span>
+      {editMode ? "Updating" : "Submitting"}
+      <span className="submitting_dot1">.</span>
+      <span className="submitting_dot2">.</span>
+      <span className="submitting_dot3">.</span>
+    </span>
+  ) : editMode ? (
+    "Update"
+  ) : (
+    "Submit"
+  )}
+</button>
+
         </form>
       </div>
-      <div
-        className={`my_container ${userData.length === 0 ? "d-none" : " mt-5"}`}
-      >
+      <div className={` ${userData.length === 0 ? "d-none" : "mt-5"}`}>
         <h2 className="text-center mb-3">User Data</h2>
-        <div className="d-flex justify-content-md-center">
-          <table className="table_max_w overflow-x-scroll">
+        <div className="w-100 d-flex">
+          <table className="overflow-x-scroll mx-auto px-3">
             <thead>
               <tr>
-                <th className="fw-semibold fs-5">Profile Image</th>
+                <th className="fw-semibold fs-5 text-nowrap">Profile Image</th>
                 <th className="fw-semibold fs-5">Name</th>
                 <th className="fw-semibold fs-5">Email</th>
-                <th className="fw-semibold fs-5">Edit Details</th>
-                <th className="fw-semibold fs-5">Delete Details</th>
+                <th className="fw-semibold fs-5 text-nowrap">Edit Details</th>
+                <th className="fw-semibold fs-5 text-nowrap">Delete Details</th>
               </tr>
             </thead>
             <tbody>

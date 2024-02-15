@@ -3,7 +3,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 // import CommonButton from "../common/CommonButton";
-import { auth, googleAuthProvider, db } from "./FirebaseData";
+import { auth, googleAuthProvider } from "./FirebaseData";
 // import { addDoc, collection } from "firebase/firestore";
 import {
   createUserWithEmailAndPassword,
@@ -37,7 +37,7 @@ const FirebaseAuthentication = () => {
     confirmPassword: false,
   });
 
-  // Reset error state when mode changes
+  //=========== RESET ERRORS AND EMPTY INPUTS WHEN SIGN IN , SIGN UP MODE CHANGE ========
   useEffect(() => {
     setError({
       firstName: false,
@@ -55,7 +55,7 @@ const FirebaseAuthentication = () => {
     });
   }, [isSignUp]);
 
-  // =========== GET INPUTS VALUE =============
+  // =========== GET VALUES FROM INPUTS =============
   const handleInputChange = (field, value) => {
     setFormdata({ ...formdata, [field]: value });
     // ================ VALIDATE IN REAL TIME ===========
@@ -94,7 +94,7 @@ const FirebaseAuthentication = () => {
   };
   // ========== FORM SUBMITION FUNCTION ===============
   const formSubmit = async (e) => {
-    // =========== AFTER FORM SUBMIT STOP TO PAGE RELOAD ================
+    // =========== Prevent page reload after form submission ================
     e.preventDefault();
     // ==== CONDITION FOR CHECK EMPTY FIELDS ==============
     if (
@@ -153,6 +153,8 @@ const FirebaseAuthentication = () => {
           text: "Please Verify Your Email Before SignIn",
           icon: "success",
         });
+
+        // ==== SIGN UP MODE FALSE AND GO TO SIGN IN PAGE ========
         setIsSignUp(false);
       } else {
         // Sign in with existing user for sign in
@@ -164,7 +166,7 @@ const FirebaseAuthentication = () => {
 
         // Check if email is verified
         if (!user.emailVerified) {
-          // Prompt the user to verify their email
+          // Popup the user to verify their email
           Swal.fire({
             title: "Email Not Verified",
             text: "Please verify your email to sign in.",
@@ -173,13 +175,13 @@ const FirebaseAuthentication = () => {
           return;
         }
 
-        // ===== AFTER SIGN IN GO TO HOMEPAGE ===============
-        navigate("/homepage");
         // ====== OPEN POPUP OF SUCCESSFULLY SIGN IN=============
         Swal.fire({
           title: "Sign In Successfully!",
           icon: "success",
         });
+        // ===== AFTER SIGN IN GO TO HOMEPAGE ===============
+        navigate("/homepage");
       }
       // Clear form data after successful submission
       setFormdata({
@@ -220,15 +222,19 @@ const FirebaseAuthentication = () => {
     }
   };
 
-  // Google sign-in function
+  //============= SIGN IN WITH GOOGLE FUNCTION ============
   const signInWithGoogle = async () => {
     try {
-      const { user } = await signInWithPopup(auth, googleAuthProvider);
+      // ======== OPEN A POPUP FOR SIGN IN WITH GOOGLE ACCOUNT =========
+       await signInWithPopup(auth, googleAuthProvider);
+      //  ========== AGTER SIGN IN OPEN HOMEPAGE =============
       navigate("/homepage");
+      // ========= SHOW POPUP THAT YOU ARE SUCCESSFULLY SIGN IN =========
       Swal.fire({
         title: "Sign In with Google Successfully!",
         icon: "success",
       });
+      // ========= SHOW ERROR FOR FAILED TO SIGN IN ==========
     } catch (error) {
       console.log(error);
       alert("Failed to sign in with Google. Please try again.");
@@ -236,13 +242,6 @@ const FirebaseAuthentication = () => {
   };
   return (
     <section className="py-5 min-vh-100" id="form_validation">
-      {/* <div className="container">
-        <Link to="/">
-        <CommonButton
-            linkButton={"Back"}
-          />
-        </Link>
-      </div> */}
       <h1 className="mb-5 text-center">
         {isSignUp ? "Create A New Account" : "Sign In"}
       </h1>

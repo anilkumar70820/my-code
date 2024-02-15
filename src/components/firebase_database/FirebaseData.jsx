@@ -23,7 +23,11 @@ const app = initializeApp(firebaseConfig);
 
 // Initialize Realtime Database and get a reference to the service
 export const rd = getDatabase(app);
+// Initialize Firestore Database and get a reference to the service
 export const db = getFirestore(app);
+// Initialize Firebase Authentication and get a reference to the service
 export const auth = getAuth(app);
+// Initialize Firebase Storage and get a reference to the service
 export const storage = getStorage(app);
+// Initialize Google Authentication and get a reference to the service
 export const googleAuthProvider = new GoogleAuthProvider(app)

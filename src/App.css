@@ -8,7 +8,7 @@
   box-sizing: border-box;
 }
 
-.my_container{
+.my_container {
   max-width: 1140px;
   margin: 0 auto;
   padding: 0 12px;
@@ -253,10 +253,11 @@ input {
 }
 table thead th {
   border: 2px solid yellowgreen;
+  padding: 0 10px;
 }
 table tr td {
   border: 2px solid yellowgreen;
-  border-radius: 8px !important;
+  padding: 0 10px;
 }
 tr,
 th,
@@ -264,6 +265,48 @@ td {
   text-align: center;
   height: 60px;
   vertical-align: middle;
+}
+
+.submitting_dot1 {
+  animation: dot1 500ms infinite alternate-reverse;
+  display: inline-block;
+}
+
+@keyframes dot1 {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translateY(-5px);
+  }
+}
+.submitting_dot2 {
+  animation: dot2 500ms infinite alternate-reverse;
+  animation-delay: 200ms;
+  display: inline-block;
+}
+
+@keyframes dot2 {
+  0% {
+    transform: translateY(0px);
+  }
+  100% {
+    transform: translateY(-5px);
+  }
+}
+.submitting_dot3 {
+  animation: dot3 500ms infinite alternate-reverse;
+  animation-delay: 400ms;
+  display: inline-block;
+}
+
+@keyframes dot3 {
+  0% {
+    transform: translateY(0px);
+  }
+  100% {
+    transform: translateY(-5px);
+  }
 }
 /* ================progreesbar end============ */
 /* ========= Email JS ===== */
@@ -364,7 +407,7 @@ button.active {
   border-radius: 100%;
 }
 .table_max_w {
-  width: 800px !important;
+  min-width: 800px !important;
 }
 .border_yellogreen {
   border: 2px solid yellowgreen;

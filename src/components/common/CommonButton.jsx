@@ -1,11 +1,12 @@
 import React from "react";
 
 const CommonButton = (props) => {
-  const links = props.linkButton;
-  const className = props.className
+  const { linkButton, className, icon } = props;
   return (
     <>
-      <button className={`common_btns ${className}`}>{links}</button>
+       <button className={`common_btns ${className}`}>
+      {linkButton} {icon}
+    </button>
     </>
   );
 };
