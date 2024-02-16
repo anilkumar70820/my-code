@@ -461,6 +461,19 @@ button.active {
   width: 400px;
   height: 300px;
 }
+
+.slick_next_abs {
+  position: absolute;
+  top: 50%;
+  right: -1%;
+  transform: translateY(-50%);
+}
+.slick_prev_abs {
+  position: absolute;
+  top: 50%;
+  left: -1%;
+  transform: translateY(-50%);
+}
 /* ========= VIDEO PLAYER ======= */
 .play_pause_btn {
   position: absolute;

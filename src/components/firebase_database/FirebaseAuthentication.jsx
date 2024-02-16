@@ -3,8 +3,8 @@ import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 // import CommonButton from "../common/CommonButton";
-import { auth, googleAuthProvider } from "./FirebaseData";
-// import { addDoc, collection } from "firebase/firestore";
+import { auth, googleAuthProvider,db } from "./FirebaseData";
+import { addDoc, collection } from "firebase/firestore";
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
@@ -24,6 +24,7 @@ const FirebaseAuthentication = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState();
+  const [loading, setLoading] = useState();
   // ===== regex PATTERNS ==========
   const regexFirstName = /^[a-zA-Z0-9]+([._][a-zA-Z0-9]+)*$/;
   const regexEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -95,6 +96,7 @@ const FirebaseAuthentication = () => {
   const formSubmit = async (e) => {
     // =========== Prevent page reload after form submission ================
     e.preventDefault();
+    setLoading(true);
     // ==== CONDITION FOR CHECK EMPTY FIELDS ==============
     if (
       (isSignUp &&
@@ -137,9 +139,9 @@ const FirebaseAuthentication = () => {
           formdata.email,
           formdata.password
         );
-        // Add user data to Firestore for sign up
-        // const userData = { ...formdata, uid: user.uid };
-        // await addDoc(collection(db, "users"), userData);
+        // Add user data to Firestore
+        const userData = { ...formdata, uid: user.uid };
+        await addDoc(collection(db, "auth users"), userData);
 
         // Send email verification
         await sendEmailVerification(user);
@@ -188,6 +190,7 @@ const FirebaseAuthentication = () => {
         password: "",
         confirmPassword: "",
       });
+      setLoading(false);
     } catch (error) {
       if (isSignUp && error.code === "auth/email-already-in-use") {
         alert("This email is already in use.");
@@ -359,7 +362,20 @@ const FirebaseAuthentication = () => {
             )}
           </div>
           {/* Conditionally render Register/Login button based on the mode */}
-          <input type="submit" value={isSignUp ? "Sign Up" : "Sign In"} />
+          <button className="common_btns" type="submit">
+            {loading ? (
+              <span>
+                {isSignUp ? "Sign up" : "Sign in"}
+                <span className="submitting_dot1">.</span>
+                <span className="submitting_dot2">.</span>
+                <span className="submitting_dot3">.</span>
+              </span>
+            ) : isSignUp ? (
+              "Sign Up"
+            ) : (
+              "Sign In"
+            )}
+          </button>
           <Link
             className={`d-flex justify-content-end fw-medium ff_jost ${
               isSignUp ? "d-none" : "d-block"

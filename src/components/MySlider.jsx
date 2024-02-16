@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
 import CommonButton from "./common/CommonButton";
+import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa";
 
 const MySlider = () => {
+  const mySlider = useRef();
   var center = {
-    // centerMode: true,
-    // centerPadding: "60px",
     dots: false,
     arrows: false,
     autoplay: true,
@@ -46,38 +46,52 @@ const MySlider = () => {
           <CommonButton linkButton={"Back"} className={"mb-4"} />
         </Link>
         <h2 className="text-center fs-1 mb-5">SLICK SLIDER</h2>
-        <Slider {...center}>
-          <div className="d-flex justify-content-center align-items-center">
-            <div className="swiper_box d-flex justify-content-center align-items-center bg-black text-white rounded">
-              {" "}
-              slide 1
+        <div className="position-relative">
+          <Slider {...center} ref={mySlider}>
+            <div className="d-flex justify-content-center align-items-center">
+              <div className="swiper_box d-flex justify-content-center align-items-center bg-black text-white rounded">
+                {" "}
+                slide 1
+              </div>
             </div>
-          </div>
-          <div className="d-flex justify-content-center align-items-center">
-            <div className="swiper_box d-flex justify-content-center align-items-center bg-secondary text-white rounded">
-              {" "}
-              slide 2
+            <div className="d-flex justify-content-center align-items-center">
+              <div className="swiper_box d-flex justify-content-center align-items-center bg-secondary text-white rounded">
+                {" "}
+                slide 2
+              </div>
             </div>
-          </div>
-          <div className="d-flex justify-content-center align-items-center">
-            <div className="swiper_box d-flex justify-content-center align-items-center bg-danger text-white rounded">
-              {" "}
-              slide 3
+            <div className="d-flex justify-content-center align-items-center">
+              <div className="swiper_box d-flex justify-content-center align-items-center bg-danger text-white rounded">
+                {" "}
+                slide 3
+              </div>
             </div>
-          </div>
-          <div className="d-flex justify-content-center align-items-center">
-            <div className="swiper_box d-flex justify-content-center align-items-center bg-warning text-white rounded">
-              {" "}
-              slide 4
+            <div className="d-flex justify-content-center align-items-center">
+              <div className="swiper_box d-flex justify-content-center align-items-center bg-warning text-white rounded">
+                {" "}
+                slide 4
+              </div>
             </div>
-          </div>
-          <div className="d-flex justify-content-center align-items-center">
-            <div className="swiper_box d-flex justify-content-center align-items-center bg-success text-white rounded">
-              {" "}
-              slide 5
+            <div className="d-flex justify-content-center align-items-center">
+              <div className="swiper_box d-flex justify-content-center align-items-center bg-success text-white rounded">
+                {" "}
+                slide 5
+              </div>
             </div>
-          </div>
-        </Slider>
+          </Slider>
+          <button
+            className="slick_prev_abs bg-transparent border-0"
+            onClick={() => mySlider?.current?.slickPrev()}
+          >
+            <FaArrowCircleLeft className="fs-2" />
+          </button>
+          <button
+            className="slick_next_abs bg-transparent border-0"
+            onClick={() => mySlider?.current?.slickNext()}
+          >
+            <FaArrowCircleRight className="fs-2" />
+          </button>
+        </div>
       </div>
     </div>
   );

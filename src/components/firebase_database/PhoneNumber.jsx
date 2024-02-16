@@ -1,64 +1,266 @@
-import React, { useState } from "react";
-import { auth } from "./FirebaseData"; // Import auth from FirebaseData
+import React, { useEffect, useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+// import CommonButton from "../common/CommonButton";
+import { auth, googleAuthProvider } from "./FirebaseData";
+// import { addDoc, collection } from "firebase/firestore";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  RecaptchaVerifier,
+  getAuth,
+  signInWithPhoneNumber,
+} from "firebase/auth";
 
 const PhoneNumber = () => {
+  const navigate = useNavigate();
+  const [phoneNumber, setPhoneNumber] = useState("");
+
   const [formdata, setFormdata] = useState({
-    phoneNumber: "",
-    verificationCode: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
-  const [verificationId, setVerificationId] = useState(null);
-  const [isSignUp, setIsSignUp] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [isSignUp, setIsSignUp] = useState();
+  // ===== regex PATTERNS ==========
+  const regexFirstName = /^[a-zA-Z0-9]+([._][a-zA-Z0-9]+)*$/;
+  const regexEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+  const regexPassword = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#])[A-Za-z\d@#]{8,}$/;
+  // ============ ERROR STATE ==============
   const [error, setError] = useState({
-    phoneNumber: false,
-    verificationCode: false,
+    firstName: false,
+    email: false,
+    password: false,
+    confirmPassword: false,
   });
 
-  // Handle input change
+  //=========== RESET ERRORS AND EMPTY INPUTS WHEN SIGN IN , SIGN UP MODE CHANGE ========
+  useEffect(() => {
+    setError({
+      firstName: false,
+      lastName: false,
+      email: false,
+      password: false,
+      confirmPassword: false,
+    });
+    setFormdata({
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    });
+  }, [isSignUp]);
+
+  // =========== GET VALUES FROM INPUTS =============
   const handleInputChange = (field, value) => {
     setFormdata({ ...formdata, [field]: value });
-    setError({ ...error, [field]: false }); // Reset error when input changes
+    // ================ VALIDATE IN REAL TIME ===========
+    switch (field) {
+      case "firstName":
+        setError({
+          ...error,
+          [field]: value.trim() === "",
+        });
+        break;
+      case "email":
+        setError({
+          ...error,
+          email: value.trim() === "",
+        });
+        break;
+      case "password":
+        setError({
+          ...error,
+          password: value.trim() === "",
+        });
+        break;
+      case "confirmPassword":
+        setError({
+          ...error,
+          confirmPassword: value !== formdata.password,
+        });
+        break;
+      default:
+        break;
+    }
   };
-
-  // Send verification code to the provided phone number
-  const handlePhoneNumberVerification = async () => {
+  // ======== PASSWORD SHOW AND HIDDEN FUNCTION ===============
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+  // ========== FORM SUBMITION FUNCTION ===============
+  const formSubmit = async (e) => {
+    // =========== Prevent page reload after form submission ================
+    e.preventDefault();
+    // ==== CONDITION FOR CHECK EMPTY FIELDS ==============
+    if (
+      (isSignUp &&
+        (formdata.firstName.trim() === "" ||
+          formdata.confirmPassword.trim() === "")) ||
+      formdata.email.trim() === "" ||
+      formdata.password.trim() === ""
+    ) {
+      setError({
+        firstName: isSignUp && formdata.firstName.trim() === "",
+        email: formdata.email.trim() === "",
+        password: formdata.password.trim() === "",
+        confirmPassword: isSignUp && formdata.confirmPassword.trim() === "",
+      });
+      return;
+    }
+    // ============= CHECK REGEX PATTERN ============
+    if (isSignUp && !regexFirstName.test(formdata.firstName)) {
+      setError({ ...error, firstName: true });
+      return;
+    }
+    if (!regexEmail.test(formdata.email)) {
+      setError({ ...error, email: true });
+      return;
+    }
+    if (!regexPassword.test(formdata.password)) {
+      setError({ ...error, password: true });
+      return;
+    }
+    if (isSignUp && formdata.confirmPassword !== formdata.password) {
+      setError({ ...error, confirmPassword: true });
+      return;
+    }
+    // ======= FIREBASE AUTHENTICATION JS ==================
     try {
-      const confirmation = await auth().signInWithPhoneNumber(formdata.phoneNumber);
-      setVerificationId(confirmation.verificationId);
-      // Prompt the user to enter the verification code
-      Swal.fire({
-        title: "Verification Code Sent",
-        text: "Please enter the verification code you received.",
-        input: "text",
-        inputPlaceholder: "Verification Code",
-        showCancelButton: true,
-        confirmButtonText: "Verify",
-        preConfirm: (verificationCode) => {
-          setFormdata({ ...formdata, verificationCode });
-          handleVerificationCodeConfirmation(verificationCode);
-        },
+      if (isSignUp) {
+        // Create a new user in Firebase Authentication for sign up
+        const { user } = await createUserWithEmailAndPassword(
+          auth,
+          formdata.email,
+          formdata.password
+        );
+        // Add user data to Firestore for sign up
+        // const userData = { ...formdata, uid: user.uid };
+        // await addDoc(collection(db, "users"), userData);
+
+        // Send email verification
+        await sendEmailVerification(user);
+
+        // ====== OPEN POPUP OF SUCCESSFULLY SIGN UP =============
+        Swal.fire({
+          title: "Sign up Successfully!",
+          text: "Please Verify Your Email Before SignIn",
+          icon: "success",
+        });
+
+        // ==== SIGN UP MODE FALSE AND GO TO SIGN IN PAGE ========
+        setIsSignUp(false);
+      } else {
+        // Sign in with existing user for sign in
+        const { user } = await signInWithEmailAndPassword(
+          auth,
+          formdata.email,
+          formdata.password
+        );
+
+        // Check if email is verified
+        if (!user.emailVerified) {
+          // Popup the user to verify their email
+          Swal.fire({
+            title: "Email Not Verified",
+            text: "Please verify your email to sign in.",
+            icon: "error",
+          });
+          return;
+        }
+
+        // ====== OPEN POPUP OF SUCCESSFULLY SIGN IN=============
+        Swal.fire({
+          title: "Sign In Successfully!",
+          icon: "success",
+        });
+        // ===== AFTER SIGN IN GO TO HOMEPAGE ===============
+        navigate("/homepage");
+      }
+      // Clear form data after successful submission
+      setFormdata({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
       });
     } catch (error) {
-      console.error("Error verifying phone number:", error);
-      setError({ ...error, phoneNumber: true });
+      if (isSignUp && error.code === "auth/email-already-in-use") {
+        alert("This email is already in use.");
+      } else {
+        alert("Invalid email or password. Please try again.");
+      }
     }
   };
 
-  // Confirm the verification code entered by the user
-  const handleVerificationCodeConfirmation = async (verificationCode) => {
+  // ==========RESET PASSWORD FUNCTION =============
+  const handlePasswordReset = async () => {
     try {
-      const credential = auth.PhoneAuthProvider.credential(verificationId, verificationCode);
-      await auth().signInWithCredential(credential);
-      // Display success message upon successful sign in
+      // Send password reset email
+      await sendPasswordResetEmail(auth, formdata.email);
+
+      // Show success message
       Swal.fire({
-        title: "Phone Number Sign In Successful!",
+        title: "Password Reset Email Sent",
+        text: "Check your email for instructions on how to reset your password.",
         icon: "success",
       });
-      // Redirect the user to the homepage
-      // You may need to adjust the redirection logic based on your application
     } catch (error) {
-      console.error("Error confirming verification code:", error);
-      setError({ ...error, verificationCode: true });
+      // Show error message if there's an issue
+      Swal.fire({
+        title: "Error",
+        text: "Failed to send password reset email. Please try again later.",
+        icon: "error",
+      });
+    }
+  };
+
+  //============= SIGN IN WITH GOOGLE FUNCTION ============
+  const signInWithGoogle = async () => {
+    try {
+      // ======== OPEN A POPUP FOR SIGN IN WITH GOOGLE ACCOUNT =========
+      await signInWithPopup(auth, googleAuthProvider);
+      //  ========== AGTER SIGN IN OPEN HOMEPAGE =============
+      navigate("/homepage");
+      // ========= SHOW POPUP THAT YOU ARE SUCCESSFULLY SIGN IN =========
+      Swal.fire({
+        title: "Sign In with Google Successfully!",
+        icon: "success",
+      });
+      // ========= SHOW ERROR FOR FAILED TO SIGN IN ==========
+    } catch (error) {
+      console.log(error);
+      alert("Failed to sign in with Google. Please try again.");
+    }
+  };
+
+  const handlePhoneVerification = async () => {
+    try {
+      // Create a new Recaptcha verifier
+      const appVerifier = new RecaptchaVerifier("recaptcha-container", {
+        size: "invisible",
+      });
+
+      // Send SMS verification code
+      const confirmationResult = await signInWithPhoneNumber(
+        auth,
+        phoneNumber,
+        appVerifier
+      );
+
+      // Proceed to OTP verification or other actions
+      // depending on your application flow
+    } catch (error) {
+      console.error("Error sending SMS verification code:", error);
     }
   };
 
@@ -70,46 +272,163 @@ const PhoneNumber = () => {
       <div className="container d-flex align-items-center justify-content-center">
         <form
           className="d-flex flex-column gap-4 justify-content-center form_width form_box"
-          onSubmit={(e) => e.preventDefault()} // Prevent default form submission
+          onSubmit={formSubmit}
         >
-          <div className="position-relative">
+          <div
+            className={`position-relative ${isSignUp ? "d-block" : "d-none"}`}
+          >
             <p className="text-capitalize fs-5 mb-1">
-              phone number <sub className="text-danger fs-3">*</sub>
+              first name <sub className="text-danger fs-3">*</sub>
             </p>
             <input
               type="text"
+              placeholder="First Name"
+              value={formdata.firstName}
+              onChange={(e) => handleInputChange("firstName", e.target.value)}
+            />
+            {error.firstName && (
+              <p className="text-danger fw-semibold error_message">
+                {formdata.firstName.trim() === ""
+                  ? "Please enter your First Name!"
+                  : "Invalid First Name!"}
+              </p>
+            )}
+          </div>
+          <div
+            className={`position-relative ${isSignUp ? "d-block" : "d-none"}`}
+          >
+            <p className="text-capitalize fs-5 mb-1">last name</p>
+            <input
+              type="text"
+              placeholder="Last Name"
+              value={formdata.lastName}
+              onChange={(e) => handleInputChange("lastName", e.target.value)}
+            />
+          </div>
+          <div className="position-relative">
+            <p className="text-capitalize fs-5 mb-1">
+              email <sub className="text-danger fs-3">*</sub>
+            </p>
+            <input
+              type="email"
+              placeholder="Your Email"
+              value={formdata.email}
+              onChange={(e) => handleInputChange("email", e.target.value)}
+            />
+            {error.email && (
+              <p className="text-danger fw-semibold error_message">
+                {formdata.email.trim() === ""
+                  ? "Please enter your Email!"
+                  : "Invalid Email!"}
+              </p>
+            )}
+          </div>
+          <div className="position-relative">
+            <p className="text-capitalize fs-5 mb-1">
+              password <sub className="text-danger fs-3">*</sub>
+            </p>
+            <input
+              className="pe-5"
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              value={formdata.password}
+              onChange={(e) => handleInputChange("password", e.target.value)}
+            />
+            <span
+              className="password_toggle_icon"
+              onClick={togglePasswordVisibility}
+            >
+              {showPassword ? (
+                <FaEyeSlash className="text-danger" />
+              ) : (
+                <FaEye className="text-success" />
+              )}
+            </span>
+            <div className={`${isSignUp ? "d-block" : "d-none"}`}>
+              {error.password && (
+                <p className="text-danger fw-semibold error_message">
+                  {formdata.password.trim() === ""
+                    ? "Please enter a password!"
+                    : "Password must be strong."}
+                </p>
+              )}
+            </div>
+            <div className={`${isSignUp ? "d-none" : "d-block"}`}>
+              {error.password && (
+                <p className="text-danger fw-semibold error_message">
+                  {formdata.password.trim() === ""
+                    ? "Please enter a password!"
+                    : "Incorrect Password."}
+                </p>
+              )}
+            </div>
+          </div>
+          <div
+            className={`position-relative ${isSignUp ? "d-block" : "d-none"}`}
+          >
+            <p className="text-capitalize fs-5 mb-1">
+              confirm password <sub className="text-danger fs-3">*</sub>
+            </p>
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              value={formdata.confirmPassword}
+              onChange={(e) =>
+                handleInputChange("confirmPassword", e.target.value)
+              }
+            />
+            {error.confirmPassword && (
+              <p className="text-danger fw-semibold error_message">
+                {formdata.confirmPassword.trim() === ""
+                  ? "Please enter Confirm password!"
+                  : "Password does not match"}
+              </p>
+            )}
+          </div>
+          <div
+            className={`position-relative ${isSignUp ? "d-block" : "d-none"}`}
+          >
+            <p className="text-capitalize fs-5 mb-1">
+              Phone Number <sub className="text-danger fs-3">*</sub>
+            </p>
+            <input
+              type="tel"
               placeholder="Phone Number"
-              value={formdata.phoneNumber}
-              onChange={(e) => handleInputChange("phoneNumber", e.target.value)}
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
             />
-            {error.phoneNumber && (
-              <p className="text-danger fw-semibold error_message">
-                Please enter a valid phone number.
-              </p>
-            )}
           </div>
-          <div className="position-relative">
-            <p className="text-capitalize fs-5 mb-1">
-              verification code <sub className="text-danger fs-3">*</sub>
-            </p>
-            <input
-              type="text"
-              placeholder="Verification Code"
-              value={formdata.verificationCode}
-              onChange={(e) => handleInputChange("verificationCode", e.target.value)}
-            />
-            {error.verificationCode && (
-              <p className="text-danger fw-semibold error_message">
-                Please enter a valid verification code.
-              </p>
-            )}
-          </div>
-          <input
+          <button onClick={handlePhoneVerification}>Verify Phone Number</button>
+          {/* Conditionally render Register/Login button based on the mode */}
+          <input type="submit" value={isSignUp ? "Sign Up" : "Sign In"} />
+          <Link
+            className={`d-flex justify-content-end fw-medium ff_jost ${
+              isSignUp ? "d-none" : "d-block"
+            }`}
+            onClick={handlePasswordReset}
+          >
+            Forget Password ?
+          </Link>
+
+          {/* Toggle between Sign Up and Sign In mode */}
+          <button
+            className="fw-semibold ff_open_sans border-2 rounded-3"
             type="button"
-            value="Send Verification Code"
-            onClick={handlePhoneNumberVerification}
-          />
-          
+            onClick={() => setIsSignUp((prev) => !prev)}
+          >
+            {isSignUp
+              ? "Already have an account? Sign In"
+              : "Don't have an account? Sign Up"}
+          </button>
+          <p className="text-center fs-4">OR</p>
+          <button
+            type="button"
+            className="common_btns"
+            onClick={signInWithGoogle}
+          >
+            Sign In with Google Account
+          </button>
+          <div id="recaptcha-container"></div>
         </form>
       </div>
     </section>
