@@ -31,7 +31,6 @@ const FirebaseAuthentication = () => {
   // ============ ERROR STATE ==============
   const [error, setError] = useState({
     firstName: false,
-    lastName: false,
     email: false,
     password: false,
     confirmPassword: false,
@@ -100,14 +99,12 @@ const FirebaseAuthentication = () => {
     if (
       (isSignUp &&
         (formdata.firstName.trim() === "" ||
-          formdata.lastName.trim() === "" ||
           formdata.confirmPassword.trim() === "")) ||
       formdata.email.trim() === "" ||
       formdata.password.trim() === ""
     ) {
       setError({
         firstName: isSignUp && formdata.firstName.trim() === "",
-        lastName: isSignUp && formdata.lastName.trim() === "",
         email: formdata.email.trim() === "",
         password: formdata.password.trim() === "",
         confirmPassword: isSignUp && formdata.confirmPassword.trim() === "",
@@ -226,7 +223,7 @@ const FirebaseAuthentication = () => {
   const signInWithGoogle = async () => {
     try {
       // ======== OPEN A POPUP FOR SIGN IN WITH GOOGLE ACCOUNT =========
-       await signInWithPopup(auth, googleAuthProvider);
+      await signInWithPopup(auth, googleAuthProvider);
       //  ========== AGTER SIGN IN OPEN HOMEPAGE =============
       navigate("/homepage");
       // ========= SHOW POPUP THAT YOU ARE SUCCESSFULLY SIGN IN =========
@@ -253,6 +250,9 @@ const FirebaseAuthentication = () => {
           <div
             className={`position-relative ${isSignUp ? "d-block" : "d-none"}`}
           >
+            <p className="text-capitalize fs-5 mb-1">
+              first name <sub className="text-danger fs-3">*</sub>
+            </p>
             <input
               type="text"
               placeholder="First Name"
@@ -270,21 +270,18 @@ const FirebaseAuthentication = () => {
           <div
             className={`position-relative ${isSignUp ? "d-block" : "d-none"}`}
           >
+            <p className="text-capitalize fs-5 mb-1">last name</p>
             <input
               type="text"
               placeholder="Last Name"
               value={formdata.lastName}
               onChange={(e) => handleInputChange("lastName", e.target.value)}
             />
-            {error.lastName && (
-              <p className="text-danger fw-semibold error_message">
-                {formdata.lastName.trim() === ""
-                  ? "Please enter your Last Name!"
-                  : "Invalid Last Name!"}
-              </p>
-            )}
           </div>
           <div className="position-relative">
+            <p className="text-capitalize fs-5 mb-1">
+              email <sub className="text-danger fs-3">*</sub>
+            </p>
             <input
               type="email"
               placeholder="Your Email"
@@ -300,6 +297,9 @@ const FirebaseAuthentication = () => {
             )}
           </div>
           <div className="position-relative">
+            <p className="text-capitalize fs-5 mb-1">
+              password <sub className="text-danger fs-3">*</sub>
+            </p>
             <input
               className="pe-5"
               type={showPassword ? "text" : "password"}
@@ -339,6 +339,9 @@ const FirebaseAuthentication = () => {
           <div
             className={`position-relative ${isSignUp ? "d-block" : "d-none"}`}
           >
+            <p className="text-capitalize fs-5 mb-1">
+              confirm password <sub className="text-danger fs-3">*</sub>
+            </p>
             <input
               type="password"
               placeholder="Confirm Password"
@@ -358,7 +361,7 @@ const FirebaseAuthentication = () => {
           {/* Conditionally render Register/Login button based on the mode */}
           <input type="submit" value={isSignUp ? "Sign Up" : "Sign In"} />
           <Link
-            className={`d-flex justify-content-end ${
+            className={`d-flex justify-content-end fw-medium ff_jost ${
               isSignUp ? "d-none" : "d-block"
             }`}
             onClick={handlePasswordReset}

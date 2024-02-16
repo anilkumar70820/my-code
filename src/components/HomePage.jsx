@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import CommonButton from "./common/CommonButton";
 import Swal from "sweetalert2";
 import { FaSignOutAlt } from "react-icons/fa";
+import PhoneNumber from "./firebase_database/PhoneNumber";
 
 const HomePage = () => {
   const logOut = () => {
@@ -18,7 +19,7 @@ const HomePage = () => {
           <CommonButton
             linkButton={"Log Out"}
             className={"text-danger"}
-            icon={<FaSignOutAlt/>}
+            icon={<FaSignOutAlt />}
           />
         </Link>
       </div>
@@ -93,6 +94,7 @@ const HomePage = () => {
           <CommonButton linkButton={"Practice Form Validation"} />
         </Link>
       </div>
+      <PhoneNumber />
     </div>
   );
 };

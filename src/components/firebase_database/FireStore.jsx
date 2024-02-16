@@ -313,6 +313,9 @@ const FireStore = () => {
           onSubmit={formSubmit}
         >
           <div className="position-relative">
+            <p className="text-capitalize fs-5 mb-1">
+              first name <sub className="text-danger fs-3">*</sub>
+            </p>
             <input
               type="text"
               placeholder="First Name"
@@ -328,6 +331,7 @@ const FireStore = () => {
             )}
           </div>
           <div className="position-relative">
+            <p className="text-capitalize fs-5 mb-1">last name</p>
             <input
               type="text"
               placeholder="Last Name"
@@ -336,6 +340,9 @@ const FireStore = () => {
             />
           </div>
           <div className="position-relative">
+            <p className="text-capitalize fs-5 mb-1">
+              email <sub className="text-danger fs-3">*</sub>
+            </p>
             <input
               type="email"
               placeholder="Your Email"
@@ -351,20 +358,23 @@ const FireStore = () => {
             )}
           </div>
           {/* Input field for image upload */}
-          <div className="border_yellogreen">
-            <label htmlFor="fileinput" className="common_btns me-4 py-1 px-3">
-              Choose File
-              <input
-                type="file"
-                id="fileinput"
-                accept="image/*"
-                onChange={handleFileChange}
-                hidden
-              />
-            </label>
-            {showImage && (
-              <img src={showImage} alt="user_image" className="user_img" />
-            )}
+          <div className="mb-0">
+            <p className="text-capitalize fs-5 mb-1">profile image</p>
+            <div className="border_yellogreen">
+              <label htmlFor="fileinput" className="common_btns me-4 py-1 px-3">
+                Choose File
+                <input
+                  type="file"
+                  id="fileinput"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  hidden
+                />
+              </label>
+              {showImage && (
+                <img src={showImage} alt="user_image" className="user_img" />
+              )}
+            </div>
           </div>
           <button className="common_btns" type="submit">
             {loading ? (

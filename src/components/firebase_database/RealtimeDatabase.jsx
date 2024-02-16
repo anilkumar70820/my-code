@@ -150,6 +150,9 @@ const RealtimeDatabase = () => {
           onSubmit={formSubmit}
         >
           <div className="position-relative">
+          <p className="text-capitalize fs-5 mb-1">
+              first name <sub className="text-danger fs-3">*</sub>
+            </p>
             <input
               type="text"
               placeholder="First Name"
@@ -165,6 +168,9 @@ const RealtimeDatabase = () => {
             )}
           </div>
           <div className="position-relative">
+          <p className="text-capitalize fs-5 mb-1">
+              last name <sub className="text-danger fs-3">*</sub>
+            </p>
             <input
               type="text"
               placeholder="Last Name"
@@ -180,6 +186,9 @@ const RealtimeDatabase = () => {
             )}
           </div>
           <div className="position-relative">
+          <p className="text-capitalize fs-5 mb-1">
+              email <sub className="text-danger fs-3">*</sub>
+            </p>
             <input
               type="email"
               placeholder="Your Email"
@@ -195,6 +204,9 @@ const RealtimeDatabase = () => {
             )}
           </div>
           <div className="position-relative">
+          <p className="text-capitalize fs-5 mb-1">
+              password <sub className="text-danger fs-3">*</sub>
+            </p>
             <input
               className="pe-5"
               type={showPassword ? "text" : "password"}
@@ -221,6 +233,9 @@ const RealtimeDatabase = () => {
             )}
           </div>
           <div className="position-relative">
+          <p className="text-capitalize fs-5 mb-1">
+              confirm password <sub className="text-danger fs-3">*</sub>
+            </p>
             <input
               type="password"
               placeholder="Confirm Password"
