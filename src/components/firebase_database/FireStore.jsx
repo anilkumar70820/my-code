@@ -40,47 +40,69 @@ const FireStore = () => {
   const [editUserId, setEditUserId] = useState(null);
 
   const [userData, setUserData] = useState([]);
+
+  // ================ REGEX PATTERNS =================
+  const regexFirstName = /^[a-zA-Z0-9]+([._][a-zA-Z0-9]+)*$/;
+  const regexEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
   // ============== GET DATA FROM FIREBASE AND PRINT IN TABLE ================
   useEffect(() => {
     // =========== FETCH DATA FROM FIREBASE FIRESTORE =========
     const fetchData = async () => {
       // Fetch data from the "users" collection in Firestore
       const querySnapshot = await getDocs(collection(db, "users"));
-      
+
       // Map over the documents returned from the query and format the data
       const fetchedData = querySnapshot.docs.map((doc) => ({
         id: doc.id, // Assign the document ID to the 'id' property
         ...doc.data(), // Spread the document data into the object
       }));
-      
+
       // Set the fetched data into the state variable 'userData'
       setUserData(fetchedData);
     };
-    
 
     // =========== UPDATE DATA IMMEDIATELY AFTER SUBMIT ============
     // Subscribe to changes in the "users" collection in Firestore
-  const unsubscribe = onSnapshot(collection(db, "users"), (snapshot) => {
-    // Map over the documents in the snapshot and format the data
-    const updatedData = snapshot.docs.map((doc) => ({
-      id: doc.id, // Assign the document ID to the 'id' property
-      ...doc.data(), // Spread the document data into the object
-    }));
-    
-    // Set the updated data into the state variable 'userData'
-    setUserData(updatedData);
-  });
-  
-  // Fetch initial data from the "users" collection
-  fetchData();
-  
-  // Clean up the subscription when the component unmounts
-  return () => unsubscribe();
+    const unsubscribe = onSnapshot(collection(db, "users"), (snapshot) => {
+      // Map over the documents in the snapshot and format the data
+      const updatedData = snapshot.docs.map((doc) => ({
+        id: doc.id, // Assign the document ID to the 'id' property
+        ...doc.data(), // Spread the document data into the object
+      }));
+
+      // Set the updated data into the state variable 'userData'
+      setUserData(updatedData);
+    });
+
+    // Fetch initial data from the "users" collection
+    fetchData();
+
+    // Clean up the subscription when the component unmounts
+    return () => unsubscribe();
   }, []);
 
   // =============== GET VALUE FROM INPUTS ===================
   const handleInputChange = (field, value) => {
     setFormdata({ ...formdata, [field]: value });
+
+    // ================ VALIDATE IN REAL TIME ===========
+    switch (field) {
+      case "firstName":
+        setError({
+          ...error,
+          [field]: value.trim() === "",
+        });
+        break;
+      case "email":
+        setError({
+          ...error,
+          email: value.trim() === "",
+        });
+        break;
+      default:
+        break;
+    }
   };
 
   // =============== GET IMAGE FILE FROM INPUT ================
@@ -107,26 +129,21 @@ const FireStore = () => {
     // ============== CHECK FOR EMPTY FIELDS ==============
     if (formdata.firstName.trim() === "" || formdata.email.trim() === "") {
       setError({
-        firstName: true,
-        email:true,
+        firstName: formdata.firstName.trim() === "",
+        email: formdata.email.trim() === "",
       });
       setLoading(false);
       return;
     }
 
-    // ================ REGEX PATTERNS =================
-    const regexFirstName = /^[a-zA-Z0-9]+([._][a-zA-Z0-9]+)*$/;
-    const regexEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-
     //  =============== CHECK FOR REGEX PATTERN ================
-    const isValidFirstName = regexFirstName.test(formdata.firstName);
-    const isValidEmail = regexEmail.test(formdata.email);
-
-    if (!isValidFirstName || !isValidEmail) {
-      setError({
-        firstName: !isValidFirstName,
-        email: !isValidEmail,
-      });
+    if (!regexFirstName.test(formdata.firstName)) {
+      setError({ ...error, firstName: true });
+      setLoading(false);
+      return;
+    }
+    if (!regexEmail.test(formdata.email)) {
+      setError({ ...error, email: true });
       setLoading(false);
       return;
     }
@@ -152,7 +169,7 @@ const FireStore = () => {
       // ========= SUBMITTING LOADING FALSE =========
       setLoading(false);
       // ========= ERROR FALSE =======
-      setError(false)
+      setError(false);
 
       // ======= SHOW ERROR IF FORM NOT SUBMOT OR DATA NOT ADD IN FIREBASE  ========
     } catch (error) {
@@ -179,13 +196,13 @@ const FireStore = () => {
   // ============= UPDATE USER DATA IN FIREBASE AFTER EDIT DATA ====================
   const updateUserData = async (userId, userData) => {
     let imageUrl = userData.image;
-  // ====== THIS CONDITION CHECK FOR THAT IMAGE TYPE SHOULD NOT STRING =========
+    // ====== THIS CONDITION CHECK FOR THAT IMAGE TYPE SHOULD NOT STRING =========
     if (userData.image && typeof userData.image !== "string") {
       imageUrl = await uploadImageToStorage(userData.image);
     }
     //========== FIND USER WITH THEIR ID =========
     const userRef = doc(db, "users", userId);
-// ========== UPDATE USER DATA ========
+    // ========== UPDATE USER DATA ========
     await updateDoc(userRef, {
       firstName: userData.firstName,
       lastName: userData.lastName,
@@ -206,10 +223,15 @@ const FireStore = () => {
       const defaultImgUrl = await getDownloadURL(defaultImgRef);
       return defaultImgUrl;
     }
-    // ====== GET PATH FOR UPLOAD IMAGE ===========
-    const storageRef = ref(storage, `user_images/${image.name}`);
+    // Generate a unique filename for each upload
+    const filename = `${Date.now()}_${image.name}`;
+
+    // ====== GET PATH FOR UPLOAD IMAGE using the generated filename ===========
+    const storageRef = ref(storage, `user_images/${filename}`);
+
     // ======= UPLOAD IMAGE TO FIREBASE STORAGE =======
     await uploadBytes(storageRef, image);
+
     // ======== DOWNLOAD IMAGE URL ==========
     return await getDownloadURL(storageRef);
   };
@@ -238,7 +260,7 @@ const FireStore = () => {
   const handleDelete = async (id) => {
     // ======== FIND USER TO DELETE DATA ==========
     const userToDelete = userData.find((user) => user.id === id);
-    // ========= CHECK IF USER HAVE NOT DEFAULT IMAGE THEN DELETE USER IMAGE ======= 
+    // ========= CHECK IF USER HAVE NOT DEFAULT IMAGE THEN DELETE USER IMAGE =======
     if (
       userToDelete.imageUrl &&
       !userToDelete.imageUrl.includes("default_user.jpg")
@@ -277,6 +299,7 @@ const FireStore = () => {
     setEditMode(false);
     setEditUserId(null);
   };
+
   return (
     <section className="py-5 min-vh-100" id="form_validation">
       <div className="container">
@@ -286,7 +309,7 @@ const FireStore = () => {
       </div>
       <div className="container d-flex align-items-center justify-content-center">
         <form
-          className="d-flex flex-column gap-4 justify-content-center form_width"
+          className="d-flex flex-column gap-4 justify-content-center form_width form_box"
           onSubmit={formSubmit}
         >
           <div className="position-relative">
@@ -300,7 +323,7 @@ const FireStore = () => {
               <p className="text-danger fw-semibold error_message">
                 {formdata.firstName.trim() === ""
                   ? "Please enter your First Name!"
-                  : ""}
+                  : "invalid First Name"}
               </p>
             )}
           </div>
@@ -321,7 +344,9 @@ const FireStore = () => {
             />
             {error.email && (
               <p className="text-danger fw-semibold error_message">
-                {formdata.email.trim() === "" ? "Please enter your Email!" : ""}
+                {formdata.email.trim() === ""
+                  ? "Please enter your Email!"
+                  : "invalid Email"}
               </p>
             )}
           </div>
@@ -342,20 +367,19 @@ const FireStore = () => {
             )}
           </div>
           <button className="common_btns" type="submit">
-  {loading ? (
-    <span>
-      {editMode ? "Updating" : "Submitting"}
-      <span className="submitting_dot1">.</span>
-      <span className="submitting_dot2">.</span>
-      <span className="submitting_dot3">.</span>
-    </span>
-  ) : editMode ? (
-    "Update"
-  ) : (
-    "Submit"
-  )}
-</button>
-
+            {loading ? (
+              <span>
+                {editMode ? "Updating" : "Submitting"}
+                <span className="submitting_dot1">.</span>
+                <span className="submitting_dot2">.</span>
+                <span className="submitting_dot3">.</span>
+              </span>
+            ) : editMode ? (
+              "Update"
+            ) : (
+              "Submit"
+            )}
+          </button>
         </form>
       </div>
       <div className={` ${userData.length === 0 ? "d-none" : "mt-5"}`}>

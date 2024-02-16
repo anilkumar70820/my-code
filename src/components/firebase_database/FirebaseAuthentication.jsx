@@ -247,7 +247,7 @@ const FirebaseAuthentication = () => {
       </h1>
       <div className="container d-flex align-items-center justify-content-center">
         <form
-          className="d-flex flex-column gap-4 justify-content-center form_width"
+          className="d-flex flex-column gap-4 justify-content-center form_width form_box"
           onSubmit={formSubmit}
         >
           <div
