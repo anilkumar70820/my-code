@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
-import CommonButton from "./common/CommonButton";
+import CommonButton from "../common/CommonButton";
 
 const AudioPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false);

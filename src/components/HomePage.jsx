@@ -41,6 +41,9 @@ const HomePage = () => {
         <Link to="/formvalidation">
           <CommonButton linkButton={"Form Validation"} />
         </Link>
+        <Link to="/filter">
+          <CommonButton linkButton={"Filter"} />
+        </Link>
         <Link to="/realtimedatabase">
           <CommonButton linkButton={"Realtime Database"} />
         </Link>

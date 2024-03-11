@@ -92,7 +92,7 @@ import React from "react";
 import { useState } from "react";
 import { useRef } from "react";
 import Swal from "sweetalert2";
-import CommonButton from "./common/CommonButton";
+import CommonButton from "../common/CommonButton";
 import { Link } from "react-router-dom";
 
 const EmailJs = () => {

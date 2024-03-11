@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import CommonButton from "./common/CommonButton";
+import CommonButton from "../common/CommonButton";
 
 const UseStateNav = () => {
   const [showNavbar, setShowNavbar] = useState(true);

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import delete_icon from "../assets/images/svg/delete_icon.svg";
-import check_icon from "../assets/images/svg/check_icon.svg";
-import green_check_icon from "../assets/images/svg/green_check_icon.svg";
-import edit_icon from "../assets/images/png/editing.png";
+import delete_icon from "../../assets/images/svg/delete_icon.svg";
+import check_icon from "../../assets/images/svg/check_icon.svg";
+import green_check_icon from "../../assets/images/svg/green_check_icon.svg";
+import edit_icon from "../../assets/images/png/editing.png";
 import { Link } from "react-router-dom";
-import CommonButton from "./common/CommonButton";
+import CommonButton from "../common/CommonButton";
 
 const ToDoList = () => {
   const [inputData, setInputData] = useState("");

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
 import { Link } from "react-router-dom";
-import CommonButton from "./common/CommonButton";
+import CommonButton from "../common/CommonButton";
 
 const FormValidation = () => {
   const [formdata, setFormdata] = useState({

@@ -1,7 +1,7 @@
 import React from "react";
 import { Accordion } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import CommonButton from "./common/CommonButton";
+import CommonButton from "../common/CommonButton";
 
 const CustomAccordian = () => {
   return (

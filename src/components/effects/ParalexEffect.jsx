@@ -1,8 +1,8 @@
 import React from "react";
 import ReactParallaxTilt from "react-parallax-tilt";
-import devloper from "../assets/images/png/fronted devloper.jpeg";
+import devloper from "../../assets/images/png/fronted devloper.jpeg";
 import { Link } from "react-router-dom";
-import CommonButton from "./common/CommonButton";
+import CommonButton from "../common/CommonButton";
 
 const ParalexEffect = () => {
   return (

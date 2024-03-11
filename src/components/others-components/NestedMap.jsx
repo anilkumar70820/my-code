@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import CommonButton from "./common/CommonButton";
+import CommonButton from "../common/CommonButton";
 
 const NestedMap = () => {
   // Example data with nested arrays

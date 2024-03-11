@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
-import CommonButton from "./common/CommonButton";
+import CommonButton from "../common/CommonButton";
 import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa";
 
 const MySlider = () => {

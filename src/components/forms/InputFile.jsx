@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import CommonButton from "./common/CommonButton";
+import CommonButton from "../common/CommonButton";
 
 const InputFile = () => {
   const [file, setFile] = useState();
@@ -32,7 +32,7 @@ const InputFile = () => {
               <img
                 className="input_img_size mt-4 cursor_pointer"
                 src={file}
-                alt="image"
+                alt="uploaded_img"
               />
             ) : (
               <p className=" fs_2xmd fw-normal ff-Montserrat text-center mt-4">

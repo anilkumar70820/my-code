@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Typewriter from "typewriter-effect";
-import CommonButton from "./common/CommonButton";
+import CommonButton from "../common/CommonButton";
 
 const TypeWriter = () => {
   return (

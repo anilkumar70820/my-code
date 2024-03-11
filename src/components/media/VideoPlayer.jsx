@@ -1,9 +1,9 @@
 import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import sample_video from "../assets/video/sample_video.mp4";
-import play_btn from "../assets/images/svg/play-button-svgrepo-com.svg";
-import pause_btn from "../assets/images/svg/pause-button-icon.svg";
-import CommonButton from "./common/CommonButton";
+import sample_video from "../../assets/video/sample_video.mp4";
+import play_btn from "../../assets/images/svg/play-button-svgrepo-com.svg";
+import pause_btn from "../../assets/images/svg/pause-button-icon.svg";
+import CommonButton from "../common/CommonButton";
 
 const VideoPlayer = () => {
   const videoRef = useRef(null);

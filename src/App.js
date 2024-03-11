@@ -6,31 +6,32 @@ import "slick-carousel/slick/slick-theme.css";
 import { Route, Routes } from "react-router-dom";
 // import { useContext } from "react";
 // import { UseContextData } from "./components/UseContextData";
-import ToDoList from "./components/ToDoList";
-import ParalexEffect from "./components/ParalexEffect";
-import FormValidation from "./components/FormValidation";
-import NestedMap from "./components/NestedMap";
-import AudioPlayer from "./components/AudioPlayer";
-import SwiperSlider from "./components/SwiperSlider";
-import CSSTicker from "./components/CSSTicker";
-import TypeWriter from "./components/TypeWriter";
+import ToDoList from "./components/js-components/ToDoList";
+import ParalexEffect from "./components/effects/ParalexEffect";
+import FormValidation from "./components/forms/FormValidation";
+import NestedMap from "./components/others-components/NestedMap";
+import AudioPlayer from "./components/media/AudioPlayer";
+import SwiperSlider from "./components/sliders/SwiperSlider";
+import CSSTicker from "./components/sliders/CSSTicker";
+import TypeWriter from "./components/effects/TypeWriter";
 import HomePage from "./components/HomePage";
-import GsapPage from "./components/GsapPage";
-import DarkMode from "./components/DarkMode";
-import VideoPlayer from "./components/VideoPlayer";
-import EmailJs from "./components/EmailJs";
-import GoogleMap from "./components/GoogleMap";
-import UseStateNav from "./components/UseStateNav";
-import CardMapUse from "./components/CardMapUse";
-import CountDown from "./components/CountDown";
+import GsapPage from "./components/effects/GsapPage";
+import DarkMode from "./components/effects/DarkMode";
+import VideoPlayer from "./components/media/VideoPlayer";
+import EmailJs from "./components/forms/EmailJs";
+import GoogleMap from "./components/others-components/GoogleMap";
+import UseStateNav from "./components/nav-bar/UseStateNav";
+import CardMapUse from "./components/others-components/CardMapUse";
+import CountDown from "./components/js-components/CountDown";
 // import Preloader from "./components/common/Preloader";
-import CustomAccordian from "./components/CustomAccordian";
-import InputFile from "./components/InputFile";
-import NewForm from "./components/NewForm";
-import MySlider from "./components/MySlider";
+import CustomAccordian from "./components/faqs/CustomAccordian";
+import InputFile from "./components/forms/InputFile";
+import NewForm from "./components/forms/NewForm";
+import MySlider from "./components/sliders/MySlider";
 import FireStore from "./components/firebase_database/FireStore";
 import RealtimeDatabase from "./components/firebase_database/RealtimeDatabase";
 import FirebaseAuthentication from "./components/firebase_database/FirebaseAuthentication";
+import Filter from "./components/others-components/Filter";
 function App() {
   // const { arr, newObj, show, setShow } = useContext(UseContextData);
   // console.log(arr, newObj)
@@ -52,33 +53,34 @@ function App() {
       <button className='mb-5 py-3 px-4 bg-black ms-5 text-white fw-bold fs-2 rounded-4 border-0' onClick={() => setShow(true)}>click again</button> */}
       <Routes>
         <Route path="/" element={<FirebaseAuthentication />} />
-          <Route path="/homepage" element={<HomePage />} />
-          <Route path="/typewriter" element={<TypeWriter />} />
-          <Route path="/tickerslider" element={<CSSTicker />} />
-          <Route path="/swiperslider" element={<SwiperSlider />} />
-          <Route path="/formvalidation" element={<FormValidation />} />
-          <Route path="/nestedmap" element={<NestedMap />} />
-          <Route path="/todolist" element={<ToDoList />} />
-          <Route path="/parallaxeffect" element={<ParalexEffect />} />
-          <Route path="/gsap" element={<GsapPage />} />
-          <Route path="/darkmode" element={<DarkMode />} />
-          <Route path="/videoplayer" element={<VideoPlayer />} />
-          <Route path="/audioplayer" element={<AudioPlayer />} />
-          <Route path="/emailjs" element={<EmailJs />} />
-          <Route path="/googlemap" element={<GoogleMap />} />
-          <Route path="/navbar" element={<UseStateNav />} />
-          <Route path="/map" element={<CardMapUse />} />
-          <Route path="/countdown" element={<CountDown />} />
-          <Route path="/accordian" element={<CustomAccordian />} />
-          <Route path="/inputfile" element={<InputFile />} />
-          <Route path="/firestoredatabase" element={<FireStore />} />
-          <Route path="/realtimedatabase" element={<RealtimeDatabase />} />
-          <Route path="slickslider" element={<MySlider />} />
-          <Route
-            path="/firebaseauthentication"
-            element={<FirebaseAuthentication />}
-          />
-          <Route path="/practiceform" element={<NewForm />} />
+        <Route path="/homepage" element={<HomePage />} />
+        <Route path="/typewriter" element={<TypeWriter />} />
+        <Route path="/tickerslider" element={<CSSTicker />} />
+        <Route path="/swiperslider" element={<SwiperSlider />} />
+        <Route path="/formvalidation" element={<FormValidation />} />
+        <Route path="/nestedmap" element={<NestedMap />} />
+        <Route path="/todolist" element={<ToDoList />} />
+        <Route path="/parallaxeffect" element={<ParalexEffect />} />
+        <Route path="/gsap" element={<GsapPage />} />
+        <Route path="/darkmode" element={<DarkMode />} />
+        <Route path="/videoplayer" element={<VideoPlayer />} />
+        <Route path="/audioplayer" element={<AudioPlayer />} />
+        <Route path="/emailjs" element={<EmailJs />} />
+        <Route path="/googlemap" element={<GoogleMap />} />
+        <Route path="/navbar" element={<UseStateNav />} />
+        <Route path="/map" element={<CardMapUse />} />
+        <Route path="/countdown" element={<CountDown />} />
+        <Route path="/accordian" element={<CustomAccordian />} />
+        <Route path="/inputfile" element={<InputFile />} />
+        <Route path="/firestoredatabase" element={<FireStore />} />
+        <Route path="/realtimedatabase" element={<RealtimeDatabase />} />
+        <Route path="slickslider" element={<MySlider />} />
+        <Route
+          path="/firebaseauthentication"
+          element={<FirebaseAuthentication />}
+        />
+        <Route path="/practiceform" element={<NewForm />} />
+        <Route path="/filter" element={<Filter />} />
       </Routes>
     </div>
   );
