@@ -50,6 +50,7 @@ const SwiperSlider = () => {
             //   disableOnInteraction: true,
             // }}
             loop={true} // for infinite scroll
+            centeredSlides={true}
             breakpoints={{
               640: {
                 slidesPerView: 2,

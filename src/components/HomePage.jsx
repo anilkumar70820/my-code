@@ -95,6 +95,9 @@ const HomePage = () => {
         <Link to="/practiceform">
           <CommonButton linkButton={"Practice Form Validation"} />
         </Link>
+        <a href="https://custom-tabs-daebf.web.app" target="blank">
+          <CommonButton linkButton={"Js Practice Html"} />
+        </a>
       </div>
     </div>
   );

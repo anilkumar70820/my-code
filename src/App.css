@@ -480,6 +480,9 @@ button.active {
   left: -1%;
   transform: translateY(-50%);
 }
+.swiper-slide-active{
+  scale: 1.1;
+}
 /* ========= VIDEO PLAYER ======= */
 .play_pause_btn {
   position: absolute;
