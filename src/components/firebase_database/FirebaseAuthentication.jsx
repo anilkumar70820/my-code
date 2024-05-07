@@ -24,7 +24,7 @@ const FirebaseAuthentication = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState();
-  const [loading, setLoading] = useState();
+  const [loading, setLoading] = useState(false);
   // ===== regex PATTERNS ==========
   const regexFirstName = /^[a-zA-Z0-9]+([._][a-zA-Z0-9]+)*$/;
   const regexEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -96,7 +96,6 @@ const FirebaseAuthentication = () => {
   const formSubmit = async (e) => {
     // =========== Prevent page reload after form submission ================
     e.preventDefault();
-    setLoading(true);
     // ==== CONDITION FOR CHECK EMPTY FIELDS ==============
     if (
       (isSignUp &&
@@ -110,6 +109,7 @@ const FirebaseAuthentication = () => {
         email: formdata.email.trim() === "",
         password: formdata.password.trim() === "",
         confirmPassword: isSignUp && formdata.confirmPassword.trim() === "",
+      
       });
       return;
     }
@@ -130,6 +130,7 @@ const FirebaseAuthentication = () => {
       setError({ ...error, confirmPassword: true });
       return;
     }
+    setLoading(true);
     // ======= FIREBASE AUTHENTICATION JS ==================
     try {
       if (isSignUp) {
@@ -198,6 +199,7 @@ const FirebaseAuthentication = () => {
         alert("Invalid email or password. Please try again.");
       }
     }
+    setLoading(false);
   };
 
   // ==========RESET PASSWORD FUNCTION =============

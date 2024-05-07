@@ -32,6 +32,7 @@ import FireStore from "./components/firebase_database/FireStore";
 import RealtimeDatabase from "./components/firebase_database/RealtimeDatabase";
 import FirebaseAuthentication from "./components/firebase_database/FirebaseAuthentication";
 import Filter from "./components/others-components/Filter";
+import ApiFetch from "./components/others-components/ApiFetch";
 function App() {
   // const { arr, newObj, show, setShow } = useContext(UseContextData);
   // console.log(arr, newObj)
@@ -81,6 +82,7 @@ function App() {
         />
         <Route path="/practiceform" element={<NewForm />} />
         <Route path="/filter" element={<Filter />} />
+        <Route path="/apifetch" element={<ApiFetch />} />
       </Routes>
     </div>
   );

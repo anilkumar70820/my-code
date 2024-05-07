@@ -26,6 +26,9 @@ const HomePage = () => {
         <Link to="/accordian">
           <CommonButton linkButton={"Accordian"} />
         </Link>
+        <Link to="/apifetch">
+          <CommonButton linkButton={"Api Fetch"} />
+        </Link>
         <Link className="cursor_block" to="/audioplayer">
           <CommonButton linkButton={"Audio Player"} />
         </Link>
