@@ -7,7 +7,7 @@ const ApiFetch = () => {
   const [dogImages, setDogImages] = useState([]);
 
   useEffect(() => {
-    fetch("https://dog.ceo/api/breeds/image/random/50") // Fetching 10 random images
+    fetch("https://dog.ceo/api/breeds/image/random/50") 
       .then((response) => response.json())
       .then((data) => setDogImages(data.message))
       .catch((error) => console.error("Error fetching dog images:", error));

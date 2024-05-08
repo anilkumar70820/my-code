@@ -1,0 +1,31 @@
+[debug] [2024-05-07T07:30:30.915Z] ----------------------------------------------------------------------
+[debug] [2024-05-07T07:30:30.941Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\lenovo\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2024-05-07T07:30:30.942Z] CLI Version:   13.1.0
+[debug] [2024-05-07T07:30:30.942Z] Platform:      win32
+[debug] [2024-05-07T07:30:30.943Z] Node Version:  v20.10.0
+[debug] [2024-05-07T07:30:30.944Z] Time:          Tue May 07 2024 13:00:30 GMT+0530 (India Standard Time)
+[debug] [2024-05-07T07:30:30.944Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-05-07T07:30:31.179Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-05-07T07:30:31.182Z] > authorizing via signed-in user (anil70820123@gmail.com)
+[debug] [2024-05-07T07:30:31.184Z] [iam] checking project practice-page-1cbb4 for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2024-05-07T07:30:31.192Z] > refreshing access token with scopes: []
+[debug] [2024-05-07T07:30:31.203Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2024-05-07T07:30:31.205Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-05-07T07:30:32.116Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2024-05-07T07:30:32.117Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-05-07T07:30:32.158Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/practice-page-1cbb4:testIamPermissions [none]
+[debug] [2024-05-07T07:30:32.158Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/practice-page-1cbb4:testIamPermissions x-goog-quota-user=projects/practice-page-1cbb4
+[debug] [2024-05-07T07:30:32.159Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/practice-page-1cbb4:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2024-05-07T07:30:34.059Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/practice-page-1cbb4:testIamPermissions 200
+[debug] [2024-05-07T07:30:34.061Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/practice-page-1cbb4:testIamPermissions {}
+[debug] [2024-05-07T07:30:34.065Z] [iam] error while checking permissions, command may fail: FirebaseError: Authorization failed. This account is missing the following required permissions on project practice-page-1cbb4:
+
+  firebase.projects.get
+  firebasehosting.sites.update
+[debug] [2024-05-07T07:30:34.070Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/practice-page-1cbb4 [none]
+[debug] [2024-05-07T07:30:34.800Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/practice-page-1cbb4 403
+[debug] [2024-05-07T07:30:34.800Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/practice-page-1cbb4 {"error":{"code":403,"message":"The caller does not have permission","status":"PERMISSION_DENIED"}}
+[debug] [2024-05-07T07:30:34.805Z] HTTP Error: 403, The caller does not have permission
+[error] 
+[error] Error: Assertion failed: resolving hosting target of a site with no site name or target name. This should have caused an error earlier

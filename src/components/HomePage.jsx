@@ -74,6 +74,9 @@ const HomePage = () => {
         <Link to="/nestedmap">
           <CommonButton linkButton={"Nested Map"} />
         </Link>
+        <Link target="blank" to="https://january-test-3ffb7.web.app">
+          <CommonButton linkButton={"React JS Tailwind Code"} />
+        </Link>
         <Link to="/parallaxeffect">
           <CommonButton linkButton={"Parallax Effect"} />
         </Link>
