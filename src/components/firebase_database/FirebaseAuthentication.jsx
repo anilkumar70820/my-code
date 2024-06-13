@@ -19,6 +19,7 @@ const FirebaseAuthentication = () => {
     firstName: "",
     lastName: "",
     email: "",
+    number:"",
     password: "",
     confirmPassword: "",
   });
@@ -29,6 +30,8 @@ const FirebaseAuthentication = () => {
   const regexFirstName = /^[a-zA-Z0-9]+([._][a-zA-Z0-9]+)*$/;
   const regexEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
   const regexPassword = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#])[A-Za-z\d@#]{8,}$/;
+  const regexNumber = /^\d{10}$/;
+
   // ============ ERROR STATE ==============
   const [error, setError] = useState({
     firstName: false,
@@ -43,6 +46,7 @@ const FirebaseAuthentication = () => {
       firstName: false,
       lastName: false,
       email: false,
+      number:false,
       password: false,
       confirmPassword: false,
     });
@@ -50,6 +54,7 @@ const FirebaseAuthentication = () => {
       firstName: "",
       lastName: "",
       email: "",
+      number:"",
       password: "",
       confirmPassword: "",
     });
@@ -70,6 +75,12 @@ const FirebaseAuthentication = () => {
         setError({
           ...error,
           email: value.trim() === "",
+        });
+        break;
+      case "email":
+        setError({
+          ...error,
+          number: value.trim() === "",
         });
         break;
       case "password":
@@ -107,6 +118,7 @@ const FirebaseAuthentication = () => {
       setError({
         firstName: isSignUp && formdata.firstName.trim() === "",
         email: formdata.email.trim() === "",
+        number:formdata.number.trim() === "",
         password: formdata.password.trim() === "",
         confirmPassword: isSignUp && formdata.confirmPassword.trim() === "",
       
@@ -120,6 +132,10 @@ const FirebaseAuthentication = () => {
     }
     if (!regexEmail.test(formdata.email)) {
       setError({ ...error, email: true });
+      return;
+    }
+    if (!regexNumber.test(formdata.number)) {
+      setError({ ...error, number: true });
       return;
     }
     if (!regexPassword.test(formdata.password)) {
@@ -183,11 +199,13 @@ const FirebaseAuthentication = () => {
         // ===== AFTER SIGN IN GO TO HOMEPAGE ===============
         navigate("/homepage");
       }
+      console.log(formdata)
       // Clear form data after successful submission
       setFormdata({
         firstName: "",
         lastName: "",
         email: "",
+        number: "",
         password: "",
         confirmPassword: "",
       });
@@ -301,6 +319,24 @@ const FirebaseAuthentication = () => {
               </p>
             )}
           </div>
+          <div className={`position-relative ${isSignUp ? "d-block" : "d-none"}`}>
+            <p className="text-capitalize fs-5 mb-1 text-white">
+              number <sub className="text-danger fs-3">*</sub>
+            </p>
+            <input
+              type="number"
+              placeholder="Your number"
+              value={formdata.number}
+              onChange={(e) => handleInputChange("number", e.target.value)}
+            />
+            {error.number && (
+              <p className="text-danger fw-semibold error_message">
+                {formdata.number.trim() === ""
+                  ? "Please enter your number!"
+                  : "Invalid number!"}
+              </p>
+            )}
+          </div>
           <div className="position-relative">
             <p className="text-capitalize fs-5 mb-1 text-white">
               password <sub className="text-danger fs-3">*</sub>
@@ -397,14 +433,6 @@ const FirebaseAuthentication = () => {
               ? "Already have an account? Sign In"
               : "Don't have an account? Sign Up"}
           </button>
-          {/* <p className="text-center fs-4 text-white">OR</p>
-          <button
-            type="button"
-            className="common_btns"
-            onClick={signInWithGoogle}
-          >
-            Sign In with Google Account
-          </button> */}
         </form>
       </div>
     </section>
