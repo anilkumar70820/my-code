@@ -1,19 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import CommonButton from "./common/CommonButton";
 import Swal from "sweetalert2";
 import { FaSignOutAlt } from "react-icons/fa";
+import { homepageButtons } from "./common/Helper";
 
 const HomePage = () => {
+  const [search,setSearch] = useState("")
+  // ============ LOGOUT popup ===========
   const logOut = () => {
     Swal.fire({
       title: "Log Out Successfully!",
       icon: "success",
     });
   };
+ // Filter buttons based on the search input
+ const filteredButtons = homepageButtons.filter((button) =>
+  button.buttonName.toLowerCase().includes(search.toLowerCase())
+);
   return (
-    <div className="py-5">
-      <div className="d-flex justify-content-end container">
+    <div className="py-5" id="form_validation">
+      <div className="d-flex justify-content-between container">
+<div>
+  <form className="d-flex gap-3 align-items-center">
+  <input
+              type="search"
+              placeholder="Search...."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+  </form>
+</div>
         <Link to="/" onClick={logOut}>
           <CommonButton
             linkButton={"Log Out"}
@@ -23,87 +40,13 @@ const HomePage = () => {
         </Link>
       </div>
       <div className="d-flex flex-wrap gap-4 container my-5">
-        <Link to="/accordian">
-          <CommonButton linkButton={"Accordian"} />
+        {filteredButtons.map((obj,index)=>{
+          return(
+        <Link key={index} to={obj.link} target={obj.target}>
+          <CommonButton linkButton={obj.buttonName} />
         </Link>
-        <Link to="/apifetch">
-          <CommonButton linkButton={"Api Fetch"} />
-        </Link>
-        <Link className="cursor_block" to="/audioplayer">
-          <CommonButton linkButton={"Audio Player"} />
-        </Link>
-        <Link to="/countdown">
-          <CommonButton linkButton={"Countdown Timer"} />
-        </Link>
-        <Link to="/darkmode">
-          <CommonButton linkButton={"Dark Mode"} />
-        </Link>
-        <Link to="/emailjs">
-          <CommonButton linkButton={"Email Js"} />
-        </Link>
-        <Link to="/formvalidation">
-          <CommonButton linkButton={"Form Validation"} />
-        </Link>
-        <Link to="/filter">
-          <CommonButton linkButton={"Filter"} />
-        </Link>
-        <Link to="/realtimedatabase">
-          <CommonButton linkButton={"Realtime Database"} />
-        </Link>
-        <Link to="/firestoredatabase">
-          <CommonButton linkButton={"Firestore Database"} />
-        </Link>
-        <Link to="/firebaseauthentication">
-          <CommonButton linkButton={"Firebase Authentication"} />
-        </Link>
-        <Link to="/googlemap">
-          <CommonButton linkButton={"Google Map"} />
-        </Link>
-        <Link to="/gsap">
-          <CommonButton linkButton={"Gsap"} />
-        </Link>
-        <Link to="/inputfile">
-          <CommonButton linkButton={"Input Type"} />
-        </Link>
-        <Link to="/map">
-          <CommonButton linkButton={"Map Function"} />
-        </Link>
-        <Link to="/navbar">
-          <CommonButton linkButton={"Nav Bar"} />
-        </Link>
-        <Link to="/nestedmap">
-          <CommonButton linkButton={"Nested Map"} />
-        </Link>
-        <Link target="blank" to="https://january-test-3ffb7.web.app">
-          <CommonButton linkButton={"React JS Tailwind Code"} />
-        </Link>
-        <Link to="/parallaxeffect">
-          <CommonButton linkButton={"Parallax Effect"} />
-        </Link>
-        <Link to="/slickslider">
-          <CommonButton linkButton={"Slick Slider"} />
-        </Link>
-        <Link to="/swiperslider">
-          <CommonButton linkButton={"Swiper Slider"} />
-        </Link>
-        <Link to="/tickerslider">
-          <CommonButton linkButton={"Ticker Slider"} />
-        </Link>
-        <Link to="/todolist">
-          <CommonButton linkButton={"To Do List"} />
-        </Link>
-        <Link to="/typewriter">
-          <CommonButton linkButton={"Type Writer Effect"} />
-        </Link>
-        <Link to="/videoplayer">
-          <CommonButton linkButton={"Video Player"} />
-        </Link>
-        <Link to="/practiceform">
-          <CommonButton linkButton={"Practice Form Validation"} />
-        </Link>
-        <a href="https://custom-tabs-daebf.web.app" target="blank">
-          <CommonButton linkButton={"Js Practice Html"} />
-        </a>
+          )
+        })}
       </div>
     </div>
   );

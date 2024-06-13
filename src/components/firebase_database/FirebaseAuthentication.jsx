@@ -244,7 +244,7 @@ const FirebaseAuthentication = () => {
   };
   return (
     <section className="py-5 min-vh-100" id="form_validation">
-      <h1 className="mb-5 text-center">
+      <h1 className="mb-5 text-center text-white">
         {isSignUp ? "Create A New Account" : "Sign In"}
       </h1>
       <div className="container d-flex align-items-center justify-content-center">
@@ -255,7 +255,7 @@ const FirebaseAuthentication = () => {
           <div
             className={`position-relative ${isSignUp ? "d-block" : "d-none"}`}
           >
-            <p className="text-capitalize fs-5 mb-1">
+            <p className="text-capitalize fs-5 mb-1 text-white">
               first name <sub className="text-danger fs-3">*</sub>
             </p>
             <input
@@ -275,7 +275,7 @@ const FirebaseAuthentication = () => {
           <div
             className={`position-relative ${isSignUp ? "d-block" : "d-none"}`}
           >
-            <p className="text-capitalize fs-5 mb-1">last name</p>
+            <p className="text-capitalize fs-5 mb-1 text-white">last name</p>
             <input
               type="text"
               placeholder="Last Name"
@@ -284,7 +284,7 @@ const FirebaseAuthentication = () => {
             />
           </div>
           <div className="position-relative">
-            <p className="text-capitalize fs-5 mb-1">
+            <p className="text-capitalize fs-5 mb-1 text-white">
               email <sub className="text-danger fs-3">*</sub>
             </p>
             <input
@@ -302,7 +302,7 @@ const FirebaseAuthentication = () => {
             )}
           </div>
           <div className="position-relative">
-            <p className="text-capitalize fs-5 mb-1">
+            <p className="text-capitalize fs-5 mb-1 text-white">
               password <sub className="text-danger fs-3">*</sub>
             </p>
             <input
@@ -344,7 +344,7 @@ const FirebaseAuthentication = () => {
           <div
             className={`position-relative ${isSignUp ? "d-block" : "d-none"}`}
           >
-            <p className="text-capitalize fs-5 mb-1">
+            <p className="text-capitalize fs-5 mb-1 text-white">
               confirm password <sub className="text-danger fs-3">*</sub>
             </p>
             <input
@@ -379,7 +379,7 @@ const FirebaseAuthentication = () => {
             )}
           </button>
           <Link
-            className={`d-flex justify-content-end fw-medium ff_jost ${
+            className={`d-flex justify-content-end fw-medium ff_jost text-white ${
               isSignUp ? "d-none" : "d-block"
             }`}
             onClick={handlePasswordReset}
@@ -397,14 +397,14 @@ const FirebaseAuthentication = () => {
               ? "Already have an account? Sign In"
               : "Don't have an account? Sign Up"}
           </button>
-          <p className="text-center fs-4">OR</p>
+          {/* <p className="text-center fs-4 text-white">OR</p>
           <button
             type="button"
             className="common_btns"
             onClick={signInWithGoogle}
           >
             Sign In with Google Account
-          </button>
+          </button> */}
         </form>
       </div>
     </section>

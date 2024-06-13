@@ -33,6 +33,8 @@ import RealtimeDatabase from "./components/firebase_database/RealtimeDatabase";
 import FirebaseAuthentication from "./components/firebase_database/FirebaseAuthentication";
 import Filter from "./components/others-components/Filter";
 import ApiFetch from "./components/others-components/ApiFetch";
+import CssSlider from "./components/sliders/CssSlider";
+import CommonPoints from "./components/common/CommonPoints";
 function App() {
   // const { arr, newObj, show, setShow } = useContext(UseContextData);
   // console.log(arr, newObj)
@@ -83,6 +85,8 @@ function App() {
         <Route path="/practiceform" element={<NewForm />} />
         <Route path="/filter" element={<Filter />} />
         <Route path="/apifetch" element={<ApiFetch />} />
+        <Route path="/cssslider" element={<CssSlider />} />
+        <Route path="/commonpoints" element={<CommonPoints />} />
       </Routes>
     </div>
   );

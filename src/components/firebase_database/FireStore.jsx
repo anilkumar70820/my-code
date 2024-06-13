@@ -313,7 +313,7 @@ const FireStore = () => {
           onSubmit={formSubmit}
         >
           <div className="position-relative">
-            <p className="text-capitalize fs-5 mb-1">
+            <p className="text-capitalize fs-5 mb-1 text-white">
               first name <sub className="text-danger fs-3">*</sub>
             </p>
             <input
@@ -331,7 +331,7 @@ const FireStore = () => {
             )}
           </div>
           <div className="position-relative">
-            <p className="text-capitalize fs-5 mb-1">last name</p>
+            <p className="text-capitalize fs-5 mb-1 text-white">last name</p>
             <input
               type="text"
               placeholder="Last Name"
@@ -340,7 +340,7 @@ const FireStore = () => {
             />
           </div>
           <div className="position-relative">
-            <p className="text-capitalize fs-5 mb-1">
+            <p className="text-capitalize fs-5 mb-1 text-white">
               email <sub className="text-danger fs-3">*</sub>
             </p>
             <input
@@ -359,7 +359,7 @@ const FireStore = () => {
           </div>
           {/* Input field for image upload */}
           <div className="mb-0">
-            <p className="text-capitalize fs-5 mb-1">profile image</p>
+            <p className="text-capitalize fs-5 mb-1 text-white">profile image</p>
             <div className="border_yellogreen">
               <label htmlFor="fileinput" className="common_btns me-4 py-1 px-3">
                 Choose File
@@ -393,16 +393,16 @@ const FireStore = () => {
         </form>
       </div>
       <div className={` ${userData.length === 0 ? "d-none" : "mt-5"}`}>
-        <h2 className="text-center mb-3">User Data</h2>
+        <h2 className="text-center mb-3 text-white">User Data</h2>
         <div className="w-100 d-flex">
-          <table className="overflow-x-scroll mx-auto px-3">
+          <table className="overflow-x-scroll mx-auto px-3 form_box">
             <thead>
               <tr>
-                <th className="fw-semibold fs-5 text-nowrap">Profile Image</th>
-                <th className="fw-semibold fs-5">Name</th>
-                <th className="fw-semibold fs-5">Email</th>
-                <th className="fw-semibold fs-5 text-nowrap">Edit Details</th>
-                <th className="fw-semibold fs-5 text-nowrap">Delete Details</th>
+                <th className="fw-semibold fs-5 text-nowrap text-white">Profile Image</th>
+                <th className="fw-semibold fs-5 text-white">Name</th>
+                <th className="fw-semibold fs-5 text-white">Email</th>
+                <th className="fw-semibold fs-5 text-nowrap text-white">Edit Details</th>
+                <th className="fw-semibold fs-5 text-nowrap text-white">Delete Details</th>
               </tr>
             </thead>
             <tbody>
@@ -411,10 +411,10 @@ const FireStore = () => {
                   <td>
                     <img className="user_img" src={user.imageUrl} alt="User" />
                   </td>
-                  <td className="text-capitalize fw-medium">
+                  <td className="text-capitalize fw-medium text-white">
                     {user.firstName} {user.lastName}
                   </td>
-                  <td className="fw-medium">{user.email}</td>
+                  <td className="fw-medium text-white ">{user.email}</td>
                   <td>
                     <button
                       className="common_btns px-3 py-1"
